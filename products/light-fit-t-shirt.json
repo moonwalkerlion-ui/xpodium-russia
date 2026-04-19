@@ -1,0 +1,28 @@
+{
+  "name_en": "Light-fit T-shirt",
+  "name_ru": "Футболка Light-fit",
+  "brand": "XPODIUM",
+  "colors": [
+    "Розовый",
+    "Чёрный",
+    "Синий",
+    "Зелёный",
+    "Коричневый"
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2  Extra large"
+  ],
+  "price": 2500,
+  "unit": "single",
+  "images": [
+    "/images/products/light-fit-t-shirt.webp"
+  ],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "light-fit-t-shirt"
+}

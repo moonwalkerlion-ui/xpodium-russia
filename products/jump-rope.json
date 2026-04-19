@@ -1,0 +1,24 @@
+{
+  "name_en": "JUMP ROPE",
+  "name_ru": "Скакалка скоростная",
+  "brand": "XPODIUM",
+  "colors": [
+    "Серый",
+    "Золотой",
+    "Зелёный",
+    "Розово-красный",
+    "Чёрный",
+    "Silver  Black"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 2700,
+  "unit": "pair",
+  "images": [
+    "/images/products/jump-rope.webp"
+  ],
+  "category": "jumpropes",
+  "category_ru": "Скакалки",
+  "id": "jump-rope"
+}

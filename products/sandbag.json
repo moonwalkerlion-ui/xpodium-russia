@@ -1,0 +1,19 @@
+{
+  "name_en": "SANDBAG",
+  "name_ru": "Сэндбэг",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "without sand"
+  ],
+  "price": 5000,
+  "unit": "single",
+  "images": [
+    "/images/products/sandbag.webp"
+  ],
+  "category": "extras",
+  "category_ru": "Дополнительно",
+  "id": "sandbag"
+}

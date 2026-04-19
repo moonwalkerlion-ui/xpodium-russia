@@ -1,0 +1,20 @@
+{
+  "name_en": "JUMP ROPE 2.0",
+  "name_ru": "Скакалка скоростная 2.0",
+  "brand": "XPODIUM",
+  "colors": [
+    "Серебряный",
+    "Чёрный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 2700,
+  "unit": "",
+  "images": [
+    "/images/products/jump-rope-2-0.webp"
+  ],
+  "category": "jumpropes",
+  "category_ru": "Скакалки",
+  "id": "jump-rope-2-0"
+}

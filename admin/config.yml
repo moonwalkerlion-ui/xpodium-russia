@@ -1,0 +1,169 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+locale: "ru"
+
+# Настройка показывать превью внутри админки
+site_url: https://xpodium-russia.netlify.app
+display_url: https://xpodium-russia.netlify.app
+logo_url: https://xpodium-russia.netlify.app/images/placeholder.svg
+
+collections:
+  # ============================
+  # ТОВАРЫ
+  # ============================
+  - name: "products"
+    label: "Товары"
+    label_singular: "Товар"
+    folder: "content/products"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: name_ru
+    summary: "{{name_ru}} — {{price}} ₽"
+    sortable_fields: ['name_ru', 'price', 'category']
+    view_filters:
+      - label: "Накладки"
+        field: category
+        pattern: "grips"
+      - label: "Наколенники / налокотники"
+        field: category
+        pattern: "sleeves"
+      - label: "Пояса"
+        field: category
+        pattern: "belts"
+      - label: "Скакалки"
+        field: category
+        pattern: "jumpropes"
+      - label: "Кистевые бинты"
+        field: category
+        pattern: "wraps"
+      - label: "Рюкзаки и сумки"
+        field: category
+        pattern: "bags"
+      - label: "Одежда мужская"
+        field: category
+        pattern: "apparel-men"
+      - label: "Одежда женская"
+        field: category
+        pattern: "apparel-women"
+      - label: "Аксессуары"
+        field: category
+        pattern: "accessories"
+      - label: "Дополнительно"
+        field: category
+        pattern: "extras"
+    fields:
+      - { label: "Название", name: "name_ru", widget: "string" }
+      - { label: "Бренд", name: "brand", widget: "string", default: "XPODIUM" }
+      - label: "Категория"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Накладки", value: "grips" }
+          - { label: "Наколенники и налокотники", value: "sleeves" }
+          - { label: "Пояса", value: "belts" }
+          - { label: "Скакалки", value: "jumpropes" }
+          - { label: "Кистевые бинты", value: "wraps" }
+          - { label: "Рюкзаки и сумки", value: "bags" }
+          - { label: "Одежда мужская", value: "apparel-men" }
+          - { label: "Одежда женская", value: "apparel-women" }
+          - { label: "Аксессуары", value: "accessories" }
+          - { label: "Дополнительно", value: "extras" }
+      - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
+      - { label: "Старая цена (₽, для скидки)", name: "old_price", widget: "number", required: false, min: 0, step: 50 }
+      - { label: "Описание", name: "description", widget: "text", required: false }
+      - label: "Размеры"
+        name: "sizes"
+        widget: "list"
+        required: false
+        summary: "{{fields.size}}"
+        field: { label: "Размер", name: "size", widget: "string" }
+      - label: "Цвета"
+        name: "colors"
+        widget: "list"
+        required: false
+        summary: "{{fields.color}}"
+        field: { label: "Цвет", name: "color", widget: "string" }
+      - label: "Фото товара"
+        name: "images"
+        widget: "list"
+        required: false
+        summary: "{{fields.image}}"
+        field: { label: "Фото", name: "image", widget: "image" }
+      - { label: "В наличии", name: "in_stock", widget: "boolean", default: true }
+
+  # ============================
+  # НАСТРОЙКИ САЙТА
+  # ============================
+  - name: "settings"
+    label: "Настройки сайта"
+    delete: false
+    editor:
+      preview: false
+    files:
+      # --- Главная ---
+      - name: "home"
+        label: "Главная страница"
+        file: "content/settings/home.json"
+        fields:
+          - { label: "Заголовок hero (строка 1)", name: "hero_title_1", widget: "string", default: "СДЕЛАЙ" }
+          - { label: "Заголовок hero (строка 2)", name: "hero_title_2", widget: "string", default: "ЭТО" }
+          - { label: "Подзаголовок hero", name: "hero_subtitle", widget: "string" }
+          - { label: "Текст на кнопке", name: "hero_cta", widget: "string", default: "В каталог" }
+          - { label: "Заголовок блока 'О нас'", name: "about_title", widget: "string" }
+          - { label: "Текст блока 'О нас'", name: "about_text", widget: "text" }
+
+      # --- Бегущая строка ---
+      - name: "marquee"
+        label: "Бегущая строка (сверху)"
+        file: "content/settings/marquee.json"
+        fields:
+          - label: "Фразы (повторяются)"
+            name: "messages"
+            widget: "list"
+            summary: "{{fields.text}}"
+            field: { label: "Фраза", name: "text", widget: "string" }
+
+      # --- Контакты ---
+      - name: "contacts"
+        label: "Контакты и соцсети"
+        file: "content/settings/contacts.json"
+        fields:
+          - { label: "Telegram (ник без @)", name: "telegram", widget: "string", default: "xpodium_russia" }
+          - { label: "Instagram (ник без @)", name: "instagram", widget: "string", default: "xpodium_russia" }
+          - { label: "Email (опц.)", name: "email", widget: "string", required: false }
+          - { label: "Телефон (опц.)", name: "phone", widget: "string", required: false }
+
+      # --- О нас ---
+      - name: "story"
+        label: "Страница 'О нас'"
+        file: "content/settings/story.json"
+        fields:
+          - { label: "Заголовок (строка 1)", name: "title_1", widget: "string" }
+          - { label: "Заголовок (строка 2)", name: "title_2", widget: "string" }
+          - { label: "Подзаголовок", name: "subtitle", widget: "text" }
+          - { label: "Основной текст", name: "body", widget: "markdown" }
+
+      # --- Доставка и условия ---
+      - name: "delivery"
+        label: "Доставка, оплата, возврат"
+        file: "content/settings/delivery.json"
+        fields:
+          - label: "Условия доставки"
+            name: "delivery"
+            widget: "list"
+            field: { label: "Строка", name: "text", widget: "string" }
+          - label: "Способы оплаты"
+            name: "payment"
+            widget: "list"
+            field: { label: "Строка", name: "text", widget: "string" }
+          - label: "Условия возврата"
+            name: "returns"
+            widget: "list"
+            field: { label: "Строка", name: "text", widget: "string" }
+          - { label: "Сумма бесплатной доставки (₽)", name: "free_shipping_from", widget: "number", default: 10000 }

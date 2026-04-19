@@ -1,0 +1,22 @@
+{
+  "name_en": "plate Velcro",
+  "name_ru": "Шеврон цветной",
+  "brand": "XPODIUM",
+  "colors": [
+    "Зелёный",
+    "Жёлтый",
+    "Синий",
+    "Красный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 300,
+  "unit": "single",
+  "images": [
+    "/images/products/plate-velcro.webp"
+  ],
+  "category": "extras",
+  "category_ru": "Дополнительно",
+  "id": "plate-velcro"
+}

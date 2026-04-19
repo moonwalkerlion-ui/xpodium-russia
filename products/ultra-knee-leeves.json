@@ -1,0 +1,23 @@
+{
+  "name_en": "Ultra Knee leeves",
+  "name_ru": "Наколенники Ultra",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+  ],
+  "price": 5050,
+  "unit": "Pair",
+  "images": [
+    "/images/products/ultra-knee-leeves.webp"
+  ],
+  "category": "accessories",
+  "category_ru": "Аксессуары",
+  "id": "ultra-knee-leeves"
+}

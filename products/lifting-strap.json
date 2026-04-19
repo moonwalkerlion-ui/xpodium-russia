@@ -1,0 +1,19 @@
+{
+  "name_en": "Lifting strap",
+  "name_ru": "Лямки для тяги",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 500,
+  "unit": "Pair",
+  "images": [
+    "/images/products/lifting-strap.webp"
+  ],
+  "category": "extras",
+  "category_ru": "Дополнительно",
+  "id": "lifting-strap"
+}

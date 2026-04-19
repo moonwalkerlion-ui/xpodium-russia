@@ -1,0 +1,29 @@
+{
+  "name_en": "Girls T-Shirts",
+  "name_ru": "Футболка (жен.)",
+  "brand": "XPODIUM",
+  "colors": [
+    "Серо-зелёный",
+    "Тёмно-серый",
+    "Чёрный",
+    "Армейский зелёный",
+    "Кремовый",
+    "Тёмно-синий",
+    "Розовый",
+    "Жёлтый",
+    "Коричневый мокко"
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M"
+  ],
+  "price": 2500,
+  "unit": "single",
+  "images": [
+    "/images/products/girls-t-shirts.webp"
+  ],
+  "category": "apparel-women",
+  "category_ru": "Одежда женская",
+  "id": "girls-t-shirts"
+}

@@ -1,0 +1,24 @@
+{
+  "name_en": "Head Bands",
+  "name_ru": "Повязки на голову",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный (большое лого)",
+    "Белый (большое лого)",
+    "Drak Grey (small logo)",
+    "Белый (мал. лого)",
+    "Зелёный (мал. лого)",
+    "Чёрный (мал. лого)"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 900,
+  "unit": "single",
+  "images": [
+    "/images/products/head-bands.webp"
+  ],
+  "category": "accessories",
+  "category_ru": "Аксессуары",
+  "id": "head-bands"
+}

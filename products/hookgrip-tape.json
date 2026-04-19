@@ -1,0 +1,23 @@
+{
+  "name_en": "Hookgrip tape",
+  "name_ru": "Тейп для хук-грипа",
+  "brand": "XPODIUM",
+  "colors": [
+    "Белый",
+    "Чёрный",
+    "Розовый",
+    "Graffiti black",
+    "Graffiti White"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 350,
+  "unit": "single",
+  "images": [
+    "/images/products/hookgrip-tape.webp"
+  ],
+  "category": "accessories",
+  "category_ru": "Аксессуары",
+  "id": "hookgrip-tape"
+}
