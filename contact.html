@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Контакты — BRAND</title>
+<meta name="description" content="Связаться с магазином BRAND. Telegram, Instagram, условия доставки и возврата.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .contact-hero {
+    padding: 80px var(--gutter) 40px;
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .contact-hero .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .contact-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 10vw, 140px);
+    line-height: 0.9;
+    margin-bottom: 12px;
+  }
+  .contact-hero p { font-size: 18px; color: var(--muted); max-width: 560px; }
+
+  .contact-grid {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 40px var(--gutter) 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .contact-card {
+    border: 1px solid var(--line);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.25s;
+    background: #fff;
+  }
+  .contact-card:hover {
+    background: var(--fg);
+    color: #fff;
+    border-color: var(--fg);
+  }
+  .contact-card:hover .contact-meta { color: rgba(255,255,255,0.7); }
+  .contact-icon {
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 20px;
+  }
+  .contact-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.7;
+  }
+  .contact-value {
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1;
+  }
+  .contact-meta { font-size: 14px; color: var(--muted); }
+
+  .info-sections {
+    background: var(--soft-bg);
+    padding: 80px var(--gutter);
+  }
+  .info-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .info-block h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    margin-bottom: 20px;
+    letter-spacing: 0.01em;
+  }
+  .info-block p, .info-block li {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .info-block ul { list-style: none; padding: 0; }
+  .info-block li::before {
+    content: '→';
+    display: inline-block;
+    margin-right: 10px;
+    color: var(--fg);
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid, .info-inner { grid-template-columns: 1fr; }
+    .contact-card { padding: 28px; }
+    .contact-value { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>БЕСПЛАТНАЯ ДОСТАВКА ОТ 10 000 ₽</span>
+    <span>•</span>
+    <span>ДОСТАВКА ПО РОССИИ И СНГ</span>
+    <span>•</span>
+    <span>КУПИ STICKY GRIPS — НАПУЛЬСНИК В ПОДАРОК</span>
+    <span>•</span>
+    <span>БЕСПЛАТНАЯ ДОСТАВКА ОТ 10 000 ₽</span>
+    <span>•</span>
+    <span>ДОСТАВКА ПО РОССИИ И СНГ</span>
+    <span>•</span>
+    <span>КУПИ STICKY GRIPS — НАПУЛЬСНИК В ПОДАРОК</span>
+    <span>•</span>
+  </div>
+</div>
+
+<header class="header">
+  <a href="index.html" class="logo">BRAND</a>
+  <nav class="nav">
+    <div class="nav-item has-dropdown">
+      <a href="shop.html">Каталог</a>
+            <div class="dropdown">
+        <a href="shop.html?cat=grips">Накладки</a>
+        <a href="shop.html?cat=sleeves">Наколенники / налокотники</a>
+        <a href="shop.html?cat=belts">Пояса</a>
+        <a href="shop.html?cat=jumpropes">Скакалки</a>
+        <a href="shop.html?cat=wraps">Кистевые бинты</a>
+        <a href="shop.html?cat=bags">Рюкзаки и сумки</a>
+        <a href="shop.html?cat=apparel-men">Одежда мужская</a>
+        <a href="shop.html?cat=apparel-women">Одежда женская</a>
+        <a href="shop.html?cat=accessories">Аксессуары</a>
+        <a href="shop.html?cat=extras">Дополнительно</a>
+        <a href="shop.html">Всё</a>
+      </div>
+    </div>
+    <a href="our-story.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+  </nav>
+  <div class="header-actions">
+    <button class="cart-btn" id="cartBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="burger" id="burger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="contact-hero">
+  <div class="eyebrow">Контакты</div>
+  <h1>СВЯЖЕМСЯ</h1>
+  <p>Пишите в Telegram или Instagram — ответим по заказу, размерам, доставке и любым вопросам. Обычно в течение часа.</p>
+</section>
+
+<div class="contact-grid">
+  <a href="https://t.me/xpodium_russia" target="_blank" rel="noopener" class="contact-card">
+    <div class="contact-icon">→</div>
+    <div class="contact-label">Основной канал</div>
+    <div class="contact-value">Telegram</div>
+    <div>@xpodium_russia</div>
+    <div class="contact-meta">Заказы, вопросы по размерам, доставка. Среднее время ответа — 1 час.</div>
+  </a>
+  <a href="https://instagram.com/xpodium_russia" target="_blank" rel="noopener" class="contact-card">
+    <div class="contact-icon">◉</div>
+    <div class="contact-label">Соцсети</div>
+    <div class="contact-value">Instagram</div>
+    <div>@xpodium_russia</div>
+    <div class="contact-meta">Фото, обзоры продуктов, акции, истории наших атлетов.</div>
+  </a>
+</div>
+
+<section class="info-sections" id="delivery">
+  <div class="info-inner">
+    <div class="info-block">
+      <h3>Доставка</h3>
+      <ul>
+        <li>Отправляем со склада в Москве</li>
+        <li>По всей России и СНГ</li>
+        <li>СДЭК, Почта России, Boxberry</li>
+        <li>Сроки: 2–7 рабочих дней</li>
+        <li>Бесплатно при заказе от 10 000 ₽</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h3>Оплата</h3>
+      <ul>
+        <li>Перевод по реквизитам</li>
+        <li>На карту физлица</li>
+        <li>СБП по номеру телефона</li>
+        <li>Наличными при получении (по договорённости)</li>
+      </ul>
+      <p style="margin-top:16px;font-size:12px;color:#666">Детали согласуем в Telegram после оформления заказа.</p>
+    </div>
+    <div class="info-block" id="returns">
+      <h3>Возврат</h3>
+      <ul>
+        <li>14 дней на возврат без объяснения причин</li>
+        <li>Товар должен быть в оригинальной упаковке</li>
+        <li>Без следов использования</li>
+        <li>Доставку возврата оплачивает покупатель</li>
+        <li>Возвращаем деньги на карту в течение 5 дней</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-logo">BRAND</div>
+    <p>Экипировка для функционального фитнеса</p>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Магазин</div>
+    <a href="shop.html">Каталог</a>
+    <a href="our-story.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Связь</div>
+    <a href="https://t.me/xpodium_russia" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://instagram.com/xpodium_russia" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Информация</div>
+    <a href="contact.html#delivery">Доставка и оплата</a>
+    <a href="contact.html#returns">Возврат</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BRAND. Все права защищены.</span>
+    <span>Все товары сертифицированы.</span>
+  </div>
+</footer>
+
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Корзина</div>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Итого</span>
+      <span id="cartTotal">0 ₽</span>
+    </div>
+    <button class="btn-primary cart-checkout" id="cartCheckout" disabled>Оформить в Telegram</button>
+    <p class="cart-hint">После нажатия откроется чат с менеджером с готовым сообщением. Оплата и доставка обсуждаются лично.</p>
+  </div>
+</aside>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

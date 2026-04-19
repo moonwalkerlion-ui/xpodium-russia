@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Каталог — BRAND</title>
+<meta name="description" content="Полный каталог экипировки для функционального фитнеса: накладкы, наколенники, пояса, скакалки, одежда, аксессуары.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>БЕСПЛАТНАЯ ДОСТАВКА ОТ 10 000 ₽</span>
+    <span>•</span>
+    <span>ДОСТАВКА ПО РОССИИ И СНГ</span>
+    <span>•</span>
+    <span>КУПИ STICKY GRIPS — НАПУЛЬСНИК В ПОДАРОК</span>
+    <span>•</span>
+    <span>БЕСПЛАТНАЯ ДОСТАВКА ОТ 10 000 ₽</span>
+    <span>•</span>
+    <span>ДОСТАВКА ПО РОССИИ И СНГ</span>
+    <span>•</span>
+    <span>КУПИ STICKY GRIPS — НАПУЛЬСНИК В ПОДАРОК</span>
+    <span>•</span>
+  </div>
+</div>
+
+<header class="header">
+  <a href="index.html" class="logo">BRAND</a>
+  <nav class="nav">
+    <div class="nav-item has-dropdown">
+      <a href="shop.html">Каталог</a>
+            <div class="dropdown">
+        <a href="shop.html?cat=grips">Накладки</a>
+        <a href="shop.html?cat=sleeves">Наколенники / налокотники</a>
+        <a href="shop.html?cat=belts">Пояса</a>
+        <a href="shop.html?cat=jumpropes">Скакалки</a>
+        <a href="shop.html?cat=wraps">Кистевые бинты</a>
+        <a href="shop.html?cat=bags">Рюкзаки и сумки</a>
+        <a href="shop.html?cat=apparel-men">Одежда мужская</a>
+        <a href="shop.html?cat=apparel-women">Одежда женская</a>
+        <a href="shop.html?cat=accessories">Аксессуары</a>
+        <a href="shop.html?cat=extras">Дополнительно</a>
+        <a href="shop.html">Всё</a>
+      </div>
+    </div>
+    <a href="our-story.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+  </nav>
+  <div class="header-actions">
+    <button class="cart-btn" id="cartBtn" aria-label="Корзина">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="burger" id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="shop-head">
+  <h1 class="shop-title" id="shopTitle">Каталог</h1>
+  <p class="shop-subtitle" id="shopSubtitle">Экипировка для тех, кто тренируется всерьёз</p>
+</div>
+
+<div class="shop-body">
+  <aside class="filters">
+    <div class="filter-group">
+      <div class="filter-title">Категории</div>
+      <div class="filter-list" id="filterCategories"></div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-title">Цена</div>
+      <div class="filter-list">
+        <label><input type="radio" name="price" value="all" checked> Любая</label>
+        <label><input type="radio" name="price" value="lt1000"> до 1 000 ₽</label>
+        <label><input type="radio" name="price" value="1000-3000"> 1 000 – 3 000 ₽</label>
+        <label><input type="radio" name="price" value="3000-7000"> 3 000 – 7 000 ₽</label>
+        <label><input type="radio" name="price" value="gt7000"> от 7 000 ₽</label>
+      </div>
+    </div>
+  </aside>
+
+  <main class="shop-main">
+    <div class="shop-toolbar">
+      <div class="shop-count" id="shopCount">— товаров</div>
+      <select class="shop-sort" id="shopSort">
+        <option value="default">Сортировка: по умолчанию</option>
+        <option value="price-asc">Сначала дешёвые</option>
+        <option value="price-desc">Сначала дорогие</option>
+        <option value="name">По алфавиту</option>
+      </select>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-logo">BRAND</div>
+    <p>Экипировка для функционального фитнеса</p>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Магазин</div>
+    <a href="shop.html">Каталог</a>
+    <a href="our-story.html">О нас</a>
+    <a href="contact.html">Контакты</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Связь</div>
+    <a href="https://t.me/xpodium_russia" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://instagram.com/xpodium_russia" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Информация</div>
+    <a href="contact.html#delivery">Доставка и оплата</a>
+    <a href="contact.html#returns">Возврат</a>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BRAND. Все права защищены.</span>
+    <span>Все товары сертифицированы.</span>
+  </div>
+</footer>
+
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Корзина</div>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Итого</span>
+      <span id="cartTotal">0 ₽</span>
+    </div>
+    <button class="btn-primary cart-checkout" id="cartCheckout" disabled>Оформить в Telegram</button>
+    <p class="cart-hint">После нажатия откроется чат с менеджером с готовым сообщением. Оплата и доставка обсуждаются лично.</p>
+  </div>
+</aside>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+
+<script src="js/app.js"></script>
+<script src="js/shop.js"></script>
+</body>
+</html>
