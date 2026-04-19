@@ -61,11 +61,16 @@ function getSwatchColor(colorName) {
   return COLOR_SWATCH[first] || '#cccccc';
 }
 
+// Путь к картинке товара. Поддерживает и имя файла, и полный путь.
+function productImageUrl(img) {
+  if (!img) return 'images/placeholder.svg';
+  if (img.startsWith('http') || img.startsWith('/')) return img.replace(/^\//, '');
+  return `images/products/${img}`;
+}
+
 // --- Рендер карточки товара ---
 function renderProductCard(p) {
-  const img = p.images && p.images.length
-    ? `images/products/${p.images[0]}`
-    : 'images/placeholder.svg';
+  const img = productImageUrl(p.images && p.images[0]);
   const colors = (p.colors || []).slice(0, 5).map(c =>
     `<span class="product-color" style="background:${getSwatchColor(c)}" title="${c}"></span>`
   ).join('');
@@ -87,9 +92,7 @@ function openProductModal(productId) {
 
   let selectedSize = p.sizes[0] || null;
   let selectedColor = p.colors[0] || null;
-  const img = p.images && p.images.length
-    ? `images/products/${p.images[0]}`
-    : 'images/placeholder.svg';
+  const img = productImageUrl(p.images && p.images[0]);
 
   const sizesHtml = (p.sizes || []).map(s =>
     `<div class="pm-option pm-size ${s === selectedSize ? 'selected' : ''}" data-size="${s}">${s}</div>`
@@ -213,7 +216,7 @@ function renderCart() {
     itemsEl.innerHTML = CART.map(i => `
       <div class="cart-item">
         <div class="cart-item-img">
-          ${i.image ? `<img src="images/products/${i.image}" alt="${i.name}">` : ''}
+          ${i.image ? `<img src="${productImageUrl(i.image)}" alt="${i.name}">` : ''}
         </div>
         <div class="cart-item-info">
           <div class="cart-item-name">${i.name}</div>
