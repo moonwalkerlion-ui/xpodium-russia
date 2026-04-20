@@ -1,0 +1,24 @@
+{
+  "name_en": "Wristband 1.0",
+  "name_ru": "Кистевой бинт 1.0",
+  "brand": "XPODIUM",
+  "colors": [
+    "Жёлтый",
+    "Чёрный",
+    "Розово-красный",
+    "Оливковый",
+    "Белый",
+    "Тёмно-красный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 1300,
+  "unit": "Pair",
+  "images": [
+    "/images/products/wristband-1-0.webp"
+  ],
+  "category": "wraps",
+  "category_ru": "Кистевые бинты",
+  "id": "wristband-1-0"
+}

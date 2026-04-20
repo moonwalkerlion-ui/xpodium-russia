@@ -1,0 +1,23 @@
+{
+  "name_en": "Backpack 2.0",
+  "name_ru": "Рюкзак 2.0",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный",
+    "Армейский зелёный",
+    "Коричневый мокко",
+    "Белый",
+    "Серый"
+  ],
+  "sizes": [
+    "50*25*35cm"
+  ],
+  "price": 8400,
+  "unit": "single",
+  "images": [
+    "/images/products/backpack-2-0.webp"
+  ],
+  "category": "bags",
+  "category_ru": "Рюкзаки и сумки",
+  "id": "backpack-2-0"
+}

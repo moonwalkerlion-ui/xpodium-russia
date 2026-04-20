@@ -1,0 +1,19 @@
+{
+  "name_en": "MASSAGE BALL",
+  "name_ru": "Массажный мяч",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 1400,
+  "unit": "single",
+  "images": [
+    "/images/products/massage-ball-2.webp"
+  ],
+  "category": "extras",
+  "category_ru": "Дополнительно",
+  "id": "massage-ball-2"
+}

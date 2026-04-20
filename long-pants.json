@@ -1,0 +1,21 @@
+{
+  "name_en": "Long pants",
+  "name_ru": "Штаны длинные",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "M",
+    "L",
+    "Extra large                                      2XL"
+  ],
+  "price": 3300,
+  "unit": "single",
+  "images": [
+    "/images/products/long-pants.webp"
+  ],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "long-pants"
+}

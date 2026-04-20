@@ -1,0 +1,21 @@
+{
+  "name_en": "Hoodie",
+  "name_ru": "Худи",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "M",
+    "L",
+    "XL"
+  ],
+  "price": 4500,
+  "unit": "single",
+  "images": [
+    "/images/products/hoodie.webp"
+  ],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "hoodie"
+}

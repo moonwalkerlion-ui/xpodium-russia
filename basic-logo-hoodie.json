@@ -1,0 +1,20 @@
+{
+  "name_en": "basic logo hoodie",
+  "name_ru": "Худи Basic Logo",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [
+    "Size 1",
+    "Size 2"
+  ],
+  "price": 4400,
+  "unit": "single",
+  "images": [
+    "/images/products/basic-logo-hoodie.webp"
+  ],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "basic-logo-hoodie"
+}

@@ -1,0 +1,26 @@
+{
+  "name_en": "XPODIUM-3.0 GRIP （Black）",
+  "name_ru": "Накладки XPODIUM 3.0 (чёрная подложка)",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный",
+    "Зелёный",
+    "Красный",
+    "Белый",
+    "Розовый",
+    "Серый"
+  ],
+  "sizes": [
+    "S",
+    "M",
+    "L"
+  ],
+  "price": 2850,
+  "unit": "Pair",
+  "images": [
+    "/images/products/xpodium-3-0-grip-black.webp"
+  ],
+  "category": "grips",
+  "category_ru": "Накладки",
+  "id": "xpodium-3-0-grip-black"
+}

@@ -1,0 +1,24 @@
+{
+  "name_en": "3/4 Sleeves t-shirt Shorts",
+  "name_ru": "Комплект: футболка 3/4 + шорты",
+  "brand": "XPODIUM",
+  "colors": [
+    "Чёрный + Чёрный",
+    "Коричневый + Коричневый",
+    "Бордовый + Синий",
+    "Зелёный + Серый"
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M"
+  ],
+  "price": 2800,
+  "unit": "single",
+  "images": [
+    "/images/products/3-4-sleeves-t-shirt-shorts.webp"
+  ],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "3-4-sleeves-t-shirt-shorts"
+}

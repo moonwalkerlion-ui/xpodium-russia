@@ -1,0 +1,22 @@
+{
+  "name_en": "KEY RING",
+  "name_ru": "Брелок",
+  "brand": "XPODIUM",
+  "colors": [
+    "Жёлтый",
+    "Чёрный",
+    "Белый",
+    "Красный"
+  ],
+  "sizes": [
+    "One size"
+  ],
+  "price": 250,
+  "unit": "single",
+  "images": [
+    "/images/products/key-ring-2.webp"
+  ],
+  "category": "extras",
+  "category_ru": "Дополнительно",
+  "id": "key-ring-2"
+}

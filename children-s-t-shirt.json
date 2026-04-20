@@ -1,0 +1,22 @@
+{
+  "name_en": "Children's T-shirt",
+  "name_ru": "Футболка детская",
+  "brand": "XPODIUM",
+  "colors": [
+    "Тёмно-синий",
+    "Кремовый",
+    "Серо-зелёный"
+  ],
+  "sizes": [
+    "90-xs",
+    "100-s",
+    "110-m",
+    "120-l"
+  ],
+  "price": 2500,
+  "unit": "single",
+  "images": [],
+  "category": "apparel-men",
+  "category_ru": "Одежда мужская",
+  "id": "children-s-t-shirt"
+}

@@ -1,0 +1,25 @@
+{
+  "name_en": "Knee sleeves 1.0",
+  "name_ru": "Наколенники 1.0",
+  "brand": "XPODIUM",
+  "colors": [
+    "Розовый",
+    "Зелёный",
+    "Чёрный"
+  ],
+  "sizes": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL"
+  ],
+  "price": 3100,
+  "unit": "Pair",
+  "images": [
+    "/images/products/knee-sleeves-1-0.webp"
+  ],
+  "category": "sleeves",
+  "category_ru": "Наколенники и налокотники",
+  "id": "knee-sleeves-1-0"
+}
