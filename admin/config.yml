@@ -20,6 +20,8 @@ collections:
     label: "Товары"
     label_singular: "Товар"
     folder: "content/products"
+    extension: "json"
+    format: "json"
     create: true
     delete: true
     slug: "{{slug}}"
