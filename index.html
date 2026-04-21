@@ -73,9 +73,9 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1>СДЕЛАЙ<br>ЭТО</h1>
-    <p class="hero-sub">Экипировка для функционального фитнеса, созданная для результата</p>
-    <a href="shop.html" class="btn-primary">В каталог</a>
+    <h1><span data-setting="hero_title_1">СДЕЛАЙ</span><br><span data-setting="hero_title_2">ЭТО</span></h1>
+    <p class="hero-sub" data-setting="hero_subtitle">Экипировка для функционального фитнеса, созданная для результата</p>
+    <a href="shop.html" class="btn-primary" data-setting="hero_cta">В каталог</a>
   </div>
   <div class="hero-scroll">Scroll ↓</div>
 </section>
@@ -129,8 +129,8 @@
 <section class="about-band">
   <div class="about-content">
     <div class="section-label">Кто мы</div>
-    <h2>Магазин функционального фитнеса<br>для тех, кто не останавливается</h2>
-    <p>Мы поставляем экипировку для CrossFit, HYROX и силового тренинга — от гимнастических накладок до поясов и наколенников. Привозим в Россию и СНГ проверенные бренды, которые выдерживают реальные нагрузки.</p>
+    <h2 data-setting="about_title">Магазин функционального фитнеса<br>для тех, кто не останавливается</h2>
+    <p data-setting="about_text">Мы поставляем экипировку для CrossFit, HYROX и силового тренинга — от гимнастических накладок до поясов и наколенников. Привозим в Россию и СНГ проверенные бренды, которые выдерживают реальные нагрузки.</p>
     <a href="our-story.html" class="btn-outline">О нас подробнее</a>
   </div>
 </section>
@@ -212,6 +212,7 @@
 </aside>
 <div class="cart-backdrop" id="cartBackdrop"></div>
 
+<script src="js/settings-loader.js"></script>
 <script src="js/app.js"></script>
 <script src="js/home.js"></script>
 </body>

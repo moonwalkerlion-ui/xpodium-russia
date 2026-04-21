@@ -179,14 +179,14 @@
     <div class="contact-icon">→</div>
     <div class="contact-label">Основной канал</div>
     <div class="contact-value">Telegram</div>
-    <div>@xpodium_russia</div>
+    <div data-contact="telegram-handle">@xpodium_russia</div>
     <div class="contact-meta">Заказы, вопросы по размерам, доставка. Среднее время ответа — 1 час.</div>
   </a>
   <a href="https://instagram.com/xpodium_russia" target="_blank" rel="noopener" class="contact-card">
     <div class="contact-icon">◉</div>
     <div class="contact-label">Соцсети</div>
     <div class="contact-value">Instagram</div>
-    <div>@xpodium_russia</div>
+    <div data-contact="instagram-handle">@xpodium_russia</div>
     <div class="contact-meta">Фото, обзоры продуктов, акции, истории наших атлетов.</div>
   </a>
 </div>
@@ -195,7 +195,7 @@
   <div class="info-inner">
     <div class="info-block">
       <h3>Доставка</h3>
-      <ul>
+      <ul data-setting="delivery_list">
         <li>Отправляем со склада в Москве</li>
         <li>По всей России и СНГ</li>
         <li>СДЭК, Почта России, Boxberry</li>
@@ -205,7 +205,7 @@
     </div>
     <div class="info-block">
       <h3>Оплата</h3>
-      <ul>
+      <ul data-setting="payment_list">
         <li>Перевод по реквизитам</li>
         <li>На карту физлица</li>
         <li>СБП по номеру телефона</li>
@@ -215,7 +215,7 @@
     </div>
     <div class="info-block" id="returns">
       <h3>Возврат</h3>
-      <ul>
+      <ul data-setting="returns_list">
         <li>14 дней на возврат без объяснения причин</li>
         <li>Товар должен быть в оригинальной упаковке</li>
         <li>Без следов использования</li>
@@ -270,6 +270,7 @@
 </aside>
 <div class="cart-backdrop" id="cartBackdrop"></div>
 
+<script src="js/settings-loader.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

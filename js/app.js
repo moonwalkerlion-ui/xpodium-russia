@@ -2,10 +2,10 @@
    BRAND — общая логика
    ============================================ */
 
-// --- Конфиг магазина (легко меняется) ---
+// --- Конфиг магазина (легко меняется, также подменяется из settings.json) ---
 const SHOP_CONFIG = {
   currency: '₽',
-  telegram: 'xpodium_russia',  // ник менеджера
+  telegram: 'xpodium_russia',  // ник менеджера (подменится из settings)
   telegramUrl: 'https://t.me/xpodium_russia',
   freeShippingFrom: 10000,
 };
