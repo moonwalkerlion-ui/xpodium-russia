@@ -12,10 +12,28 @@
   "price": 600,
   "unit": "Pair",
   "images": [
-    "/images/products/logo-socks.webp"
+    "/images/products/logo-socks.webp",
+    "/images/products/logo-socks-2.webp",
+    "/images/products/logo-socks-3.webp",
+    "/images/products/logo-socks-4.webp",
+    "/images/products/logo-socks-5.webp",
+    "/images/products/logo-socks-6.webp",
+    "/images/products/logo-socks-7.webp",
+    "/images/products/logo-socks-8.webp",
+    "/images/products/logo-socks-9.webp",
+    "/images/products/logo-socks-10.webp",
+    "/images/products/logo-socks-11.webp",
+    "/images/products/logo-socks-12.webp",
+    "/images/products/logo-socks-13.webp",
+    "/images/products/logo-socks-14.webp",
+    "/images/products/logo-socks-15.webp",
+    "/images/products/logo-socks-16.webp",
+    "/images/products/logo-socks-17.webp",
+    "/images/products/logo-socks-18.webp",
+    "/images/products/logo-socks-19.webp",
+    "/images/products/logo-socks-20.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "logo-socks",
-  "_new_folder": "socks"
+  "id": "logo-socks"
 }

@@ -16,10 +16,11 @@
   "price": 2700,
   "unit": "pair",
   "images": [
-    "/images/products/jump-rope.webp"
+    "/images/products/jump-rope.webp",
+    "/images/products/jump-rope-2.webp",
+    "/images/products/jump-rope-3.webp"
   ],
   "category": "jumpropes",
   "category_ru": "Скакалки",
-  "id": "jump-rope",
-  "_new_folder": "jump-rope"
+  "id": "jump-rope"
 }

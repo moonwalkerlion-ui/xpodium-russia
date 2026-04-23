@@ -18,10 +18,11 @@
   "price": 2500,
   "unit": "single",
   "images": [
-    "/images/products/pro-vest.webp"
+    "/images/products/pro-vest.webp",
+    "/images/products/pro-vest-2.webp",
+    "/images/products/pro-vest-3.webp"
   ],
   "category": "apparel-men",
   "category_ru": "Одежда мужская",
-  "id": "pro-vest",
-  "_new_folder": "men's tank"
+  "id": "pro-vest"
 }

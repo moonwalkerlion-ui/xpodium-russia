@@ -23,10 +23,12 @@
   "price": 2500,
   "unit": "single",
   "images": [
-    "/images/products/pro-t-shirts.webp"
+    "/images/products/pro-t-shirts.webp",
+    "/images/products/pro-t-shirts-2.webp",
+    "/images/products/pro-t-shirts-3.webp",
+    "/images/products/pro-t-shirts-4.webp"
   ],
   "category": "apparel-men",
   "category_ru": "Одежда мужская",
-  "id": "pro-t-shirts",
-  "_new_folder": "mens-t-shirt"
+  "id": "pro-t-shirts"
 }

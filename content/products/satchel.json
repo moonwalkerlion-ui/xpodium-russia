@@ -14,10 +14,13 @@
   "price": 4400,
   "unit": "single",
   "images": [
-    "/images/products/satchel.webp"
+    "/images/products/satchel.webp",
+    "/images/products/satchel-2.webp",
+    "/images/products/satchel-3.webp",
+    "/images/products/satchel-4.webp",
+    "/images/products/satchel-5.webp"
   ],
   "category": "bags",
   "category_ru": "Рюкзаки и сумки",
-  "id": "satchel",
-  "_new_folder": "satchel"
+  "id": "satchel"
 }

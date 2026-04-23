@@ -13,10 +13,11 @@
   "price": 2500,
   "unit": "Pair",
   "images": [
-    "/images/products/suede-grip-with-hole.webp"
+    "/images/products/suede-grip-with-hole.webp",
+    "/images/products/suede-grip-with-hole-2.webp",
+    "/images/products/suede-grip-with-hole-3.webp"
   ],
   "category": "grips",
   "category_ru": "Накладки",
-  "id": "suede-grip-with-hole",
-  "_new_folder": "suede-grips-with-holes"
+  "id": "suede-grip-with-hole"
 }

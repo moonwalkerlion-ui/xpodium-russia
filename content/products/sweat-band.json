@@ -20,10 +20,14 @@
   "price": 650,
   "unit": "Pair",
   "images": [
-    "/images/products/sweat-band.webp"
+    "/images/products/sweat-band.webp",
+    "/images/products/sweat-band-2.webp",
+    "/images/products/sweat-band-3.webp",
+    "/images/products/sweat-band-4.webp",
+    "/images/products/sweat-band-5.webp",
+    "/images/products/sweat-band-6.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "sweat-band",
-  "_new_folder": "sweatbands"
+  "id": "sweat-band"
 }

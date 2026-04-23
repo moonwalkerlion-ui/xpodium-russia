@@ -9,10 +9,12 @@
   "price": 450,
   "unit": "single",
   "images": [
-    "/images/products/chalk.webp"
+    "/images/products/chalk.webp",
+    "/images/products/chalk-2.webp",
+    "/images/products/chalk-3.webp",
+    "/images/products/chalk-4.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "chalk",
-  "_new_folder": "chalk"
+  "id": "chalk"
 }

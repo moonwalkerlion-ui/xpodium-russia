@@ -11,8 +11,20 @@
   ],
   "colors": [],
   "unit": "шт",
-  "images": [],
-  "_new_folder": "new-shorts",
+  "images": [
+    "/images/products/shorts-3-0.webp",
+    "/images/products/shorts-3-0-2.webp",
+    "/images/products/shorts-3-0-3.webp",
+    "/images/products/shorts-3-0-4.webp",
+    "/images/products/shorts-3-0-5.webp",
+    "/images/products/shorts-3-0-6.webp",
+    "/images/products/shorts-3-0-7.webp",
+    "/images/products/shorts-3-0-8.webp",
+    "/images/products/shorts-3-0-9.webp",
+    "/images/products/shorts-3-0-10.webp",
+    "/images/products/shorts-3-0-11.webp",
+    "/images/products/shorts-3-0-12.webp"
+  ],
   "in_stock": true,
   "id": "shorts-3-0"
 }

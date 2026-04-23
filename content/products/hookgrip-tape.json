@@ -15,10 +15,14 @@
   "price": 350,
   "unit": "single",
   "images": [
-    "/images/products/hookgrip-tape.webp"
+    "/images/products/hookgrip-tape.webp",
+    "/images/products/hookgrip-tape-2.webp",
+    "/images/products/hookgrip-tape-3.webp",
+    "/images/products/hookgrip-tape-4.webp",
+    "/images/products/hookgrip-tape-5.webp",
+    "/images/products/hookgrip-tape-6.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "hookgrip-tape",
-  "_new_folder": "thumb-tape"
+  "id": "hookgrip-tape"
 }

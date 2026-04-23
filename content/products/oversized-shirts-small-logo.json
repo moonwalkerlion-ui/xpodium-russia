@@ -14,10 +14,15 @@
   "price": 2900,
   "unit": "single",
   "images": [
-    "/images/products/oversized-shirts-small-logo.webp"
+    "/images/products/oversized-shirts-small-logo.webp",
+    "/images/products/oversized-shirts-small-logo-2.webp",
+    "/images/products/oversized-shirts-small-logo-3.webp",
+    "/images/products/oversized-shirts-small-logo-4.webp",
+    "/images/products/oversized-shirts-small-logo-5.webp",
+    "/images/products/oversized-shirts-small-logo-6.webp",
+    "/images/products/oversized-shirts-small-logo-7.webp"
   ],
   "category": "apparel-men",
   "category_ru": "Одежда мужская",
-  "id": "oversized-shirts-small-logo",
-  "_new_folder": "small-logo-t-shirt"
+  "id": "oversized-shirts-small-logo"
 }

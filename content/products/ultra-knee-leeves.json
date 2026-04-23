@@ -15,10 +15,13 @@
   "price": 5050,
   "unit": "Pair",
   "images": [
-    "/images/products/ultra-knee-leeves.webp"
+    "/images/products/ultra-knee-leeves.webp",
+    "/images/products/ultra-knee-leeves-2.webp",
+    "/images/products/ultra-knee-leeves-3.webp",
+    "/images/products/ultra-knee-leeves-4.webp",
+    "/images/products/ultra-knee-leeves-5.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "ultra-knee-leeves",
-  "_new_folder": "knee-sleeves-ultra"
+  "id": "ultra-knee-leeves"
 }

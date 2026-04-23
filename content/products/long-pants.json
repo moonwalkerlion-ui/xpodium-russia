@@ -13,10 +13,11 @@
   "price": 3300,
   "unit": "single",
   "images": [
-    "/images/products/long-pants.webp"
+    "/images/products/long-pants.webp",
+    "/images/products/long-pants-2.webp",
+    "/images/products/long-pants-3.webp"
   ],
   "category": "apparel-men",
   "category_ru": "Одежда мужская",
-  "id": "long-pants",
-  "_new_folder": "long-pants"
+  "id": "long-pants"
 }

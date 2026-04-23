@@ -12,9 +12,14 @@
   ],
   "price": 3100,
   "unit": "single",
-  "images": [],
+  "images": [
+    "/images/products/leggings-long.webp",
+    "/images/products/leggings-long-2.webp",
+    "/images/products/leggings-long-3.webp",
+    "/images/products/leggings-long-4.webp",
+    "/images/products/leggings-long-5.webp"
+  ],
   "category": "apparel-women",
   "category_ru": "Одежда женская",
-  "id": "leggings-long",
-  "_new_folder": "leggins-long"
+  "id": "leggings-long"
 }

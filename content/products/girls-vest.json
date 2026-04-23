@@ -21,10 +21,12 @@
   "price": 2500,
   "unit": "single",
   "images": [
-    "/images/products/girls-vest.webp"
+    "/images/products/girls-vest.webp",
+    "/images/products/girls-vest-2.webp",
+    "/images/products/girls-vest-3.webp",
+    "/images/products/girls-vest-4.webp"
   ],
   "category": "apparel-women",
   "category_ru": "Одежда женская",
-  "id": "girls-vest",
-  "_new_folder": "women-tank"
+  "id": "girls-vest"
 }
