@@ -21,7 +21,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "3-4-sleeves-t-shirt-shorts"
+    "id": "3-4-sleeves-t-shirt-shorts",
+    "_new_folder": "3:4-women-t-shirt"
   },
   {
     "name_en": "3/4 Sleeves t-shirt",
@@ -54,7 +55,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "3-4-sleeves-t-shirt"
+    "id": "3-4-sleeves-t-shirt",
+    "_new_folder": "3:4-mens-t-shirt"
   },
   {
     "name_en": "Alluminium BARBELL CLIPS",
@@ -117,7 +119,8 @@
     ],
     "category": "bags",
     "category_ru": "Рюкзаки и сумки",
-    "id": "backpack-2-0"
+    "id": "backpack-2-0",
+    "_new_folder": "backpack-2.0"
   },
   {
     "name_en": "Backpack Medium-Small",
@@ -145,24 +148,6 @@
     "name_ru": "Худи Basic Logo",
     "brand": "XPODIUM",
     "colors": [
-      "Серый"
-    ],
-    "sizes": [
-      "Size 1",
-      "Size 2"
-    ],
-    "price": 4400,
-    "unit": "",
-    "images": [],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
-    "id": "basic-logo-hoodie-2"
-  },
-  {
-    "name_en": "basic logo hoodie",
-    "name_ru": "Худи Basic Logo",
-    "brand": "XPODIUM",
-    "colors": [
       "Чёрный"
     ],
     "sizes": [
@@ -176,7 +161,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "basic-logo-hoodie"
+    "id": "basic-logo-hoodie",
+    "_new_folder": "basic-logo-hoodie"
   },
   {
     "name_en": "Basic Logo Socks",
@@ -253,7 +239,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "chalk"
+    "id": "chalk",
+    "_new_folder": "chalk"
   },
   {
     "name_en": "Children's T-shirt",
@@ -297,7 +284,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "compression-shorts"
+    "id": "compression-shorts",
+    "_new_folder": "compression-shorts"
   },
   {
     "name_en": "Elbow sleeves 3.0",
@@ -322,7 +310,27 @@
     ],
     "category": "sleeves",
     "category_ru": "Наколенники и налокотники",
-    "id": "elbow-sleeves-3-0"
+    "id": "elbow-sleeves-3-0",
+    "_new_folder": "elbow-sleeves"
+  },
+  {
+    "name_en": "Elite Sticky Grips",
+    "name_ru": "Накладки Elite Sticky",
+    "brand": "XPODIUM",
+    "category": "grips",
+    "price": 3200,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [],
+    "unit": "Пара",
+    "images": [],
+    "_new_folder": "elite-sticky-grips",
+    "in_stock": true,
+    "id": "elite-sticky-grips",
+    "category_ru": "Накладки"
   },
   {
     "name_en": "Girls T-Shirts",
@@ -380,7 +388,8 @@
     ],
     "category": "apparel-women",
     "category_ru": "Одежда женская",
-    "id": "girls-vest"
+    "id": "girls-vest",
+    "_new_folder": "women-tank"
   },
   {
     "name_en": "Head Bands",
@@ -404,7 +413,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "head-bands"
+    "id": "head-bands",
+    "_new_folder": "headband"
   },
   {
     "name_en": "Hoodie",
@@ -425,7 +435,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "hoodie"
+    "id": "hoodie",
+    "_new_folder": "hoodie"
   },
   {
     "name_en": "Hookgrip tape",
@@ -448,7 +459,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "hookgrip-tape"
+    "id": "hookgrip-tape",
+    "_new_folder": "thumb-tape"
   },
   {
     "name_en": "JUMP ROPE 2.0",
@@ -468,7 +480,8 @@
     ],
     "category": "jumpropes",
     "category_ru": "Скакалки",
-    "id": "jump-rope-2-0"
+    "id": "jump-rope-2-0",
+    "_new_folder": "jump-rope-2.0"
   },
   {
     "name_en": "JUMP ROPE",
@@ -492,29 +505,8 @@
     ],
     "category": "jumpropes",
     "category_ru": "Скакалки",
-    "id": "jump-rope"
-  },
-  {
-    "name_en": "KEY RING",
-    "name_ru": "Брелок",
-    "brand": "XPODIUM",
-    "colors": [
-      "Жёлтый",
-      "Чёрный",
-      "Белый",
-      "Красный"
-    ],
-    "sizes": [
-      "One size"
-    ],
-    "price": 250,
-    "unit": "single",
-    "images": [
-      "key-ring-2.webp"
-    ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "key-ring-2"
+    "id": "jump-rope",
+    "_new_folder": "jump-rope"
   },
   {
     "name_en": "KEY RING",
@@ -561,7 +553,8 @@
     ],
     "category": "sleeves",
     "category_ru": "Наколенники и налокотники",
-    "id": "knee-sleeves-1-0"
+    "id": "knee-sleeves-1-0",
+    "_new_folder": "knee-sleeves-1.0"
   },
   {
     "name_en": "Knee sleeves 2.0",
@@ -613,7 +606,8 @@
     ],
     "category": "sleeves",
     "category_ru": "Наколенники и налокотники",
-    "id": "knee-sleeves-3-0"
+    "id": "knee-sleeves-3-0",
+    "_new_folder": "knee-sleeves-3.0"
   },
   {
     "name_en": "Leggings (Long)",
@@ -632,7 +626,8 @@
     "images": [],
     "category": "apparel-women",
     "category_ru": "Одежда женская",
-    "id": "leggings-long"
+    "id": "leggings-long",
+    "_new_folder": "leggins-long"
   },
   {
     "name_en": "Leggings (Short)",
@@ -651,7 +646,8 @@
     "images": [],
     "category": "apparel-women",
     "category_ru": "Одежда женская",
-    "id": "leggings-short"
+    "id": "leggings-short",
+    "_new_folder": "leggins-short"
   },
   {
     "name_en": "Lifting Socks",
@@ -738,7 +734,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "logo-socks"
+    "id": "logo-socks",
+    "_new_folder": "socks"
   },
   {
     "name_en": "Long pants",
@@ -759,26 +756,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "long-pants"
-  },
-  {
-    "name_en": "MASSAGE BALL",
-    "name_ru": "Массажный мяч",
-    "brand": "XPODIUM",
-    "colors": [
-      "Чёрный"
-    ],
-    "sizes": [
-      "One size"
-    ],
-    "price": 1400,
-    "unit": "single",
-    "images": [
-      "massage-ball-2.webp"
-    ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "massage-ball-2"
+    "id": "long-pants",
+    "_new_folder": "long-pants"
   },
   {
     "name_en": "MASSAGE BALL",
@@ -819,7 +798,8 @@
     ],
     "category": "bags",
     "category_ru": "Рюкзаки и сумки",
-    "id": "mini-backpack"
+    "id": "mini-backpack",
+    "_new_folder": "mini-backpack"
   },
   {
     "name_en": "MONTRIGGER",
@@ -882,7 +862,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "oversized-shirts-small-logo"
+    "id": "oversized-shirts-small-logo",
+    "_new_folder": "small-logo-t-shirt"
   },
   {
     "name_en": "OVERSIZED SHIRTS",
@@ -1012,7 +993,8 @@
     ],
     "category": "belts",
     "category_ru": "Пояса",
-    "id": "pr-belt"
+    "id": "pr-belt",
+    "_new_folder": "pr-belt"
   },
   {
     "name_en": "PRO T-Shirts",
@@ -1043,7 +1025,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "pro-t-shirts"
+    "id": "pro-t-shirts",
+    "_new_folder": "mens-t-shirt"
   },
   {
     "name_en": "PRO Vest",
@@ -1069,7 +1052,8 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "pro-vest"
+    "id": "pro-vest",
+    "_new_folder": "men's tank"
   },
   {
     "name_en": "SANDBAG",
@@ -1110,7 +1094,8 @@
     ],
     "category": "bags",
     "category_ru": "Рюкзаки и сумки",
-    "id": "satchel"
+    "id": "satchel",
+    "_new_folder": "satchel"
   },
   {
     "name_en": "Shorts 1.0",
@@ -1142,7 +1127,11 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "shorts-1-0"
+    "id": "shorts-1-0",
+    "_new_folder": "small-logo-shorts",
+    "_extra_folders": [
+      "big-logo-shorts"
+    ]
   },
   {
     "name_en": "Shorts 2.0",
@@ -1164,7 +1153,27 @@
     ],
     "category": "apparel-men",
     "category_ru": "Одежда мужская",
-    "id": "shorts-2-0"
+    "id": "shorts-2-0",
+    "_new_folder": "shorts 2.0"
+  },
+  {
+    "name_en": "Shorts 3.0",
+    "name_ru": "Шорты 3.0",
+    "brand": "XPODIUM",
+    "category": "apparel-men",
+    "price": 0,
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [],
+    "unit": "шт",
+    "images": [],
+    "_new_folder": "new-shorts",
+    "in_stock": true,
+    "id": "shorts-3-0",
+    "category_ru": "Одежда мужская"
   },
   {
     "name_en": "Sport Bottle",
@@ -1205,7 +1214,8 @@
     ],
     "category": "apparel-women",
     "category_ru": "Одежда женская",
-    "id": "sports-bra"
+    "id": "sports-bra",
+    "_new_folder": "sports-bra"
   },
   {
     "name_en": "Suede Grip （With hole）",
@@ -1226,7 +1236,8 @@
     ],
     "category": "grips",
     "category_ru": "Накладки",
-    "id": "suede-grip-with-hole"
+    "id": "suede-grip-with-hole",
+    "_new_folder": "suede-grips-with-holes"
   },
   {
     "name_en": "Suede Grip",
@@ -1247,7 +1258,8 @@
     ],
     "category": "grips",
     "category_ru": "Накладки",
-    "id": "suede-grip"
+    "id": "suede-grip",
+    "_new_folder": "suede-grips-no-hole"
   },
   {
     "name_en": "Sweat band",
@@ -1275,7 +1287,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "sweat-band"
+    "id": "sweat-band",
+    "_new_folder": "sweatbands"
   },
   {
     "name_en": "Ultra Knee leeves",
@@ -1298,7 +1311,8 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "ultra-knee-leeves"
+    "id": "ultra-knee-leeves",
+    "_new_folder": "knee-sleeves-ultra"
   },
   {
     "name_en": "Weightlifting Socks",
@@ -1342,7 +1356,8 @@
     ],
     "category": "wraps",
     "category_ru": "Кистевые бинты",
-    "id": "wristband-1-0"
+    "id": "wristband-1-0",
+    "_new_folder": "wristband 1.0"
   },
   {
     "name_en": "Wristband 2.0",
@@ -1387,7 +1402,8 @@
     ],
     "category": "wraps",
     "category_ru": "Кистевые бинты",
-    "id": "wristband-2-0"
+    "id": "wristband-2-0",
+    "_new_folder": "wristband 2.0"
   },
   {
     "name_en": "Wristband 3.0",
@@ -1407,7 +1423,8 @@
     ],
     "category": "wraps",
     "category_ru": "Кистевые бинты",
-    "id": "wristband-3-0"
+    "id": "wristband-3-0",
+    "_new_folder": "wristband 3.0"
   },
   {
     "name_en": "XPODIUM-3.0 GRIP （Black）",
@@ -1480,7 +1497,8 @@
     ],
     "category": "grips",
     "category_ru": "Накладки",
-    "id": "xpodium-carbon-grips-with-hole"
+    "id": "xpodium-carbon-grips-with-hole",
+    "_new_folder": "carbon-grips-with-holes"
   },
   {
     "name_en": "XPODIUM CARBON GRIPS",
@@ -1501,7 +1519,8 @@
     ],
     "category": "grips",
     "category_ru": "Накладки",
-    "id": "xpodium-carbon-grips"
+    "id": "xpodium-carbon-grips",
+    "_new_folder": "carbon-grips-no-holes"
   },
   {
     "name_en": "XPODIUM STICKY GRIPS",
@@ -1545,7 +1564,8 @@
     ],
     "category": "grips",
     "category_ru": "Накладки",
-    "id": "xpodium-sticky-grips"
+    "id": "xpodium-sticky-grips",
+    "_new_folder": "sticky-grips"
   },
   {
     "name_en": "XPODIUM Velcro 2",

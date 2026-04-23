@@ -78,8 +78,19 @@ function applySettings() {
   // Главная
   if (SETTINGS.home) {
     const h = SETTINGS.home;
-    setText('[data-setting="hero_title_1"]', h.hero_title_1);
-    setText('[data-setting="hero_title_2"]', h.hero_title_2);
+    // hero: одно поле hero_title_block (HTML, можно вставить <img>/коллаж/что угодно)
+    if (h.hero_title_block !== undefined) {
+      const blockEl = document.querySelector('[data-setting="hero_title_block"]');
+      if (blockEl) blockEl.innerHTML = h.hero_title_block || '';
+    }
+    // fallback: старые поля hero_title_1/2 — если используются, собираем в блок
+    if ((h.hero_title_1 || h.hero_title_2) && !h.hero_title_block) {
+      const blockEl = document.querySelector('[data-setting="hero_title_block"]');
+      if (blockEl) {
+        const parts = [h.hero_title_1, h.hero_title_2].filter(Boolean);
+        blockEl.innerHTML = parts.map(escapeHtml).join('<br>');
+      }
+    }
     setText('[data-setting="hero_subtitle"]', h.hero_subtitle);
     setText('[data-setting="hero_cta"]', h.hero_cta);
     setText('[data-setting="about_title"]', h.about_title);

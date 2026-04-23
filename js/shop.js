@@ -12,6 +12,7 @@ const CATEGORY_RU = {
   'apparel-men': 'Одежда мужская',
   'apparel-women': 'Одежда женская',
   'accessories': 'Аксессуары',
+  'equipment': 'Оборудование',
   'extras': 'Дополнительно',
 };
 

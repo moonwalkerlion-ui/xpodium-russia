@@ -1,0 +1,18 @@
+{
+  "name_en": "Shorts 3.0",
+  "name_ru": "Шорты 3.0",
+  "brand": "XPODIUM",
+  "category": "apparel-men",
+  "price": 0,
+  "sizes": [
+    "M",
+    "L",
+    "XL"
+  ],
+  "colors": [],
+  "unit": "шт",
+  "images": [],
+  "_new_folder": "new-shorts",
+  "in_stock": true,
+  "id": "shorts-3-0"
+}

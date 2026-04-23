@@ -46,6 +46,7 @@ if (fs.existsSync(productsDir)) {
         'apparel-men': 'Одежда мужская',
         'apparel-women': 'Одежда женская',
         'accessories': 'Аксессуары',
+        'equipment': 'Оборудование',
         'extras': 'Дополнительно',
       };
       data.category_ru = CAT_RU[data.category] || data.category;

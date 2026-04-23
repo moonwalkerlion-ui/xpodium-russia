@@ -56,6 +56,9 @@ collections:
       - label: "Аксессуары"
         field: category
         pattern: "accessories"
+      - label: "Оборудование"
+        field: category
+        pattern: "equipment"
       - label: "Дополнительно"
         field: category
         pattern: "extras"
@@ -75,6 +78,7 @@ collections:
           - { label: "Одежда мужская", value: "apparel-men" }
           - { label: "Одежда женская", value: "apparel-women" }
           - { label: "Аксессуары", value: "accessories" }
+          - { label: "Оборудование", value: "equipment" }
           - { label: "Дополнительно", value: "extras" }
       - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
       - { label: "Старая цена (₽, для скидки)", name: "old_price", widget: "number", required: false, min: 0, step: 50 }
