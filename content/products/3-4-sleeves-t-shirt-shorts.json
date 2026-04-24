@@ -1,10 +1,7 @@
 {
-  "category_ru": "Одежда мужская",
-  "unit": "single",
-  "subcategory_ru": "Одежда мужская",
+  "name_en": "3/4 Sleeves t-shirt Shorts",
+  "name_ru": "Комплект: футболка 3/4 + шорты",
   "brand": "XPODIUM",
-  "price": 2800,
-  "_new_folder": "3:4-women-t-shirt",
   "colors": [
     "Чёрный + Чёрный",
     "Коричневый + Коричневый",
@@ -16,13 +13,15 @@
     "S",
     "M"
   ],
-  "name_ru": "Футболка с рукавом 3/4 (Женская)",
+  "price": 2800,
+  "unit": "single",
   "images": [
     "/images/products/3-4-sleeves-t-shirt-shorts.webp"
   ],
-  "id": "3-4-sleeves-t-shirt-shorts",
-  "in_stock": true,
-  "name_en": "3/4 Sleeves t-shirt Shorts",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "category_ru": "Одежда мужская",
+  "id": "3-4-sleeves-t-shirt-shorts",
+  "_new_folder": "3:4-women-t-shirt",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

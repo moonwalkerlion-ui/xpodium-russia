@@ -1,10 +1,7 @@
 {
-  "category_ru": "Одежда мужская",
-  "unit": "single",
-  "subcategory_ru": "Одежда мужская",
+  "name_en": "3/4 Sleeves t-shirt",
+  "name_ru": "Футболка с рукавом 3/4",
   "brand": "XPODIUM",
-  "price": 2800,
-  "_new_folder": "3:4-mens-t-shirt",
   "colors": [
     "Чёрный + Чёрный",
     "Серый + Чёрный",
@@ -25,13 +22,15 @@
     "L",
     "XL"
   ],
-  "name_ru": "Футболка с рукавом 3/4 (Мужская)",
+  "price": 2800,
+  "unit": "single",
   "images": [
     "/images/products/3-4-sleeves-t-shirt.webp"
   ],
-  "id": "3-4-sleeves-t-shirt",
-  "in_stock": true,
-  "name_en": "3/4 Sleeves t-shirt",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "category_ru": "Одежда мужская",
+  "id": "3-4-sleeves-t-shirt",
+  "_new_folder": "3:4-mens-t-shirt",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }
