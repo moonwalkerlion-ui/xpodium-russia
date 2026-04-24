@@ -23,17 +23,12 @@
   "price": 2900,
   "unit": "single",
   "images": [
-    "/images/products/pr-belt.webp",
-    "/images/products/pr-belt-2.webp",
-    "/images/products/pr-belt-3.webp",
-    "/images/products/pr-belt-4.webp",
-    "/images/products/pr-belt-5.webp",
-    "/images/products/pr-belt-6.webp",
-    "/images/products/pr-belt-7.webp",
-    "/images/products/pr-belt-8.webp",
-    "/images/products/pr-belt-9.webp"
+    "/images/products/pr-belt.webp"
   ],
-  "category": "belts",
+  "category": "gear",
   "category_ru": "Пояса",
-  "id": "pr-belt"
+  "id": "pr-belt",
+  "_new_folder": "pr-belt",
+  "subcategory": "belts",
+  "subcategory_ru": "Пояса"
 }

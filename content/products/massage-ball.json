@@ -13,7 +13,9 @@
   "images": [
     "/images/products/massage-ball.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "massage-ball"
+  "id": "massage-ball",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

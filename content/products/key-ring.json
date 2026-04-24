@@ -16,7 +16,9 @@
   "images": [
     "/images/products/key-ring.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "key-ring"
+  "id": "key-ring",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

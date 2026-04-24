@@ -14,14 +14,12 @@
   "price": 6200,
   "unit": "single",
   "images": [
-    "/images/products/mini-backpack.webp",
-    "/images/products/mini-backpack-2.webp",
-    "/images/products/mini-backpack-3.webp",
-    "/images/products/mini-backpack-4.webp",
-    "/images/products/mini-backpack-5.webp",
-    "/images/products/mini-backpack-6.webp"
+    "/images/products/mini-backpack.webp"
   ],
-  "category": "bags",
+  "category": "accessories",
   "category_ru": "Рюкзаки и сумки",
-  "id": "mini-backpack"
+  "id": "mini-backpack",
+  "_new_folder": "mini-backpack",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

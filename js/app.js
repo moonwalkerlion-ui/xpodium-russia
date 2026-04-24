@@ -90,9 +90,15 @@ function openProductModal(productId) {
   const p = PRODUCTS.find(x => x.id === productId);
   if (!p) return;
 
+  // Убираем предыдущие открытые модалки (защита от дублей)
+  document.querySelectorAll('.product-modal').forEach(m => m.remove());
+
   let selectedSize = p.sizes[0] || null;
   let selectedColor = p.colors[0] || null;
-  const img = productImageUrl(p.images && p.images[0]);
+  let currentImageIndex = 0;
+
+  const images = (p.images && p.images.length) ? p.images : [null];
+  const mainImg = productImageUrl(images[0]);
 
   const sizesHtml = (p.sizes || []).map(s =>
     `<div class="pm-option pm-size ${s === selectedSize ? 'selected' : ''}" data-size="${s}">${s}</div>`
@@ -103,12 +109,30 @@ function openProductModal(productId) {
      </div>`
   ).join('');
 
+  // Галерея миниатюр
+  const thumbsHtml = images.length > 1
+    ? `<div class="pm-thumbs">${images.map((src, i) =>
+        `<button class="pm-thumb ${i === 0 ? 'active' : ''}" data-index="${i}">
+          <img src="${productImageUrl(src)}" alt="">
+        </button>`
+      ).join('')}</div>`
+    : '';
+
   const modal = document.createElement('div');
   modal.className = 'product-modal open';
   modal.innerHTML = `
     <div class="product-modal-inner">
-      <button class="pm-close" onclick="this.closest('.product-modal').remove()">✕</button>
-      <div class="pm-img"><img src="${img}" alt="${p.name_ru}"></div>
+      <button class="pm-close" aria-label="Закрыть">✕</button>
+      <div class="pm-gallery">
+        <div class="pm-img">
+          <img src="${mainImg}" alt="${p.name_ru}" id="pmMainImg">
+          ${images.length > 1 ? `
+            <button class="pm-nav pm-prev" aria-label="Назад">‹</button>
+            <button class="pm-nav pm-next" aria-label="Вперёд">›</button>
+          ` : ''}
+        </div>
+        ${thumbsHtml}
+      </div>
       <div class="pm-info">
         <div class="pm-brand">${p.brand}</div>
         <h2 class="pm-title">${p.name_ru}</h2>
@@ -128,9 +152,57 @@ function openProductModal(productId) {
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
 
-  // закрытие по backdrop
+  // Единая функция закрытия (гарантирует восстановление scroll)
+  function closeModal() {
+    modal.remove();
+    // Снимаем overflow только если нет других открытых модалок
+    if (!document.querySelector('.product-modal.open, .cart-overlay.open')) {
+      document.body.style.overflow = '';
+    }
+    document.removeEventListener('keydown', onEsc);
+  }
+
+  // Закрытие по клавише Esc
+  function onEsc(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+  document.addEventListener('keydown', onEsc);
+
+  // Кнопка закрытия
+  modal.querySelector('.pm-close').addEventListener('click', closeModal);
+
+  // Закрытие по backdrop
   modal.addEventListener('click', e => {
-    if (e.target === modal) { modal.remove(); document.body.style.overflow = ''; }
+    if (e.target === modal) closeModal();
+  });
+
+  // Переключение фото
+  function showImage(index) {
+    if (index < 0) index = images.length - 1;
+    if (index >= images.length) index = 0;
+    currentImageIndex = index;
+    const mainImgEl = modal.querySelector('#pmMainImg');
+    if (mainImgEl) mainImgEl.src = productImageUrl(images[index]);
+    modal.querySelectorAll('.pm-thumb').forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === index);
+    });
+  }
+  modal.querySelectorAll('.pm-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => showImage(parseInt(thumb.dataset.index, 10)));
+  });
+  const prevBtn = modal.querySelector('.pm-prev');
+  const nextBtn = modal.querySelector('.pm-next');
+  if (prevBtn) prevBtn.addEventListener('click', () => showImage(currentImageIndex - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => showImage(currentImageIndex + 1));
+
+  // Клавиши стрелок для навигации
+  document.addEventListener('keydown', function onArrow(e) {
+    if (!document.body.contains(modal)) {
+      document.removeEventListener('keydown', onArrow);
+      return;
+    }
+    if (e.key === 'ArrowLeft') showImage(currentImageIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentImageIndex + 1);
   });
 
   // выбор опций
@@ -147,8 +219,7 @@ function openProductModal(productId) {
   // добавление в корзину
   modal.querySelector('#pmAdd').addEventListener('click', () => {
     addToCart(p, selectedSize, selectedColor);
-    modal.remove();
-    document.body.style.overflow = '';
+    closeModal();
     openCart();
   });
 }

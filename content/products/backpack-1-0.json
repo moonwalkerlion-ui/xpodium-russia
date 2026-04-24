@@ -15,7 +15,9 @@
   "images": [
     "/images/products/backpack-1-0.webp"
   ],
-  "category": "bags",
+  "category": "accessories",
   "category_ru": "Рюкзаки и сумки",
-  "id": "backpack-1-0"
+  "id": "backpack-1-0",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

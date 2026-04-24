@@ -13,7 +13,9 @@
   "images": [
     "/images/products/panda-velcro.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "panda-velcro"
+  "id": "panda-velcro",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

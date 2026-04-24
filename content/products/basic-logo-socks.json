@@ -16,5 +16,7 @@
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "basic-logo-socks"
+  "id": "basic-logo-socks",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

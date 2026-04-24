@@ -16,19 +16,12 @@
   "price": 1300,
   "unit": "Pair",
   "images": [
-    "/images/products/wristband-1-0.webp",
-    "/images/products/wristband-1-0-2.webp",
-    "/images/products/wristband-1-0-3.webp",
-    "/images/products/wristband-1-0-4.webp",
-    "/images/products/wristband-1-0-5.webp",
-    "/images/products/wristband-1-0-6.webp",
-    "/images/products/wristband-1-0-7.webp",
-    "/images/products/wristband-1-0-8.webp",
-    "/images/products/wristband-1-0-9.webp",
-    "/images/products/wristband-1-0-10.webp",
-    "/images/products/wristband-1-0-11.webp"
+    "/images/products/wristband-1-0.webp"
   ],
-  "category": "wraps",
+  "category": "gear",
   "category_ru": "Кистевые бинты",
-  "id": "wristband-1-0"
+  "id": "wristband-1-0",
+  "_new_folder": "wristband 1.0",
+  "subcategory": "wraps",
+  "subcategory_ru": "Кистевые бинты"
 }

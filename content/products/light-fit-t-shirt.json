@@ -22,7 +22,9 @@
   "images": [
     "/images/products/light-fit-t-shirt.webp"
   ],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "light-fit-t-shirt"
+  "id": "light-fit-t-shirt",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

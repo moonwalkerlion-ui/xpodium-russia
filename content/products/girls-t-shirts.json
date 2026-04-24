@@ -23,7 +23,9 @@
   "images": [
     "/images/products/girls-t-shirts.webp"
   ],
-  "category": "apparel-women",
+  "category": "apparel",
   "category_ru": "Одежда женская",
-  "id": "girls-t-shirts"
+  "id": "girls-t-shirts",
+  "subcategory": "apparel-women",
+  "subcategory_ru": "Одежда женская"
 }

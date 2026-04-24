@@ -14,10 +14,12 @@
   "price": 1850,
   "unit": "single",
   "images": [
-    "/images/products/compression-shorts.webp",
-    "/images/products/compression-shorts-2.webp"
+    "/images/products/compression-shorts.webp"
   ],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "compression-shorts"
+  "id": "compression-shorts",
+  "_new_folder": "compression-shorts",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

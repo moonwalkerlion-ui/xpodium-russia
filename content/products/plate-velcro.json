@@ -16,7 +16,9 @@
   "images": [
     "/images/products/plate-velcro.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "plate-velcro"
+  "id": "plate-velcro",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

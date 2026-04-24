@@ -12,20 +12,12 @@
   "price": 4400,
   "unit": "single",
   "images": [
-    "/images/products/basic-logo-hoodie.webp",
-    "/images/products/basic-logo-hoodie-2.webp",
-    "/images/products/basic-logo-hoodie-3.webp",
-    "/images/products/basic-logo-hoodie-4.webp",
-    "/images/products/basic-logo-hoodie-5.webp",
-    "/images/products/basic-logo-hoodie-6.webp",
-    "/images/products/basic-logo-hoodie-7.webp",
-    "/images/products/basic-logo-hoodie-8.webp",
-    "/images/products/basic-logo-hoodie-9.webp",
-    "/images/products/basic-logo-hoodie-10.webp",
-    "/images/products/basic-logo-hoodie-11.webp",
-    "/images/products/basic-logo-hoodie-12.webp"
+    "/images/products/basic-logo-hoodie.webp"
   ],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "basic-logo-hoodie"
+  "id": "basic-logo-hoodie",
+  "_new_folder": "basic-logo-hoodie",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

@@ -16,7 +16,9 @@
   "price": 2500,
   "unit": "single",
   "images": [],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "children-s-t-shirt"
+  "id": "children-s-t-shirt",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

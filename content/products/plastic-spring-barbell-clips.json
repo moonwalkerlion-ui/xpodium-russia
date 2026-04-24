@@ -11,7 +11,9 @@
   "images": [
     "/images/products/plastic-spring-barbell-clips.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "plastic-spring-barbell-clips"
+  "id": "plastic-spring-barbell-clips",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

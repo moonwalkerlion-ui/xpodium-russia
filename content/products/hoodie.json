@@ -13,14 +13,12 @@
   "price": 4500,
   "unit": "single",
   "images": [
-    "/images/products/hoodie.webp",
-    "/images/products/hoodie-2.webp",
-    "/images/products/hoodie-3.webp",
-    "/images/products/hoodie-4.webp",
-    "/images/products/hoodie-5.webp",
-    "/images/products/hoodie-6.webp"
+    "/images/products/hoodie.webp"
   ],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "hoodie"
+  "id": "hoodie",
+  "_new_folder": "hoodie",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

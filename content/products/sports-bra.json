@@ -13,12 +13,12 @@
   "price": 2800,
   "unit": "single",
   "images": [
-    "/images/products/sports-bra.webp",
-    "/images/products/sports-bra-2.webp",
-    "/images/products/sports-bra-3.webp",
-    "/images/products/sports-bra-4.webp"
+    "/images/products/sports-bra.webp"
   ],
-  "category": "apparel-women",
+  "category": "apparel",
   "category_ru": "Одежда женская",
-  "id": "sports-bra"
+  "id": "sports-bra",
+  "_new_folder": "sports-bra",
+  "subcategory": "apparel-women",
+  "subcategory_ru": "Одежда женская"
 }

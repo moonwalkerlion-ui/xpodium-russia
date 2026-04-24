@@ -13,7 +13,9 @@
   "images": [
     "/images/products/xpodium-velcro-2.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "xpodium-velcro-2"
+  "id": "xpodium-velcro-2",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

@@ -15,7 +15,9 @@
   "images": [
     "/images/products/wristband-2-0-2.webp"
   ],
-  "category": "wraps",
+  "category": "gear",
   "category_ru": "Кистевые бинты",
-  "id": "wristband-2-0-2"
+  "id": "wristband-2-0-2",
+  "subcategory": "wraps",
+  "subcategory_ru": "Кистевые бинты"
 }

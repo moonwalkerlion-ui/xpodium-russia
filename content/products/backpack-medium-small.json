@@ -15,7 +15,9 @@
   "images": [
     "/images/products/backpack-medium-small.webp"
   ],
-  "category": "bags",
+  "category": "accessories",
   "category_ru": "Рюкзаки и сумки",
-  "id": "backpack-medium-small"
+  "id": "backpack-medium-small",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

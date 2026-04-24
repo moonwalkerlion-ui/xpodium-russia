@@ -13,7 +13,9 @@
   "images": [
     "/images/products/montrigger.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "montrigger"
+  "id": "montrigger",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

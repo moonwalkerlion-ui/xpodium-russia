@@ -12,12 +12,11 @@
   ],
   "price": 2800,
   "unit": "single",
-  "images": [
-    "/images/products/leggings-short.webp",
-    "/images/products/leggings-short-2.webp",
-    "/images/products/leggings-short-3.webp"
-  ],
-  "category": "apparel-women",
+  "images": [],
+  "category": "apparel",
   "category_ru": "Одежда женская",
-  "id": "leggings-short"
+  "id": "leggings-short",
+  "_new_folder": "leggins-short",
+  "subcategory": "apparel-women",
+  "subcategory_ru": "Одежда женская"
 }

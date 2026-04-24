@@ -17,7 +17,9 @@
   "images": [
     "/images/products/oversized-shirts.webp"
   ],
-  "category": "apparel-men",
+  "category": "apparel",
   "category_ru": "Одежда мужская",
-  "id": "oversized-shirts"
+  "id": "oversized-shirts",
+  "subcategory": "apparel-men",
+  "subcategory_ru": "Одежда мужская"
 }

@@ -29,39 +29,18 @@ collections:
     summary: "{{name_ru}} — {{price}} ₽"
     sortable_fields: ['name_ru', 'price', 'category']
     view_filters:
-      - label: "Накладки"
+      - label: "Экипировка"
         field: category
-        pattern: "grips"
-      - label: "Наколенники / налокотники"
+        pattern: "gear"
+      - label: "Одежда"
         field: category
-        pattern: "sleeves"
-      - label: "Пояса"
-        field: category
-        pattern: "belts"
-      - label: "Скакалки"
-        field: category
-        pattern: "jumpropes"
-      - label: "Кистевые бинты"
-        field: category
-        pattern: "wraps"
-      - label: "Рюкзаки и сумки"
-        field: category
-        pattern: "bags"
-      - label: "Одежда мужская"
-        field: category
-        pattern: "apparel-men"
-      - label: "Одежда женская"
-        field: category
-        pattern: "apparel-women"
+        pattern: "apparel"
       - label: "Аксессуары"
         field: category
         pattern: "accessories"
       - label: "Оборудование"
         field: category
         pattern: "equipment"
-      - label: "Дополнительно"
-        field: category
-        pattern: "extras"
     fields:
       - { label: "Название", name: "name_ru", widget: "string" }
       - { label: "Бренд", name: "brand", widget: "string", default: "XPODIUM" }
@@ -69,17 +48,26 @@ collections:
         name: "category"
         widget: "select"
         options:
+          - { label: "Экипировка (накладки, пояса, бинты, скакалки, наколенники)", value: "gear" }
+          - { label: "Одежда (мужская и женская)", value: "apparel" }
+          - { label: "Аксессуары (рюкзаки, брелоки, носки, мелочи)", value: "accessories" }
+          - { label: "Оборудование (медболы, сэндбеги, штанги)", value: "equipment" }
+      - label: "Подкатегория (для фильтра внутри раздела)"
+        name: "subcategory"
+        widget: "select"
+        required: false
+        options:
+          - { label: "— не выбрано —", value: "" }
           - { label: "Накладки", value: "grips" }
           - { label: "Наколенники и налокотники", value: "sleeves" }
           - { label: "Пояса", value: "belts" }
           - { label: "Скакалки", value: "jumpropes" }
           - { label: "Кистевые бинты", value: "wraps" }
-          - { label: "Рюкзаки и сумки", value: "bags" }
           - { label: "Одежда мужская", value: "apparel-men" }
           - { label: "Одежда женская", value: "apparel-women" }
-          - { label: "Аксессуары", value: "accessories" }
-          - { label: "Оборудование", value: "equipment" }
-          - { label: "Дополнительно", value: "extras" }
+          - { label: "Рюкзаки и сумки", value: "bags" }
+          - { label: "Носки", value: "socks" }
+          - { label: "Мелочи", value: "extras" }
       - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
       - { label: "Старая цена (₽, для скидки)", name: "old_price", widget: "number", required: false, min: 0, step: 50 }
       - { label: "Описание", name: "description", widget: "text", required: false }

@@ -13,7 +13,9 @@
   "images": [
     "/images/products/sandbag.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "sandbag"
+  "id": "sandbag",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

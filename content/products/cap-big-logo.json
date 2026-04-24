@@ -16,5 +16,7 @@
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "cap-big-logo"
+  "id": "cap-big-logo",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

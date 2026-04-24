@@ -16,12 +16,12 @@
   "price": 900,
   "unit": "single",
   "images": [
-    "/images/products/head-bands.webp",
-    "/images/products/head-bands-2.webp",
-    "/images/products/head-bands-3.webp",
-    "/images/products/head-bands-4.webp"
+    "/images/products/head-bands.webp"
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "head-bands"
+  "id": "head-bands",
+  "_new_folder": "headband",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

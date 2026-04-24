@@ -20,7 +20,9 @@
   "images": [
     "/images/products/xpodium-3-0-grip-black.webp"
   ],
-  "category": "grips",
+  "category": "gear",
   "category_ru": "Накладки",
-  "id": "xpodium-3-0-grip-black"
+  "id": "xpodium-3-0-grip-black",
+  "subcategory": "grips",
+  "subcategory_ru": "Накладки"
 }

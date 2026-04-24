@@ -13,7 +13,9 @@
   "images": [
     "/images/products/lifting-strap.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "lifting-strap"
+  "id": "lifting-strap",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

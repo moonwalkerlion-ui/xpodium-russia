@@ -13,11 +13,12 @@
   "price": 2500,
   "unit": "Pair",
   "images": [
-    "/images/products/xpodium-carbon-grips.webp",
-    "/images/products/xpodium-carbon-grips-2.webp",
-    "/images/products/xpodium-carbon-grips-3.webp"
+    "/images/products/xpodium-carbon-grips.webp"
   ],
-  "category": "grips",
+  "category": "gear",
   "category_ru": "Накладки",
-  "id": "xpodium-carbon-grips"
+  "id": "xpodium-carbon-grips",
+  "_new_folder": "carbon-grips-no-holes",
+  "subcategory": "grips",
+  "subcategory_ru": "Накладки"
 }

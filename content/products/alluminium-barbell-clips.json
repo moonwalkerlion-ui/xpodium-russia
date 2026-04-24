@@ -13,7 +13,9 @@
   "images": [
     "/images/products/alluminium-barbell-clips.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "alluminium-barbell-clips"
+  "id": "alluminium-barbell-clips",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

@@ -15,14 +15,12 @@
   "price": 8400,
   "unit": "single",
   "images": [
-    "/images/products/backpack-2-0.webp",
-    "/images/products/backpack-2-0-2.webp",
-    "/images/products/backpack-2-0-3.webp",
-    "/images/products/backpack-2-0-4.webp",
-    "/images/products/backpack-2-0-5.webp",
-    "/images/products/backpack-2-0-6.webp"
+    "/images/products/backpack-2-0.webp"
   ],
-  "category": "bags",
+  "category": "accessories",
   "category_ru": "Рюкзаки и сумки",
-  "id": "backpack-2-0"
+  "id": "backpack-2-0",
+  "_new_folder": "backpack-2.0",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

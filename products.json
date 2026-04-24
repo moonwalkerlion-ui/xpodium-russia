@@ -19,10 +19,12 @@
     "images": [
       "3-4-sleeves-t-shirt-shorts.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "3-4-sleeves-t-shirt-shorts",
-    "_new_folder": "3:4-women-t-shirt"
+    "_new_folder": "3:4-women-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "3/4 Sleeves t-shirt",
@@ -53,10 +55,12 @@
     "images": [
       "3-4-sleeves-t-shirt.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "3-4-sleeves-t-shirt",
-    "_new_folder": "3:4-mens-t-shirt"
+    "_new_folder": "3:4-mens-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Alluminium BARBELL CLIPS",
@@ -73,9 +77,11 @@
     "images": [
       "alluminium-barbell-clips.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "alluminium-barbell-clips"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "alluminium-barbell-clips",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Backpack 1.0",
@@ -94,9 +100,11 @@
     "images": [
       "backpack-1-0.webp"
     ],
-    "category": "bags",
-    "category_ru": "Рюкзаки и сумки",
-    "id": "backpack-1-0"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "backpack-1-0",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Backpack 2.0",
@@ -117,10 +125,12 @@
     "images": [
       "backpack-2-0.webp"
     ],
-    "category": "bags",
-    "category_ru": "Рюкзаки и сумки",
+    "category": "accessories",
+    "category_ru": "Аксессуары",
     "id": "backpack-2-0",
-    "_new_folder": "backpack-2.0"
+    "_new_folder": "backpack-2.0",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Backpack Medium-Small",
@@ -139,9 +149,11 @@
     "images": [
       "backpack-medium-small.webp"
     ],
-    "category": "bags",
-    "category_ru": "Рюкзаки и сумки",
-    "id": "backpack-medium-small"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "backpack-medium-small",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "basic logo hoodie",
@@ -159,10 +171,12 @@
     "images": [
       "basic-logo-hoodie.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "basic-logo-hoodie",
-    "_new_folder": "basic-logo-hoodie"
+    "_new_folder": "basic-logo-hoodie",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Basic Logo Socks",
@@ -182,7 +196,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "basic-logo-socks"
+    "id": "basic-logo-socks",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Cap big logo",
@@ -202,7 +218,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "cap-big-logo"
+    "id": "cap-big-logo",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Cap small logo",
@@ -222,7 +240,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "cap-small-logo"
+    "id": "cap-small-logo",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "CHALK",
@@ -240,7 +260,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "chalk",
-    "_new_folder": "chalk"
+    "_new_folder": "chalk",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Children's T-shirt",
@@ -260,9 +282,11 @@
     "price": 2500,
     "unit": "single",
     "images": [],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
-    "id": "children-s-t-shirt"
+    "category": "apparel",
+    "category_ru": "Одежда",
+    "id": "children-s-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Compression shorts",
@@ -282,10 +306,12 @@
     "images": [
       "compression-shorts.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "compression-shorts",
-    "_new_folder": "compression-shorts"
+    "_new_folder": "compression-shorts",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Elbow sleeves 3.0",
@@ -308,16 +334,18 @@
     "images": [
       "elbow-sleeves-3-0.webp"
     ],
-    "category": "sleeves",
-    "category_ru": "Наколенники и налокотники",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "elbow-sleeves-3-0",
-    "_new_folder": "elbow-sleeves"
+    "_new_folder": "elbow-sleeves",
+    "subcategory": "sleeves",
+    "subcategory_ru": "Наколенники и налокотники"
   },
   {
     "name_en": "Elite Sticky Grips",
     "name_ru": "Накладки Elite Sticky",
     "brand": "XPODIUM",
-    "category": "grips",
+    "category": "gear",
     "price": 3200,
     "sizes": [
       "S",
@@ -330,7 +358,9 @@
     "_new_folder": "elite-sticky-grips",
     "in_stock": true,
     "id": "elite-sticky-grips",
-    "category_ru": "Накладки"
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки",
+    "category_ru": "Экипировка"
   },
   {
     "name_en": "Girls T-Shirts",
@@ -357,9 +387,11 @@
     "images": [
       "girls-t-shirts.webp"
     ],
-    "category": "apparel-women",
-    "category_ru": "Одежда женская",
-    "id": "girls-t-shirts"
+    "category": "apparel",
+    "category_ru": "Одежда",
+    "id": "girls-t-shirts",
+    "subcategory": "apparel-women",
+    "subcategory_ru": "Одежда женская"
   },
   {
     "name_en": "Girls Vest",
@@ -386,10 +418,12 @@
     "images": [
       "girls-vest.webp"
     ],
-    "category": "apparel-women",
-    "category_ru": "Одежда женская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "girls-vest",
-    "_new_folder": "women-tank"
+    "_new_folder": "women-tank",
+    "subcategory": "apparel-women",
+    "subcategory_ru": "Одежда женская"
   },
   {
     "name_en": "Head Bands",
@@ -414,7 +448,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "head-bands",
-    "_new_folder": "headband"
+    "_new_folder": "headband",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Hoodie",
@@ -433,10 +469,12 @@
     "images": [
       "hoodie.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "hoodie",
-    "_new_folder": "hoodie"
+    "_new_folder": "hoodie",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Hookgrip tape",
@@ -460,7 +498,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "hookgrip-tape",
-    "_new_folder": "thumb-tape"
+    "_new_folder": "thumb-tape",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "JUMP ROPE 2.0",
@@ -478,10 +518,12 @@
     "images": [
       "jump-rope-2-0.webp"
     ],
-    "category": "jumpropes",
-    "category_ru": "Скакалки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "jump-rope-2-0",
-    "_new_folder": "jump-rope-2.0"
+    "_new_folder": "jump-rope-2.0",
+    "subcategory": "jumpropes",
+    "subcategory_ru": "Скакалки"
   },
   {
     "name_en": "JUMP ROPE",
@@ -503,10 +545,12 @@
     "images": [
       "jump-rope.webp"
     ],
-    "category": "jumpropes",
-    "category_ru": "Скакалки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "jump-rope",
-    "_new_folder": "jump-rope"
+    "_new_folder": "jump-rope",
+    "subcategory": "jumpropes",
+    "subcategory_ru": "Скакалки"
   },
   {
     "name_en": "KEY RING",
@@ -526,9 +570,11 @@
     "images": [
       "key-ring.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "key-ring"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "key-ring",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Knee sleeves 1.0",
@@ -551,10 +597,12 @@
     "images": [
       "knee-sleeves-1-0.webp"
     ],
-    "category": "sleeves",
-    "category_ru": "Наколенники и налокотники",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "knee-sleeves-1-0",
-    "_new_folder": "knee-sleeves-1.0"
+    "_new_folder": "knee-sleeves-1.0",
+    "subcategory": "sleeves",
+    "subcategory_ru": "Наколенники и налокотники"
   },
   {
     "name_en": "Knee sleeves 2.0",
@@ -579,9 +627,11 @@
     "images": [
       "knee-sleeves-2-0.webp"
     ],
-    "category": "sleeves",
-    "category_ru": "Наколенники и налокотники",
-    "id": "knee-sleeves-2-0"
+    "category": "gear",
+    "category_ru": "Экипировка",
+    "id": "knee-sleeves-2-0",
+    "subcategory": "sleeves",
+    "subcategory_ru": "Наколенники и налокотники"
   },
   {
     "name_en": "Knee sleeves 3.0",
@@ -604,10 +654,12 @@
     "images": [
       "knee-sleeves-3-0.webp"
     ],
-    "category": "sleeves",
-    "category_ru": "Наколенники и налокотники",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "knee-sleeves-3-0",
-    "_new_folder": "knee-sleeves-3.0"
+    "_new_folder": "knee-sleeves-3.0",
+    "subcategory": "sleeves",
+    "subcategory_ru": "Наколенники и налокотники"
   },
   {
     "name_en": "Leggings (Long)",
@@ -624,10 +676,12 @@
     "price": 3100,
     "unit": "single",
     "images": [],
-    "category": "apparel-women",
-    "category_ru": "Одежда женская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "leggings-long",
-    "_new_folder": "leggins-long"
+    "_new_folder": "leggins-long",
+    "subcategory": "apparel-women",
+    "subcategory_ru": "Одежда женская"
   },
   {
     "name_en": "Leggings (Short)",
@@ -644,10 +698,12 @@
     "price": 2800,
     "unit": "single",
     "images": [],
-    "category": "apparel-women",
-    "category_ru": "Одежда женская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "leggings-short",
-    "_new_folder": "leggins-short"
+    "_new_folder": "leggins-short",
+    "subcategory": "apparel-women",
+    "subcategory_ru": "Одежда женская"
   },
   {
     "name_en": "Lifting Socks",
@@ -667,7 +723,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "lifting-socks"
+    "id": "lifting-socks",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Lifting strap",
@@ -684,9 +742,11 @@
     "images": [
       "lifting-strap.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "lifting-strap"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "lifting-strap",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Light-fit T-shirt",
@@ -712,9 +772,11 @@
     "images": [
       "light-fit-t-shirt.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
-    "id": "light-fit-t-shirt"
+    "category": "apparel",
+    "category_ru": "Одежда",
+    "id": "light-fit-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Logo Socks",
@@ -735,7 +797,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "logo-socks",
-    "_new_folder": "socks"
+    "_new_folder": "socks",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Long pants",
@@ -754,10 +818,12 @@
     "images": [
       "long-pants.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "long-pants",
-    "_new_folder": "long-pants"
+    "_new_folder": "long-pants",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "MASSAGE BALL",
@@ -774,9 +840,11 @@
     "images": [
       "massage-ball.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "massage-ball"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "massage-ball",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Mini Backpack",
@@ -796,10 +864,12 @@
     "images": [
       "mini-backpack.webp"
     ],
-    "category": "bags",
-    "category_ru": "Рюкзаки и сумки",
+    "category": "accessories",
+    "category_ru": "Аксессуары",
     "id": "mini-backpack",
-    "_new_folder": "mini-backpack"
+    "_new_folder": "mini-backpack",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "MONTRIGGER",
@@ -816,9 +886,11 @@
     "images": [
       "montrigger.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "montrigger"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "montrigger",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "OVERSIZED SHIRTS (BIG LOGO)",
@@ -838,9 +910,11 @@
     "images": [
       "oversized-shirts-big-logo.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
-    "id": "oversized-shirts-big-logo"
+    "category": "apparel",
+    "category_ru": "Одежда",
+    "id": "oversized-shirts-big-logo",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "OVERSIZED SHIRTS (SMALL LOGO)",
@@ -860,10 +934,12 @@
     "images": [
       "oversized-shirts-small-logo.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "oversized-shirts-small-logo",
-    "_new_folder": "small-logo-t-shirt"
+    "_new_folder": "small-logo-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "OVERSIZED SHIRTS",
@@ -884,9 +960,11 @@
     "images": [
       "oversized-shirts.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
-    "id": "oversized-shirts"
+    "category": "apparel",
+    "category_ru": "Одежда",
+    "id": "oversized-shirts",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "panda Velcro",
@@ -903,9 +981,11 @@
     "images": [
       "panda-velcro.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "panda-velcro"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "panda-velcro",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "PLASTIC BARBELL CLIPS",
@@ -921,9 +1001,11 @@
     "images": [
       "plastic-barbell-clips.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "plastic-barbell-clips"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "plastic-barbell-clips",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "PLASTIC SPRING BARBELL CLIPS",
@@ -938,9 +1020,11 @@
     "images": [
       "plastic-spring-barbell-clips.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "plastic-spring-barbell-clips"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "plastic-spring-barbell-clips",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "plate Velcro",
@@ -960,9 +1044,11 @@
     "images": [
       "plate-velcro.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "plate-velcro"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "plate-velcro",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "PR belt",
@@ -991,10 +1077,12 @@
     "images": [
       "pr-belt.webp"
     ],
-    "category": "belts",
-    "category_ru": "Пояса",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "pr-belt",
-    "_new_folder": "pr-belt"
+    "_new_folder": "pr-belt",
+    "subcategory": "belts",
+    "subcategory_ru": "Пояса"
   },
   {
     "name_en": "PRO T-Shirts",
@@ -1023,10 +1111,12 @@
     "images": [
       "pro-t-shirts.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "pro-t-shirts",
-    "_new_folder": "mens-t-shirt"
+    "_new_folder": "mens-t-shirt",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "PRO Vest",
@@ -1050,10 +1140,12 @@
     "images": [
       "pro-vest.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "pro-vest",
-    "_new_folder": "men's tank"
+    "_new_folder": "men's tank",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "SANDBAG",
@@ -1070,9 +1162,11 @@
     "images": [
       "sandbag.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "sandbag"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "sandbag",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Satchel",
@@ -1092,10 +1186,12 @@
     "images": [
       "satchel.webp"
     ],
-    "category": "bags",
-    "category_ru": "Рюкзаки и сумки",
+    "category": "accessories",
+    "category_ru": "Аксессуары",
     "id": "satchel",
-    "_new_folder": "satchel"
+    "_new_folder": "satchel",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Shorts 1.0",
@@ -1125,13 +1221,15 @@
     "images": [
       "shorts-1-0.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "shorts-1-0",
     "_new_folder": "small-logo-shorts",
     "_extra_folders": [
       "big-logo-shorts"
-    ]
+    ],
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Shorts 2.0",
@@ -1151,16 +1249,18 @@
     "images": [
       "shorts-2-0.webp"
     ],
-    "category": "apparel-men",
-    "category_ru": "Одежда мужская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "shorts-2-0",
-    "_new_folder": "shorts 2.0"
+    "_new_folder": "shorts 2.0",
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская"
   },
   {
     "name_en": "Shorts 3.0",
     "name_ru": "Шорты 3.0",
     "brand": "XPODIUM",
-    "category": "apparel-men",
+    "category": "apparel",
     "price": 0,
     "sizes": [
       "M",
@@ -1173,7 +1273,9 @@
     "_new_folder": "new-shorts",
     "in_stock": true,
     "id": "shorts-3-0",
-    "category_ru": "Одежда мужская"
+    "subcategory": "apparel-men",
+    "subcategory_ru": "Одежда мужская",
+    "category_ru": "Одежда"
   },
   {
     "name_en": "Sport Bottle",
@@ -1193,7 +1295,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "sport-bottle"
+    "id": "sport-bottle",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Sports Bra",
@@ -1212,10 +1316,12 @@
     "images": [
       "sports-bra.webp"
     ],
-    "category": "apparel-women",
-    "category_ru": "Одежда женская",
+    "category": "apparel",
+    "category_ru": "Одежда",
     "id": "sports-bra",
-    "_new_folder": "sports-bra"
+    "_new_folder": "sports-bra",
+    "subcategory": "apparel-women",
+    "subcategory_ru": "Одежда женская"
   },
   {
     "name_en": "Suede Grip （With hole）",
@@ -1234,10 +1340,12 @@
     "images": [
       "suede-grip-with-hole.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "suede-grip-with-hole",
-    "_new_folder": "suede-grips-with-holes"
+    "_new_folder": "suede-grips-with-holes",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "Suede Grip",
@@ -1256,10 +1364,12 @@
     "images": [
       "suede-grip.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "suede-grip",
-    "_new_folder": "suede-grips-no-hole"
+    "_new_folder": "suede-grips-no-hole",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "Sweat band",
@@ -1288,7 +1398,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "sweat-band",
-    "_new_folder": "sweatbands"
+    "_new_folder": "sweatbands",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Ultra Knee leeves",
@@ -1312,7 +1424,9 @@
     "category": "accessories",
     "category_ru": "Аксессуары",
     "id": "ultra-knee-leeves",
-    "_new_folder": "knee-sleeves-ultra"
+    "_new_folder": "knee-sleeves-ultra",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Weightlifting Socks",
@@ -1332,7 +1446,9 @@
     ],
     "category": "accessories",
     "category_ru": "Аксессуары",
-    "id": "weightlifting-socks"
+    "id": "weightlifting-socks",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "Wristband 1.0",
@@ -1354,10 +1470,12 @@
     "images": [
       "wristband-1-0.webp"
     ],
-    "category": "wraps",
-    "category_ru": "Кистевые бинты",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "wristband-1-0",
-    "_new_folder": "wristband 1.0"
+    "_new_folder": "wristband 1.0",
+    "subcategory": "wraps",
+    "subcategory_ru": "Кистевые бинты"
   },
   {
     "name_en": "Wristband 2.0",
@@ -1376,9 +1494,11 @@
     "images": [
       "wristband-2-0-2.webp"
     ],
-    "category": "wraps",
-    "category_ru": "Кистевые бинты",
-    "id": "wristband-2-0-2"
+    "category": "gear",
+    "category_ru": "Экипировка",
+    "id": "wristband-2-0-2",
+    "subcategory": "wraps",
+    "subcategory_ru": "Кистевые бинты"
   },
   {
     "name_en": "Wristband 2.0",
@@ -1400,10 +1520,12 @@
     "images": [
       "wristband-2-0.webp"
     ],
-    "category": "wraps",
-    "category_ru": "Кистевые бинты",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "wristband-2-0",
-    "_new_folder": "wristband 2.0"
+    "_new_folder": "wristband 2.0",
+    "subcategory": "wraps",
+    "subcategory_ru": "Кистевые бинты"
   },
   {
     "name_en": "Wristband 3.0",
@@ -1421,10 +1543,12 @@
     "images": [
       "wristband-3-0.webp"
     ],
-    "category": "wraps",
-    "category_ru": "Кистевые бинты",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "wristband-3-0",
-    "_new_folder": "wristband 3.0"
+    "_new_folder": "wristband 3.0",
+    "subcategory": "wraps",
+    "subcategory_ru": "Кистевые бинты"
   },
   {
     "name_en": "XPODIUM-3.0 GRIP （Black）",
@@ -1448,9 +1572,11 @@
     "images": [
       "xpodium-3-0-grip-black.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
-    "id": "xpodium-3-0-grip-black"
+    "category": "gear",
+    "category_ru": "Экипировка",
+    "id": "xpodium-3-0-grip-black",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM-3.0 GRIP （White）",
@@ -1474,9 +1600,11 @@
     "images": [
       "xpodium-3-0-grip-white.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
-    "id": "xpodium-3-0-grip-white"
+    "category": "gear",
+    "category_ru": "Экипировка",
+    "id": "xpodium-3-0-grip-white",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM CARBON GRIPS （With hole）",
@@ -1495,10 +1623,12 @@
     "images": [
       "xpodium-carbon-grips-with-hole.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "xpodium-carbon-grips-with-hole",
-    "_new_folder": "carbon-grips-with-holes"
+    "_new_folder": "carbon-grips-with-holes",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM CARBON GRIPS",
@@ -1517,10 +1647,12 @@
     "images": [
       "xpodium-carbon-grips.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "xpodium-carbon-grips",
-    "_new_folder": "carbon-grips-no-holes"
+    "_new_folder": "carbon-grips-no-holes",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM STICKY GRIPS",
@@ -1539,9 +1671,11 @@
     "images": [
       "xpodium-sticky-grips-2.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
-    "id": "xpodium-sticky-grips-2"
+    "category": "gear",
+    "category_ru": "Экипировка",
+    "id": "xpodium-sticky-grips-2",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM STICKY GRIPS",
@@ -1562,10 +1696,12 @@
     "images": [
       "xpodium-sticky-grips.webp"
     ],
-    "category": "grips",
-    "category_ru": "Накладки",
+    "category": "gear",
+    "category_ru": "Экипировка",
     "id": "xpodium-sticky-grips",
-    "_new_folder": "sticky-grips"
+    "_new_folder": "sticky-grips",
+    "subcategory": "grips",
+    "subcategory_ru": "Накладки"
   },
   {
     "name_en": "XPODIUM Velcro 2",
@@ -1582,9 +1718,11 @@
     "images": [
       "xpodium-velcro-2.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "xpodium-velcro-2"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "xpodium-velcro-2",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   },
   {
     "name_en": "XPODIUM Velcro",
@@ -1601,8 +1739,10 @@
     "images": [
       "xpodium-velcro.webp"
     ],
-    "category": "extras",
-    "category_ru": "Дополнительно",
-    "id": "xpodium-velcro"
+    "category": "accessories",
+    "category_ru": "Аксессуары",
+    "id": "xpodium-velcro",
+    "subcategory": "accessories",
+    "subcategory_ru": "Аксессуары"
   }
 ]

@@ -37,17 +37,10 @@ if (fs.existsSync(productsDir)) {
       }
       // category_ru заполним из category
       const CAT_RU = {
-        'grips': 'Накладки',
-        'sleeves': 'Наколенники и налокотники',
-        'belts': 'Пояса',
-        'jumpropes': 'Скакалки',
-        'wraps': 'Кистевые бинты',
-        'bags': 'Рюкзаки и сумки',
-        'apparel-men': 'Одежда мужская',
-        'apparel-women': 'Одежда женская',
+        'gear': 'Экипировка',
+        'apparel': 'Одежда',
         'accessories': 'Аксессуары',
         'equipment': 'Оборудование',
-        'extras': 'Дополнительно',
       };
       data.category_ru = CAT_RU[data.category] || data.category;
       products.push(data);

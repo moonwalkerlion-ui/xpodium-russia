@@ -16,5 +16,7 @@
   ],
   "category": "accessories",
   "category_ru": "Аксессуары",
-  "id": "weightlifting-socks"
+  "id": "weightlifting-socks",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }

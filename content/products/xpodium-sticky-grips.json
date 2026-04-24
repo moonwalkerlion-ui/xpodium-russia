@@ -15,13 +15,12 @@
   "price": 2950,
   "unit": "Pair",
   "images": [
-    "/images/products/xpodium-sticky-grips.webp",
-    "/images/products/xpodium-sticky-grips-2.webp",
-    "/images/products/xpodium-sticky-grips-3.webp",
-    "/images/products/xpodium-sticky-grips-4.webp",
-    "/images/products/xpodium-sticky-grips-5.webp"
+    "/images/products/xpodium-sticky-grips.webp"
   ],
-  "category": "grips",
+  "category": "gear",
   "category_ru": "Накладки",
-  "id": "xpodium-sticky-grips"
+  "id": "xpodium-sticky-grips",
+  "_new_folder": "sticky-grips",
+  "subcategory": "grips",
+  "subcategory_ru": "Накладки"
 }

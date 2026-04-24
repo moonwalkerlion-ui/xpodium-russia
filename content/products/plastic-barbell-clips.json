@@ -12,7 +12,9 @@
   "images": [
     "/images/products/plastic-barbell-clips.webp"
   ],
-  "category": "extras",
+  "category": "accessories",
   "category_ru": "Дополнительно",
-  "id": "plastic-barbell-clips"
+  "id": "plastic-barbell-clips",
+  "subcategory": "accessories",
+  "subcategory_ru": "Аксессуары"
 }
