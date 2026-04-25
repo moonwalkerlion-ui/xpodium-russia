@@ -64,6 +64,61 @@ DST_DIR = ROOT / "images" / "products"
 # Папки которые игнорируем (по запросу пользователя)
 IGNORE_FOLDERS = {"accessories", "equipment"}
 
+# Явный маппинг: имя_папки -> slug товара (для случаев когда они отличаются)
+FOLDER_TO_SLUG = {
+    # Накладки
+    'sticky-grips': 'xpodium-sticky-grips',
+    'carbon-grips-no-holes': 'xpodium-carbon-grips',
+    'carbon-grips-with-holes': 'xpodium-carbon-grips-with-hole',
+    'suede-grips-no-hole': 'suede-grip',
+    'suede-grips-with-holes': 'suede-grip-with-hole',
+    'elite-sticky-grips': 'elite-sticky-grips',
+    # Наколенники / налокотники
+    'knee-sleeves-3.0': 'knee-sleeves-3-0',
+    'knee-sleeves-1.0': 'knee-sleeves-1-0',
+    'knee-sleeves-ultra': 'ultra-knee-leeves',
+    'elbow-sleeves': 'elbow-sleeves-3-0',
+    # Пояса
+    'pr-belt': 'pr-belt',
+    # Скакалки
+    'jump-rope': 'jump-rope',
+    'jump-rope-2.0': 'jump-rope-2-0',
+    # Кистевые бинты
+    'wristband 1.0': 'wristband-1-0',
+    'wristband 2.0': 'wristband-2-0',
+    'wristband 3.0': 'wristband-3-0',
+    # Рюкзаки
+    'backpack-2.0': 'backpack-2-0',
+    'mini-backpack': 'mini-backpack',
+    'satchel': 'satchel',
+    # Одежда мужская
+    'hoodie': 'hoodie',
+    'basic-logo-hoodie': 'basic-logo-hoodie',
+    'mens-t-shirt': 'pro-t-shirts',
+    '3:4-mens-t-shirt': '3-4-sleeves-t-shirt',
+    "men's tank": 'pro-vest',
+    'compression-shorts': 'compression-shorts',
+    'shorts 2.0': 'shorts-2-0',
+    'long-pants': 'long-pants',
+    'small-logo-t-shirt': 'oversized-shirts-small-logo',
+    'small-logo-shorts': 'shorts-1-0',
+    'big-logo-shorts': 'shorts-1-0',  # тот же товар, фото добавятся к существующим
+    'new-shorts': 'shorts-3-0',
+    # Одежда женская
+    '3:4-women-t-shirt': '3-4-sleeves-t-shirt-shorts',
+    'women-t-shirt-crop': 'womens-crop-top',
+    'women-tank': 'girls-vest',
+    'sports-bra': 'sports-bra',
+    'leggins-short': 'leggings-short',
+    'leggins-long': 'leggings-long',
+    # Аксессуары
+    'sweatbands': 'sweat-band',
+    'headband': 'head-bands',
+    'thumb-tape': 'hookgrip-tape',
+    'socks': 'logo-socks',
+    'chalk': 'chalk',
+}
+
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}
 
 
@@ -144,29 +199,35 @@ def main():
 
     print(f"📂 Найдено папок с фото: {len(src_folders)}")
 
-    # 3. Матчим папки с товарами
-    # Точное совпадение по slug, либо по slugify(имя_папки)
-    matches = {}  # slug товара -> [Path фото]
+    # 3. Матчим папки с товарами через явный маппинг
+    matches = {}  # slug товара -> [Path фото] (с поддержкой объединения папок)
     used_folders = set()
     unmatched_folders = []
 
     for folder_name, folder in src_folders.items():
-        # Пробуем найти товар: по точному имени, по slugify, по приведению точек/двоеточий
-        candidates = [
-            folder_name,
-            slugify(folder_name),
-            folder_name.replace(":", "-").replace(".", "-"),
-            folder_name.replace(" ", "-").replace(".", "-").replace(":", "-"),
-        ]
-        matched_slug = None
-        for c in candidates:
-            if c in products:
-                matched_slug = c
-                break
-        if matched_slug:
+        # Сначала пробуем явный маппинг
+        matched_slug = FOLDER_TO_SLUG.get(folder_name)
+        # Если нет в маппинге — пробуем угадать через slugify
+        if not matched_slug:
+            candidates = [
+                folder_name,
+                slugify(folder_name),
+                folder_name.replace(":", "-").replace(".", "-"),
+                folder_name.replace(" ", "-").replace(".", "-").replace(":", "-"),
+            ]
+            for c in candidates:
+                if c in products:
+                    matched_slug = c
+                    break
+
+        if matched_slug and matched_slug in products:
             images = list_images(folder)
             if images:
-                matches[matched_slug] = images
+                # Если для этого товара уже есть фото из другой папки — добавляем к ним
+                if matched_slug in matches:
+                    matches[matched_slug].extend(images)
+                else:
+                    matches[matched_slug] = images
                 used_folders.add(folder_name)
         else:
             unmatched_folders.append(folder_name)

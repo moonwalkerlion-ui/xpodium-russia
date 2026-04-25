@@ -25,12 +25,14 @@
   "price": 2800,
   "unit": "single",
   "images": [
-    "/images/products/3-4-sleeves-t-shirt.webp"
+    "/images/products/3-4-sleeves-t-shirt.webp",
+    "/images/products/3-4-sleeves-t-shirt-2.webp",
+    "/images/products/3-4-sleeves-t-shirt-3.webp",
+    "/images/products/3-4-sleeves-t-shirt-4.webp"
   ],
   "category": "apparel",
   "category_ru": "Одежда мужская",
   "id": "3-4-sleeves-t-shirt",
-  "_new_folder": "3:4-mens-t-shirt",
   "subcategory": "apparel-men",
   "subcategory_ru": "Одежда мужская"
 }
