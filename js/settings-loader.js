@@ -95,6 +95,21 @@ function applySettings() {
     setText('[data-setting="hero_cta"]', h.hero_cta);
     setText('[data-setting="about_title"]', h.about_title);
     setText('[data-setting="about_text"]', h.about_text);
+
+    // Hero фоновое изображение
+    if (h.hero_image) {
+      const heroBg = document.querySelector('.hero-bg');
+      if (heroBg) {
+        heroBg.style.setProperty('--hero-bg-image', `url("${h.hero_image}")`);
+        heroBg.setAttribute('data-has-image', 'true');
+      }
+    }
+  }
+
+  // Логотип / название бренда
+  if (SETTINGS.brand && SETTINGS.brand.name) {
+    setText('[data-setting="site_brand"]', SETTINGS.brand.name);
+    document.title = document.title.replace(/^[^—|–-]+/, SETTINGS.brand.name + ' ');
   }
 
   // Our Story

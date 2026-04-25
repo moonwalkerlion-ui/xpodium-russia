@@ -73,11 +73,10 @@ img { max-width: 100%; display: block; }
 }
 .logo {
   font-family: var(--font-display);
-  font-size: 36px;
-  letter-spacing: 0.06em;
+  font-size: 48px;
+  letter-spacing: 0.04em;
   font-weight: 400;
   line-height: 1;
-  min-width: 140px;
   display: inline-flex;
   align-items: center;
 }
@@ -194,6 +193,15 @@ img { max-width: 100%; display: block; }
     radial-gradient(ellipse at 30% 50%, rgba(80,80,80,0.6) 0%, transparent 50%),
     linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
   background-size: cover;
+  background-position: center;
+}
+/* Если задано фоновое изображение — поверх градиента-заглушки */
+.hero-bg[data-has-image="true"] {
+  background: var(--hero-bg-image, none) center/cover no-repeat;
+}
+.hero-bg[data-has-image="true"]::before {
+  /* убираем сетку если есть фото */
+  display: none;
 }
 .hero-bg::before {
   content: '';

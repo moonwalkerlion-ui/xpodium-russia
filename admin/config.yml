@@ -102,15 +102,27 @@ collections:
     editor:
       preview: false
     files:
+      # --- Название сайта / бренд ---
+      - name: "brand"
+        label: "Название сайта (логотип)"
+        file: "content/settings/brand.json"
+        fields:
+          - { label: "Название бренда (отображается в шапке и футере)", name: "name", widget: "string", default: "BRAND" }
+
       # --- Главная ---
       - name: "home"
         label: "Главная страница"
         file: "content/settings/home.json"
         fields:
-          - { label: "Заголовок hero (строка 1)", name: "hero_title_1", widget: "string", default: "СДЕЛАЙ" }
-          - { label: "Заголовок hero (строка 2)", name: "hero_title_2", widget: "string", default: "ЭТО" }
-          - { label: "Подзаголовок hero", name: "hero_subtitle", widget: "string" }
+          - { label: "Заголовок hero (строка 1)", name: "hero_title_1", widget: "string", default: "СДЕЛАЙ", required: false }
+          - { label: "Заголовок hero (строка 2)", name: "hero_title_2", widget: "string", default: "ЭТО", required: false }
+          - { label: "Подзаголовок hero", name: "hero_subtitle", widget: "string", required: false }
           - { label: "Текст на кнопке", name: "hero_cta", widget: "string", default: "В каталог" }
+          - label: "Фоновое изображение hero (опционально)"
+            name: "hero_image"
+            widget: "image"
+            required: false
+            hint: "Большое изображение для главной страницы (заменяет тёмный градиент)"
           - { label: "Заголовок блока 'О нас'", name: "about_title", widget: "string" }
           - { label: "Текст блока 'О нас'", name: "about_text", widget: "text" }
 
