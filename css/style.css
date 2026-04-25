@@ -484,12 +484,14 @@ section {
   position: relative;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(32px, 3.5vw, 56px);
+  font-size: clamp(20px, 2.4vw, 38px);
   letter-spacing: 0.02em;
   line-height: 1;
   text-transform: uppercase;
   z-index: 2;
   color: #fff;
+  word-break: break-word;
+  hyphens: auto;
 }
 .cat-arrow {
   position: relative;
@@ -1103,7 +1105,7 @@ section {
   /* Категории на мобилке — 2×2, квадратные карточки */
   .category-grid { gap: 2px; }
   .cat-card { aspect-ratio: 1 / 1.1; padding: 20px; }
-  .cat-label { font-size: clamp(26px, 7vw, 36px); }
+  .cat-label { font-size: clamp(18px, 5.5vw, 28px); }
   .cat-arrow { width: 32px; height: 32px; opacity: 1; transform: none; margin-bottom: 8px; }
 
   /* Модалка товара на мобилке */

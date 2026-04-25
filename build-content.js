@@ -18,15 +18,24 @@ if (fs.existsSync(productsDir)) {
     try {
       const raw = fs.readFileSync(path.join(productsDir, file), 'utf-8');
       const data = JSON.parse(raw);
-      // Преобразуем абсолютные пути картинок обратно в имена файлов
+      // Сглаживаем массив images — поддерживаем разные форматы:
+      // 1) ["path/to.webp"] — простые строки
+      // 2) [{ image: "path/to.webp" }] — массив объектов (формат Decap CMS)
       if (Array.isArray(data.images)) {
-        data.images = data.images.map(img => {
-          if (typeof img === 'string' && img.startsWith('/images/products/')) {
-            return img.replace('/images/products/', '');
-          }
-          // картинка загружена через админку — путь /images/uploads/...
-          return img;
-        });
+        data.images = data.images
+          .map(img => {
+            if (typeof img === 'string') return img;
+            if (typeof img === 'object' && img !== null) return img.image || img.url || img.src || '';
+            return '';
+          })
+          .filter(Boolean)
+          .map(img => {
+            // Преобразуем абсолютные пути в имена файлов (для совместимости с product-image-url)
+            if (img.startsWith('/images/products/')) {
+              return img.replace('/images/products/', '');
+            }
+            return img;
+          });
       }
       // Сглаживаем списки sizes и colors (они в админке сохраняются как массив объектов)
       if (Array.isArray(data.sizes)) {

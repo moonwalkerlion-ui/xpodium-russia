@@ -83,12 +83,14 @@ collections:
         required: false
         summary: "{{fields.color}}"
         field: { label: "Цвет", name: "color", widget: "string" }
-      - label: "Фото товара"
+      - label: "Фото товара (можно перетаскивать для смены порядка)"
         name: "images"
         widget: "list"
         required: false
-        summary: "{{fields.image}}"
-        field: { label: "Фото", name: "image", widget: "image" }
+        allow_add: true
+        summary: "Фото"
+        field:
+          { label: "Фото", name: "image", widget: "image" }
       - { label: "В наличии", name: "in_stock", widget: "boolean", default: true }
 
   # ============================
