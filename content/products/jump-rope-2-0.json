@@ -12,12 +12,17 @@
   "price": 2700,
   "unit": "",
   "images": [
-    "/images/products/jump-rope-2-0.webp"
+    "/images/products/jump-rope-2-0.webp",
+    "/images/products/jump-rope-2-0-2.webp",
+    "/images/products/jump-rope-2-0-3.webp",
+    "/images/products/jump-rope-2-0-4.webp",
+    "/images/products/jump-rope-2-0-5.webp",
+    "/images/products/jump-rope-2-0-6.webp",
+    "/images/products/jump-rope-2-0-7.webp"
   ],
   "category": "gear",
   "category_ru": "Скакалки",
   "id": "jump-rope-2-0",
-  "_new_folder": "jump-rope-2.0",
   "subcategory": "jumpropes",
   "subcategory_ru": "Скакалки"
 }

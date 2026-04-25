@@ -14,12 +14,14 @@
   "price": 3500,
   "unit": "single",
   "images": [
-    "/images/products/shorts-2-0.webp"
+    "/images/products/shorts-2-0.webp",
+    "/images/products/shorts-2-0-2.webp",
+    "/images/products/shorts-2-0-3.webp",
+    "/images/products/shorts-2-0-4.webp"
   ],
   "category": "apparel",
   "category_ru": "Одежда мужская",
   "id": "shorts-2-0",
-  "_new_folder": "shorts 2.0",
   "subcategory": "apparel-men",
   "subcategory_ru": "Одежда мужская"
 }
