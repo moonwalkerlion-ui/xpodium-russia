@@ -4,6 +4,7 @@
   "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
   "price": 2800,
+  "_new_folder": "3:4-women-t-shirt",
   "colors": [
     "Чёрный + Чёрный",
     "Коричневый + Коричневый",
@@ -18,15 +19,7 @@
   "name_ru": "Комплект: футболка 3/4 + шорты",
   "images": [
     "/images/products/3-4-sleeves-t-shirt-shorts.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-2.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-3.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-4.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-5.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-6.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-7.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-8.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-9.webp",
-    "/images/products/3-4-sleeves-t-shirt-shorts-10.webp"
+    "/images/uploads/썸네일-1-.jpg"
   ],
   "id": "3-4-sleeves-t-shirt-shorts",
   "in_stock": true,
