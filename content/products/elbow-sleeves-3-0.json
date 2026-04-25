@@ -17,12 +17,16 @@
   "price": 2200,
   "unit": "Pair",
   "images": [
-    "/images/products/elbow-sleeves-3-0.webp"
+    "/images/products/elbow-sleeves-3-0.webp",
+    "/images/products/elbow-sleeves-3-0-2.webp",
+    "/images/products/elbow-sleeves-3-0-3.webp",
+    "/images/products/elbow-sleeves-3-0-4.webp",
+    "/images/products/elbow-sleeves-3-0-5.webp",
+    "/images/products/elbow-sleeves-3-0-6.webp"
   ],
   "category": "gear",
   "category_ru": "Наколенники и налокотники",
   "id": "elbow-sleeves-3-0",
-  "_new_folder": "elbow-sleeves",
   "subcategory": "sleeves",
   "subcategory_ru": "Наколенники и налокотники"
 }
