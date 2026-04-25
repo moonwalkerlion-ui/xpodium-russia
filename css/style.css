@@ -185,11 +185,12 @@ img { max-width: 100%; display: block; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #111;
+  background: transparent;
+  padding: 0 var(--gutter);
 }
 .hero-bg {
   position: absolute;
-  inset: 0;
+  inset: 0 var(--gutter);
   background:
     radial-gradient(ellipse at 30% 50%, rgba(80,80,80,0.6) 0%, transparent 50%),
     linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
@@ -206,7 +207,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-overlay {
   position: absolute;
-  inset: 0;
+  inset: 0 var(--gutter);
   background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 100%);
 }
 .hero-content {
@@ -484,14 +485,15 @@ section {
   position: relative;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(20px, 2.4vw, 38px);
+  font-size: clamp(18px, 2vw, 32px);
   letter-spacing: 0.02em;
   line-height: 1;
   text-transform: uppercase;
   z-index: 2;
   color: #fff;
-  word-break: break-word;
-  hyphens: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 .cat-arrow {
   position: relative;
@@ -921,11 +923,11 @@ section {
 .product-modal-inner {
   background: #fff;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1100px;
   max-height: 90vh;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 1fr;
   position: relative;
 }
 .pm-close {
@@ -1017,9 +1019,11 @@ section {
 }
 .pm-title {
   font-family: var(--font-display);
-  font-size: 34px;
-  line-height: 1;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.05;
   margin-bottom: 16px;
+  word-break: break-word;
+  hyphens: auto;
 }
 .pm-price {
   font-size: 22px;
