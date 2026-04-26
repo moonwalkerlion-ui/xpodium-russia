@@ -23,10 +23,10 @@
     },
     {
       "id": "equipment",
-      "label": "Оборудование",
+      "label": "Оборудование (СКОРО)",
       "image": "/images/categories/equipment.webp",
-      "hidden": false,
-      "placeholder": "TO BE ANNOUNCED"
+      "hidden": true,
+      "placeholder": "СКОРО"
     }
   ]
 }
