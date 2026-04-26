@@ -119,7 +119,7 @@ collections:
             widget: "list"
             summary: "{{fields.label}}"
             allow_add: false
-            field:
+            fields:
               - { label: "Системное имя (НЕ МЕНЯТЬ)", name: "id", widget: "string", hint: "gear / apparel / accessories / equipment" }
               - { label: "Название на сайте", name: "label", widget: "string" }
               - label: "Фото категории"
