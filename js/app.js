@@ -7,6 +7,8 @@ const SHOP_CONFIG = {
   currency: '₽',
   telegram: 'xpodium_russia',  // ник менеджера (подменится из settings)
   telegramUrl: 'https://t.me/xpodium_russia',
+  orderTelegram: 'barkovdenis',  // личный TG для заказов (подменится из settings)
+  orderTelegramUrl: 'https://t.me/barkovdenis',
   freeShippingFrom: 10000,
 };
 
@@ -338,7 +340,9 @@ function checkoutToTelegram() {
   msg += `\nИтого: ${formatPrice(cartTotal())}\n\n`;
   msg += `Имя: \nГород: \nАдрес доставки: \nСпособ оплаты: `;
 
-  const url = `${SHOP_CONFIG.telegramUrl}?text=${encodeURIComponent(msg)}`;
+  // Используем orderTelegramUrl (личный TG для заказов), а если его нет — обычный telegramUrl
+  const targetUrl = SHOP_CONFIG.orderTelegramUrl || SHOP_CONFIG.telegramUrl;
+  const url = `${targetUrl}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
 }
 

@@ -109,6 +109,26 @@ collections:
         fields:
           - { label: "Название бренда (отображается в шапке и футере)", name: "name", widget: "string", default: "BRAND" }
 
+      # --- Категории на главной ---
+      - name: "categories"
+        label: "Категории на главной"
+        file: "content/settings/categories.json"
+        fields:
+          - label: "Категории (порядок отображения = порядок здесь)"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.label}}"
+            allow_add: false
+            field:
+              - { label: "Системное имя (НЕ МЕНЯТЬ)", name: "id", widget: "string", hint: "gear / apparel / accessories / equipment" }
+              - { label: "Название на сайте", name: "label", widget: "string" }
+              - label: "Фото категории"
+                name: "image"
+                widget: "image"
+                required: false
+              - { label: "Скрыть категорию (страница станет недоступна)", name: "hidden", widget: "boolean", default: false }
+              - { label: "Текст-заглушка вместо товаров (если категория скрыта)", name: "placeholder", widget: "string", required: false, default: "TO BE ANNOUNCED" }
+
       # --- Главная ---
       - name: "home"
         label: "Главная страница"
@@ -142,7 +162,8 @@ collections:
         label: "Контакты и соцсети"
         file: "content/settings/contacts.json"
         fields:
-          - { label: "Telegram (ник без @)", name: "telegram", widget: "string", default: "xpodium_russia" }
+          - { label: "Telegram канала / для контакта (ник без @)", name: "telegram", widget: "string", default: "xpodium_russia", hint: "Этот ник используется в шапке/футере для ссылки на канал" }
+          - { label: "Telegram для приёма заказов (ник без @)", name: "order_telegram", widget: "string", default: "barkovdenis", hint: "Сюда будут уходить сообщения с заказами. Должен быть ЛИЧНЫЙ TG, не канал!" }
           - { label: "Instagram (ник без @)", name: "instagram", widget: "string", default: "xpodium_russia" }
           - { label: "Email (опц.)", name: "email", widget: "string", required: false }
           - { label: "Телефон (опц.)", name: "phone", widget: "string", required: false }

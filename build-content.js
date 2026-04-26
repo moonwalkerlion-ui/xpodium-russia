@@ -7,6 +7,27 @@
 const fs = require('fs');
 const path = require('path');
 
+// Загружаем настройки категорий заранее, чтобы использовать русские названия в товарах
+let CAT_RU = {
+  'gear': 'Экипировка',
+  'apparel': 'Одежда',
+  'accessories': 'Аксессуары',
+  'equipment': 'Оборудование',
+};
+const categoriesFile = path.join(__dirname, 'content', 'settings', 'categories.json');
+if (fs.existsSync(categoriesFile)) {
+  try {
+    const cats = JSON.parse(fs.readFileSync(categoriesFile, 'utf-8'));
+    if (Array.isArray(cats.items)) {
+      for (const c of cats.items) {
+        if (c.id && c.label) CAT_RU[c.id] = c.label;
+      }
+    }
+  } catch (e) {
+    console.error(`Ошибка чтения categories.json: ${e.message}`);
+  }
+}
+
 // --- Товары ---
 const productsDir = path.join(__dirname, 'content', 'products');
 const products = [];
@@ -44,13 +65,7 @@ if (fs.existsSync(productsDir)) {
       if (Array.isArray(data.colors)) {
         data.colors = data.colors.map(c => typeof c === 'object' && c !== null ? (c.color || c.text || '') : c).filter(Boolean);
       }
-      // category_ru заполним из category
-      const CAT_RU = {
-        'gear': 'Экипировка',
-        'apparel': 'Одежда',
-        'accessories': 'Аксессуары',
-        'equipment': 'Оборудование',
-      };
+      // category_ru заполним из category (используется глобальный CAT_RU из categories.json)
       data.category_ru = CAT_RU[data.category] || data.category;
       products.push(data);
     } catch (e) {

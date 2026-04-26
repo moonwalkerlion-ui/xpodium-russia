@@ -535,6 +535,51 @@ section {
   color: #000;
 }
 
+/* Скрытая категория — заглушка "TO BE ANNOUNCED" */
+.cat-card-hidden {
+  cursor: default;
+  pointer-events: none;
+}
+.cat-card-hidden .cat-img { filter: brightness(0.35) grayscale(0.5); }
+.cat-card-hidden .cat-arrow { display: none; }
+.cat-placeholder {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.4vw, 20px);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 12px 24px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Заглушка TO BE ANNOUNCED на странице каталога */
+body[data-cat-hidden="true"] .shop-grid,
+body[data-cat-hidden="true"] .filters {
+  display: none !important;
+}
+body[data-cat-hidden="true"] .shop-body {
+  display: block !important;
+  text-align: center;
+}
+body[data-cat-hidden="true"] .shop-body::before {
+  content: var(--cat-placeholder, "TO BE ANNOUNCED");
+  display: block;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  padding: 120px 0;
+  width: 100%;
+}
+
 /* ============================
    Сетка товаров
    ============================ */
@@ -1122,7 +1167,7 @@ section {
   /* Категории на мобилке — 2×2, квадратные карточки */
   .category-grid { gap: 2px; }
   .cat-card { aspect-ratio: 1 / 1.1; padding: 20px; }
-  .cat-label { font-size: clamp(18px, 5.5vw, 28px); }
+  .cat-label { font-size: clamp(14px, 4vw, 22px); }
   .cat-arrow { width: 32px; height: 32px; opacity: 1; transform: none; margin-bottom: 8px; }
 
   /* Модалка товара на мобилке */

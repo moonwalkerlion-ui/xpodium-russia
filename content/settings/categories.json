@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": "gear",
+      "label": "Экипировка",
+      "image": "/images/categories/gear.webp",
+      "hidden": false,
+      "placeholder": "TO BE ANNOUNCED"
+    },
+    {
+      "id": "apparel",
+      "label": "Одежда",
+      "image": "/images/categories/apparel.webp",
+      "hidden": false,
+      "placeholder": "TO BE ANNOUNCED"
+    },
+    {
+      "id": "accessories",
+      "label": "Аксессуары",
+      "image": "/images/categories/accessories.webp",
+      "hidden": false,
+      "placeholder": "TO BE ANNOUNCED"
+    },
+    {
+      "id": "equipment",
+      "label": "Оборудование",
+      "image": "/images/categories/equipment.webp",
+      "hidden": false,
+      "placeholder": "TO BE ANNOUNCED"
+    }
+  ]
+}

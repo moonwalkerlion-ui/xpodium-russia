@@ -36,7 +36,7 @@ function applySettings() {
 
   // Контакты (ссылки на Telegram, Instagram)
   if (SETTINGS.contacts) {
-    const { telegram, instagram, email, phone } = SETTINGS.contacts;
+    const { telegram, order_telegram, instagram, email, phone } = SETTINGS.contacts;
 
     if (telegram) {
       const tgUrl = `https://t.me/${telegram}`;
@@ -51,6 +51,15 @@ function applySettings() {
       if (typeof SHOP_CONFIG !== 'undefined') {
         SHOP_CONFIG.telegram = telegram;
         SHOP_CONFIG.telegramUrl = tgUrl;
+      }
+    }
+    // Отдельный ник для приёма заказов (личный TG, не канал)
+    // Если указан — все заказы идут на него, не на общий telegram
+    if (typeof SHOP_CONFIG !== 'undefined') {
+      const orderHandle = order_telegram || telegram;
+      if (orderHandle) {
+        SHOP_CONFIG.orderTelegram = orderHandle;
+        SHOP_CONFIG.orderTelegramUrl = `https://t.me/${orderHandle}`;
       }
     }
     if (instagram) {
@@ -110,6 +119,57 @@ function applySettings() {
   if (SETTINGS.brand && SETTINGS.brand.name) {
     setText('[data-setting="site_brand"]', SETTINGS.brand.name);
     document.title = document.title.replace(/^[^—|–-]+/, SETTINGS.brand.name + ' ');
+  }
+
+  // Категории на главной
+  if (SETTINGS.categories && Array.isArray(SETTINGS.categories.items)) {
+    SETTINGS.categories.items.forEach(cat => {
+      // Карточка категории на главной (.cat-card)
+      const card = document.querySelector(`.cat-card[data-cat="${cat.id}"]`);
+      if (card) {
+        // Название
+        const labelEl = card.querySelector('.cat-label');
+        if (labelEl && cat.label) labelEl.textContent = cat.label;
+        // Фоновое фото
+        const imgEl = card.querySelector('.cat-img');
+        if (imgEl && cat.image) imgEl.style.backgroundImage = `url('${cat.image}')`;
+        // Если категория скрыта — добавляем стиль и блокируем переход
+        if (cat.hidden) {
+          card.classList.add('cat-card-hidden');
+          card.setAttribute('href', 'javascript:void(0)');
+          card.style.pointerEvents = 'none';
+          // Добавляем плашку "TO BE ANNOUNCED"
+          if (!card.querySelector('.cat-placeholder')) {
+            const ph = document.createElement('div');
+            ph.className = 'cat-placeholder';
+            ph.textContent = cat.placeholder || 'TO BE ANNOUNCED';
+            card.appendChild(ph);
+          }
+        }
+      }
+      // Также обновляем названия в навигации (выпадающее меню каталога)
+      document.querySelectorAll(`a[href*="cat=${cat.id}"]`).forEach(a => {
+        // Если внутри ссылки нет картинки — это пункт меню, обновляем текст
+        if (!a.querySelector('img') && !a.classList.contains('cat-card') && cat.label) {
+          a.textContent = cat.label;
+        }
+      });
+    });
+
+    // Глобальная защита: если пользователь зашёл напрямую на shop.html?cat=equipment, и она скрыта — редирект на каталог
+    const params = new URLSearchParams(window.location.search);
+    const currentCat = params.get('cat');
+    if (currentCat) {
+      const matched = SETTINGS.categories.items.find(c => c.id === currentCat);
+      if (matched && matched.hidden) {
+        // Показываем плашку вместо товаров
+        document.body.setAttribute('data-cat-hidden', 'true');
+        const ph = matched.placeholder || 'TO BE ANNOUNCED';
+        // Экранируем кавычки для CSS-строки
+        const safe = ph.replace(/"/g, '\\"');
+        document.body.style.setProperty('--cat-placeholder', `"${safe}"`);
+      }
+    }
   }
 
   // Our Story
