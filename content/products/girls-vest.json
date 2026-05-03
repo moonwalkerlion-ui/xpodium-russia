@@ -1,7 +1,9 @@
 {
-  "name_en": "Girls Vest",
-  "name_ru": "Майка (жен.)",
+  "category_ru": "Одежда женская",
+  "unit": "single",
+  "subcategory_ru": "Одежда женская",
   "brand": "XPODIUM",
+  "price": 2500,
   "colors": [
     "Серо-зелёный",
     "Тёмно-серый",
@@ -18,17 +20,16 @@
     "S",
     "M"
   ],
-  "price": 2500,
-  "unit": "single",
+  "name_ru": "Майка (жен.)",
   "images": [
-    "/images/products/girls-vest.webp",
     "/images/products/girls-vest-2.webp",
+    "/images/products/girls-vest.webp",
     "/images/products/girls-vest-3.webp",
     "/images/products/girls-vest-4.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда женская",
   "id": "girls-vest",
-  "subcategory": "apparel-women",
-  "subcategory_ru": "Одежда женская"
+  "in_stock": true,
+  "name_en": "Girls Vest",
+  "category": "apparel",
+  "subcategory": "apparel-women"
 }
