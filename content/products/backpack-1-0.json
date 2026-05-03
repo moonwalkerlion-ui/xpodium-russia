@@ -1,7 +1,9 @@
 {
-  "name_en": "Backpack 1.0",
-  "name_ru": "Рюкзак 1.0",
+  "category_ru": "Рюкзаки и сумки",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 12800,
   "colors": [
     "Чёрный",
     "Хаки",
@@ -10,14 +12,16 @@
   "sizes": [
     "58*18*34cm"
   ],
-  "price": 12800,
-  "unit": "single",
+  "name_ru": "Рюкзак 1.0",
   "images": [
-    "/images/products/backpack-1-0.webp"
+    "/images/uploads/ac_oy-21.webp",
+    "/images/uploads/d9896665c2b3ab961e587535475a0c8b.webp",
+    "/images/uploads/1af39d8df6a141ca5353d13f9f69b828.jpg",
+    "/images/uploads/0000.webp"
   ],
-  "category": "accessories",
-  "category_ru": "Рюкзаки и сумки",
   "id": "backpack-1-0",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Backpack 1.0",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
