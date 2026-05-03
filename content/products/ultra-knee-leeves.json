@@ -1,7 +1,9 @@
 {
-  "name_en": "Ultra Knee leeves",
-  "name_ru": "Наколенники Ultra",
+  "category_ru": "Аксессуары",
+  "unit": "Pair",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 5050,
   "colors": [
     "Чёрный"
   ],
@@ -12,18 +14,17 @@
     "L",
     "XL"
   ],
-  "price": 5050,
-  "unit": "Pair",
+  "name_ru": "Наколенники Ultra",
   "images": [
+    "/images/products/ultra-knee-leeves-4.webp",
     "/images/products/ultra-knee-leeves.webp",
     "/images/products/ultra-knee-leeves-2.webp",
     "/images/products/ultra-knee-leeves-3.webp",
-    "/images/products/ultra-knee-leeves-4.webp",
     "/images/products/ultra-knee-leeves-5.webp"
   ],
-  "category": "accessories",
-  "category_ru": "Аксессуары",
   "id": "ultra-knee-leeves",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Ultra Knee leeves",
+  "category": "gear",
+  "subcategory": "sleeves"
 }
