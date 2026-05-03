@@ -1,0 +1,27 @@
+{
+  "brand": "XPODIUM",
+  "price": 5000,
+  "colors": [
+    "Чёрный",
+    "Серый",
+    "Хаки"
+  ],
+  "sizes": [
+    "S",
+    "M",
+    "L"
+  ],
+  "name_ru": "Женский костюм XPODIUM",
+  "images": [
+    "/images/uploads/x-thum-6-1-.jpg",
+    "/images/uploads/x-thum-3.jpg",
+    "/images/uploads/x-thum-6-복사본.jpg",
+    "/images/uploads/x-thum-8.jpg",
+    "/images/uploads/x-thum-5.jpg",
+    "/images/uploads/x-thum-9.jpg"
+  ],
+  "in_stock": true,
+  "description": "Грация и практичность ✨\n\n-Подходит под любой вид активности🏃🏼‍♀️🏋🏻‍♀️🤸🏽‍♀️\n\n-Уникальный износостойкий материал 🛡️\n\n-Отличное влагоотведение 💧",
+  "category": "apparel",
+  "subcategory": "apparel-women"
+}
