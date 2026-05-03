@@ -1,21 +1,25 @@
 {
-  "name_en": "MONTRIGGER",
-  "name_ru": "Массажёр-триггер",
+  "category_ru": "Дополнительно",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 2100,
   "colors": [
     "Зелёный"
   ],
   "sizes": [
     "One size"
   ],
-  "price": 2100,
-  "unit": "single",
+  "name_ru": "Массажёр-триггер",
   "images": [
-    "/images/products/montrigger.webp"
+    "/images/uploads/썸네일1.jpg",
+    "/images/uploads/썸네일4.jpg",
+    "/images/uploads/썸네일3.jpg",
+    "/images/uploads/썸네일2.jpg"
   ],
-  "category": "accessories",
-  "category_ru": "Дополнительно",
   "id": "montrigger",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "MONTRIGGER",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
