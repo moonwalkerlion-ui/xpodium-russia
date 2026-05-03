@@ -1,25 +1,28 @@
 {
-  "name_en": "Leggings (Short)",
-  "name_ru": "Леггинсы короткие",
+  "category_ru": "Одежда женская",
+  "unit": "single",
+  "subcategory_ru": "Одежда женская",
   "brand": "XPODIUM",
+  "price": 2800,
   "colors": [
     "Чёрный",
     "Серый",
     "Серо-зелёный"
   ],
   "sizes": [
-    "S"
+    "S",
+    "M",
+    "L"
   ],
-  "price": 2800,
-  "unit": "single",
+  "name_ru": "Леггинсы короткие",
   "images": [
     "/images/products/leggings-short.webp",
     "/images/products/leggings-short-2.webp",
     "/images/products/leggings-short-3.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда женская",
   "id": "leggings-short",
-  "subcategory": "apparel-women",
-  "subcategory_ru": "Одежда женская"
+  "in_stock": true,
+  "name_en": "Leggings (Short)",
+  "category": "apparel",
+  "subcategory": "apparel-women"
 }
