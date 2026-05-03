@@ -1,7 +1,9 @@
 {
-  "name_en": "PRO T-Shirts",
-  "name_ru": "Футболка PRO (муж.)",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 2500,
   "colors": [
     "Серо-зелёный",
     "Тёмно-серый",
@@ -20,17 +22,16 @@
     "L",
     "XL"
   ],
-  "price": 2500,
-  "unit": "single",
+  "name_ru": "Футболка PRO (муж.)",
   "images": [
+    "/images/products/pro-t-shirts-3.webp",
     "/images/products/pro-t-shirts.webp",
     "/images/products/pro-t-shirts-2.webp",
-    "/images/products/pro-t-shirts-3.webp",
     "/images/products/pro-t-shirts-4.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "pro-t-shirts",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "in_stock": true,
+  "name_en": "PRO T-Shirts",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
