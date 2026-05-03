@@ -1,7 +1,9 @@
 {
-  "name_en": "Hookgrip tape",
-  "name_ru": "Тейп для хук-грипа",
+  "category_ru": "Аксессуары",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 350,
   "colors": [
     "Белый",
     "Чёрный",
@@ -12,19 +14,18 @@
   "sizes": [
     "One size"
   ],
-  "price": 350,
-  "unit": "single",
+  "name_ru": "Тейп для хук-грипа",
   "images": [
-    "/images/products/hookgrip-tape.webp",
-    "/images/products/hookgrip-tape-2.webp",
-    "/images/products/hookgrip-tape-3.webp",
     "/images/products/hookgrip-tape-4.webp",
     "/images/products/hookgrip-tape-5.webp",
-    "/images/products/hookgrip-tape-6.webp"
+    "/images/products/hookgrip-tape-6.webp",
+    "/images/products/hookgrip-tape-2.webp",
+    "/images/products/hookgrip-tape.webp",
+    "/images/products/hookgrip-tape-3.webp"
   ],
-  "category": "accessories",
-  "category_ru": "Аксессуары",
   "id": "hookgrip-tape",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Hookgrip tape",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
