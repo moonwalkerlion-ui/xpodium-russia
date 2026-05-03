@@ -11,7 +11,7 @@
   "sizes": [
     "One size"
   ],
-  "name_ru": "Носки для тяжёлой атлетики",
+  "name_ru": "Носки Lifting",
   "images": [
     "/images/uploads/x-thum-8-2.jpg",
     "/images/uploads/img_6791.jpg"
@@ -19,6 +19,6 @@
   "id": "lifting-socks",
   "in_stock": true,
   "name_en": "Lifting Socks",
-  "category": "accessories",
-  "subcategory": "accessories"
+  "category": "apparel",
+  "subcategory": "socks"
 }
