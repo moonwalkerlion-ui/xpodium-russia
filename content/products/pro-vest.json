@@ -1,7 +1,9 @@
 {
-  "name_en": "PRO Vest",
-  "name_ru": "Майка PRO (муж.)",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 2500,
   "colors": [
     "Розовый",
     "Белый",
@@ -15,16 +17,15 @@
     "L",
     "XL"
   ],
-  "price": 2500,
-  "unit": "single",
+  "name_ru": "Майка PRO (муж.)",
   "images": [
-    "/images/products/pro-vest.webp",
+    "/images/uploads/60cf77a879023a0ecc8c799c8e163eb2.webp",
     "/images/products/pro-vest-2.webp",
     "/images/products/pro-vest-3.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "pro-vest",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "in_stock": true,
+  "name_en": "PRO Vest",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
