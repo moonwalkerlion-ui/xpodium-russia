@@ -1,7 +1,9 @@
 {
-  "name_en": "Lifting Socks",
-  "name_ru": "Носки для тяжёлой атлетики",
+  "category_ru": "Аксессуары",
+  "unit": "Pair",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 600,
   "colors": [
     "Белый",
     "Чёрный"
@@ -9,14 +11,14 @@
   "sizes": [
     "One size"
   ],
-  "price": 600,
-  "unit": "Pair",
+  "name_ru": "Носки для тяжёлой атлетики",
   "images": [
-    "/images/products/lifting-socks.webp"
+    "/images/uploads/x-thum-8-2.jpg",
+    "/images/uploads/img_6791.jpg"
   ],
-  "category": "accessories",
-  "category_ru": "Аксессуары",
   "id": "lifting-socks",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Lifting Socks",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
