@@ -1,7 +1,9 @@
 {
-  "name_en": "Cap small logo",
-  "name_ru": "Кепка (маленькое лого)",
+  "category_ru": "Аксессуары",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 1450,
   "colors": [
     "Чёрный",
     "Серый"
@@ -9,14 +11,16 @@
   "sizes": [
     "One size"
   ],
-  "price": 1450,
-  "unit": "single",
+  "name_ru": "Кепка (маленькое лого)",
   "images": [
-    "/images/products/cap-small-logo.webp"
+    "/images/uploads/x-thum-5.jpg",
+    "/images/uploads/x-thum-7.jpg",
+    "/images/uploads/black_5.jpeg",
+    "/images/uploads/grey_5.jpeg"
   ],
-  "category": "accessories",
-  "category_ru": "Аксессуары",
   "id": "cap-small-logo",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Cap small logo",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
