@@ -87,23 +87,36 @@ function applySettings() {
   // Главная
   if (SETTINGS.home) {
     const h = SETTINGS.home;
-    // hero: одно поле hero_title_block (HTML, можно вставить <img>/коллаж/что угодно)
+
+    // Hero: собираем заголовок из строк 1 и 2 (если есть hero_title_block — он приоритетнее)
     if (h.hero_title_block !== undefined) {
       const blockEl = document.querySelector('[data-setting="hero_title_block"]');
       if (blockEl) blockEl.innerHTML = h.hero_title_block || '';
-    }
-    // fallback: старые поля hero_title_1/2 — если используются, собираем в блок
-    if ((h.hero_title_1 || h.hero_title_2) && !h.hero_title_block) {
+    } else if (h.hero_title_1 || h.hero_title_2) {
       const blockEl = document.querySelector('[data-setting="hero_title_block"]');
       if (blockEl) {
         const parts = [h.hero_title_1, h.hero_title_2].filter(Boolean);
         blockEl.innerHTML = parts.map(escapeHtml).join('<br>');
       }
     }
+
+    // Размер шрифта hero (vw)
+    if (typeof h.hero_title_size === 'number' && h.hero_title_size > 0) {
+      const blockEl = document.querySelector('[data-setting="hero_title_block"]');
+      if (blockEl) {
+        blockEl.style.fontSize = `${h.hero_title_size}vw`;
+      }
+    }
+
     setText('[data-setting="hero_subtitle"]', h.hero_subtitle);
     setText('[data-setting="hero_cta"]', h.hero_cta);
     setText('[data-setting="about_title"]', h.about_title);
     setText('[data-setting="about_text"]', h.about_text);
+
+    // CTA в нижней части главной
+    setText('[data-setting="cta_title"]', h.cta_title);
+    setText('[data-setting="cta_subtitle"]', h.cta_subtitle);
+    setText('[data-setting="cta_button"]', h.cta_button);
 
     // Hero фоновое изображение
     if (h.hero_image) {
@@ -113,6 +126,28 @@ function applySettings() {
         heroBg.setAttribute('data-has-image', 'true');
       }
     }
+
+    // Преимущества (4 блока)
+    if (Array.isArray(h.features) && h.features.length) {
+      const featuresContainer = document.querySelector('[data-setting="features_list"]');
+      if (featuresContainer) {
+        featuresContainer.innerHTML = h.features.map(f => `
+          <div class="feature">
+            <div class="feature-icon">${escapeHtml(f.icon || '◆')}</div>
+            <div class="feature-title">${escapeHtml(f.title || '')}</div>
+            <div class="feature-text">${escapeHtml(f.text || '')}</div>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  // Футер
+  if (SETTINGS.footer) {
+    const f = SETTINGS.footer;
+    setText('[data-setting="footer_tagline"]', f.tagline);
+    setText('[data-setting="footer_copyright"]', f.copyright);
+    setText('[data-setting="footer_right_text"]', f.right_text);
   }
 
   // Логотип / название бренда

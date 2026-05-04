@@ -91,7 +91,8 @@ collections:
         summary: "Фото"
         field:
           { label: "Фото", name: "image", widget: "image" }
-      - { label: "В наличии", name: "in_stock", widget: "boolean", default: true }
+      - { label: "Скрыть товар (временно убрать из магазина, не удаляя)", name: "hidden", widget: "boolean", default: false, required: false }
+      - { label: "Порядок в каталоге (меньше = выше). Оставь пустым для сортировки по алфавиту", name: "sort_index", widget: "number", required: false, hint: "Например, 1 = первый. Можно использовать 10, 20, 30 чтобы потом легко вставлять новые между ними" }
 
   # ============================
   # НАСТРОЙКИ САЙТА
@@ -136,6 +137,7 @@ collections:
         fields:
           - { label: "Заголовок hero (строка 1)", name: "hero_title_1", widget: "string", default: "СДЕЛАЙ", required: false }
           - { label: "Заголовок hero (строка 2)", name: "hero_title_2", widget: "string", default: "ЭТО", required: false }
+          - { label: "Размер шрифта hero (vw, по умолчанию 18)", name: "hero_title_size", widget: "number", required: false, default: 18, min: 6, max: 30, hint: "Чем меньше число — тем мельче текст. Для длинных русских слов уменьшай до 12-14" }
           - { label: "Подзаголовок hero", name: "hero_subtitle", widget: "string", required: false }
           - { label: "Текст на кнопке", name: "hero_cta", widget: "string", default: "В каталог" }
           - label: "Фоновое изображение hero (опционально)"
@@ -145,6 +147,29 @@ collections:
             hint: "Большое изображение для главной страницы (заменяет тёмный градиент)"
           - { label: "Заголовок блока 'О нас'", name: "about_title", widget: "string" }
           - { label: "Текст блока 'О нас'", name: "about_text", widget: "text" }
+          - { label: "Заголовок CTA (нижняя секция перед футером)", name: "cta_title", widget: "string", required: false, default: "Снаряжение, которое работает так же, как ты" }
+          - { label: "Подзаголовок CTA", name: "cta_subtitle", widget: "string", required: false, default: "Собрали всё, что нужно для функционального тренинга" }
+          - { label: "Текст кнопки CTA", name: "cta_button", widget: "string", required: false, default: "В каталог" }
+          - label: "4 преимущества (блок «Преимущества» на главной)"
+            name: "features"
+            widget: "list"
+            required: false
+            max: 4
+            min: 0
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Иконка (один символ)", name: "icon", widget: "string", default: "◆" }
+              - { label: "Заголовок", name: "title", widget: "string" }
+              - { label: "Подпись", name: "text", widget: "string" }
+
+      # --- Футер ---
+      - name: "footer"
+        label: "Футер (низ сайта)"
+        file: "content/settings/footer.json"
+        fields:
+          - { label: "Подпись под лого в футере", name: "tagline", widget: "string", required: false, default: "Экипировка для функционального фитнеса" }
+          - { label: "Копирайт (внизу слева)", name: "copyright", widget: "string", required: false, default: "© 2026 BRAND. Все права защищены." }
+          - { label: "Текст справа внизу", name: "right_text", widget: "string", required: false, default: "Все товары сертифицированы." }
 
       # --- Бегущая строка ---
       - name: "marquee"

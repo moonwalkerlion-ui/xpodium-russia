@@ -46,20 +46,43 @@ function formatPrice(n) {
 }
 
 // Маппинг русского цвета -> hex (для кружков-свотчей)
+// Регистр названия не важен — нормализуем при поиске
 const COLOR_SWATCH = {
-  'Чёрный': '#0a0a0a', 'Белый': '#ffffff', 'Серый': '#8a8a8a',
-  'Зелёный': '#2d5a3d', 'Розовый': '#ffb6c1', 'Жёлтый': '#e8c547',
-  'Синий': '#2a4a7a', 'Красный': '#b33030', 'Хаки': '#8b7d5a',
-  'Тёмно-синий': '#1a2b4a', 'Голубой': '#8ab4d8', 'Кремовый': '#e8dcc4',
-  'Мятный': '#a8d8c0', 'Оливковый': '#6b7a3d', 'Армейский зелёный': '#4a5a3a',
-  'Коричневый мокко': '#5a3a2a', 'Коричневый': '#6b4423', 'Тёмно-красный': '#6b2020',
-  'Тёмно-серый': '#3a3a3a', 'Серо-зелёный': '#7a8a6a',
-  'Кофейный': '#3a2a1a', 'Золотой': '#c9a86a', 'Серебряный': '#b8b8b8',
-  'Бордовый': '#5a1a2a', 'Оранжевый': '#e88530', 'Розово-красный': '#c8456a',
+  // Базовые
+  'чёрный': '#0a0a0a', 'черный': '#0a0a0a',
+  'белый': '#ffffff',
+  'серый': '#8a8a8a', 'тёмно-серый': '#3a3a3a', 'темно-серый': '#3a3a3a',
+  'светло-серый': '#cfcfcf',
+  // Зелёные
+  'зелёный': '#2d5a3d', 'зеленый': '#2d5a3d',
+  'тёмно-зелёный': '#1f3a2a', 'темно-зеленый': '#1f3a2a',
+  'мятный': '#a8d8c0', 'оливковый': '#6b7a3d',
+  'хаки': '#8b7d5a', 'армейский зелёный': '#4a5a3a', 'армейский зеленый': '#4a5a3a',
+  'серо-зелёный': '#7a8a6a', 'серо-зеленый': '#7a8a6a',
+  // Синие
+  'синий': '#2a4a7a', 'тёмно-синий': '#1a2b4a', 'темно-синий': '#1a2b4a',
+  'голубой': '#8ab4d8', 'бирюзовый': '#3da6a8', 'индиго': '#3a3a7a',
+  // Красные / розовые
+  'красный': '#b33030', 'тёмно-красный': '#6b2020', 'темно-красный': '#6b2020',
+  'бордовый': '#5a1a2a',
+  'розовый': '#ffb6c1', 'розово-красный': '#c8456a', 'малиновый': '#a8265a',
+  'пурпурный': '#a83a78', 'фуксия': '#d63a8a',
+  // Жёлтые / оранжевые
+  'жёлтый': '#e8c547', 'желтый': '#e8c547', 'оранжевый': '#e88530',
+  'кремовый': '#e8dcc4', 'бежевый': '#d8c8a8',
+  // Коричневые
+  'коричневый': '#6b4423', 'коричневый мокко': '#5a3a2a',
+  'кофейный': '#3a2a1a', 'шоколадный': '#3d2818',
+  // Фиолетовые / лавандовые
+  'фиолетовый': '#6a3aa8', 'тёмно-фиолетовый': '#3a1a5a', 'темно-фиолетовый': '#3a1a5a',
+  'лавандовый': '#b8a0d8', 'сиреневый': '#a890c8',
+  // Металлики
+  'золотой': '#c9a86a', 'серебряный': '#b8b8b8', 'бронзовый': '#a87838',
 };
 function getSwatchColor(colorName) {
+  if (!colorName) return '#cccccc';
   // если составной (Белый+Серый) — берём первый
-  const first = colorName.split('+')[0].split('(')[0].trim();
+  const first = colorName.split('+')[0].split('(')[0].trim().toLowerCase();
   return COLOR_SWATCH[first] || '#cccccc';
 }
 
@@ -76,11 +99,14 @@ function renderProductCard(p) {
   const colors = (p.colors || []).slice(0, 5).map(c =>
     `<span class="product-color" style="background:${getSwatchColor(c)}" title="${c}"></span>`
   ).join('');
+  // Безопасный data-product-id (без проблем с кодировкой)
+  const safeId = String(p.id || '').replace(/"/g, '&quot;');
+  const safeName = String(p.name_ru || '').replace(/"/g, '&quot;');
   return `
-    <div class="product-card" data-product-id="${p.id}" onclick="openProductModal('${p.id}')">
-      <div class="product-img"><img src="${img}" alt="${p.name_ru}" loading="lazy"></div>
-      <div class="product-brand">${p.brand}</div>
-      <div class="product-name">${p.name_ru}</div>
+    <div class="product-card" data-product-id="${safeId}">
+      <div class="product-img"><img src="${img}" alt="${safeName}" loading="lazy"></div>
+      <div class="product-brand">${p.brand || ''}</div>
+      <div class="product-name">${p.name_ru || ''}</div>
       <div class="product-price">${formatPrice(p.price)}</div>
       ${colors ? `<div class="product-colors">${colors}</div>` : ''}
     </div>
@@ -355,6 +381,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('burger')?.addEventListener('click', () => {
     document.querySelector('.nav')?.classList.toggle('mobile-open');
   });
+
+  // Делегирование клика по карточкам товара (работает для динамически добавленных)
+  document.body.addEventListener('click', (e) => {
+    const card = e.target.closest('.product-card[data-product-id]');
+    if (!card) return;
+    const id = card.dataset.productId;
+    if (id) openProductModal(id);
+  });
+
   renderCart();
 });
 
