@@ -220,4 +220,3 @@ collections:
             name: "returns"
             widget: "list"
             field: { label: "Строка", name: "text", widget: "string" }
-          - { label: "Сумма бесплатной доставки (₽)", name: "free_shipping_from", widget: "number", default: 10000 }
