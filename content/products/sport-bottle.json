@@ -1,7 +1,9 @@
 {
-  "name_en": "Sport Bottle",
-  "name_ru": "Бутылка спортивная",
+  "category_ru": "Аксессуары",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 2700,
   "colors": [
     "Чёрный",
     "Белый"
@@ -9,14 +11,15 @@
   "sizes": [
     "One size"
   ],
-  "price": 2700,
-  "unit": "single",
+  "name_ru": "Бутылка спортивная",
   "images": [
-    "/images/products/sport-bottle.webp"
+    "/images/uploads/x-thum-9.jpg",
+    "/images/uploads/x-thum-10-2.jpg",
+    "/images/uploads/x-thum-14.jpg"
   ],
-  "category": "accessories",
-  "category_ru": "Аксессуары",
   "id": "sport-bottle",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "in_stock": true,
+  "name_en": "Sport Bottle",
+  "category": "accessories",
+  "subcategory": "accessories"
 }

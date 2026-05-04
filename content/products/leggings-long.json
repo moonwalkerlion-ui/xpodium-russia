@@ -1,17 +1,20 @@
 {
-  "name_en": "Leggings (Long)",
-  "name_ru": "Леггинсы длинные",
+  "category_ru": "Одежда женская",
+  "unit": "single",
+  "subcategory_ru": "Одежда женская",
   "brand": "XPODIUM",
+  "price": 3100,
   "colors": [
     "Чёрный",
     "Серый",
     "Серо-зелёный"
   ],
   "sizes": [
-    "S"
+    "S",
+    "M",
+    "L"
   ],
-  "price": 3100,
-  "unit": "single",
+  "name_ru": "Леггинсы длинные",
   "images": [
     "/images/products/leggings-long.webp",
     "/images/products/leggings-long-2.webp",
@@ -19,9 +22,9 @@
     "/images/products/leggings-long-4.webp",
     "/images/products/leggings-long-5.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда женская",
   "id": "leggings-long",
-  "subcategory": "apparel-women",
-  "subcategory_ru": "Одежда женская"
+  "in_stock": true,
+  "name_en": "Leggings (Long)",
+  "category": "apparel",
+  "subcategory": "apparel-women"
 }

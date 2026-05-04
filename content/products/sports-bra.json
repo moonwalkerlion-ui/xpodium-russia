@@ -1,26 +1,29 @@
 {
-  "name_en": "Sports Bra",
-  "name_ru": "Спортивный топ",
+  "category_ru": "Одежда женская",
+  "unit": "single",
+  "subcategory_ru": "Одежда женская",
   "brand": "XPODIUM",
+  "price": 2800,
   "colors": [
     "Чёрный",
     "Серый",
     "Серо-зелёный"
   ],
   "sizes": [
-    "S"
+    "S",
+    "M",
+    "L"
   ],
-  "price": 2800,
-  "unit": "single",
+  "name_ru": "Спортивный топ",
   "images": [
     "/images/products/sports-bra.webp",
     "/images/products/sports-bra-2.webp",
     "/images/products/sports-bra-3.webp",
     "/images/products/sports-bra-4.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда женская",
   "id": "sports-bra",
-  "subcategory": "apparel-women",
-  "subcategory_ru": "Одежда женская"
+  "in_stock": true,
+  "name_en": "Sports Bra",
+  "category": "apparel",
+  "subcategory": "apparel-women"
 }

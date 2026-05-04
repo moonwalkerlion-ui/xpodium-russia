@@ -1,18 +1,24 @@
 {
-  "name_en": "Elite Sticky Grips",
-  "name_ru": "Накладки Elite Sticky",
+  "unit": "Пара",
+  "subcategory_ru": "Накладки",
   "brand": "XPODIUM",
-  "category": "gear",
   "price": 3200,
+  "colors": [
+    "Чёрный",
+    "Лавандовый",
+    "Белый",
+    "Хаки",
+    "Серый"
+  ],
   "sizes": [
     "S",
     "M",
     "L"
   ],
-  "colors": [],
-  "unit": "Пара",
+  "name_ru": "Накладки Sticky Grips Elite",
   "images": [
     "/images/products/elite-sticky-grips.webp",
+    "/images/uploads/screenshot-2026-05-03-at-13.42.17.png",
     "/images/products/elite-sticky-grips-2.webp",
     "/images/products/elite-sticky-grips-3.webp",
     "/images/products/elite-sticky-grips-4.webp",
@@ -24,8 +30,9 @@
     "/images/products/elite-sticky-grips-10.webp",
     "/images/products/elite-sticky-grips-11.webp"
   ],
-  "in_stock": true,
   "id": "elite-sticky-grips",
-  "subcategory": "grips",
-  "subcategory_ru": "Накладки"
+  "in_stock": true,
+  "name_en": "Elite Sticky Grips",
+  "category": "gear",
+  "subcategory": "grips"
 }
