@@ -1,19 +1,20 @@
 {
-  "name_en": "PLASTIC SPRING BARBELL CLIPS",
-  "name_ru": "Замки для грифа пружинные",
+  "category_ru": "Дополнительно",
+  "unit": "pair",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 450,
   "colors": [
     "Чёрный"
   ],
   "sizes": [],
-  "price": 450,
-  "unit": "pair",
+  "name_ru": "Замки для грифа пружинные",
   "images": [
-    "/images/products/plastic-spring-barbell-clips.webp"
+    "/images/uploads/img_4437.webp",
+    "/images/uploads/img_4438.webp"
   ],
-  "category": "accessories",
-  "category_ru": "Дополнительно",
   "id": "plastic-spring-barbell-clips",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "name_en": "PLASTIC SPRING BARBELL CLIPS",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
