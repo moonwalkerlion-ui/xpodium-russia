@@ -81,9 +81,17 @@ function matchesFilters(p) {
 
 function render() {
   let list = PRODUCTS.filter(matchesFilters);
-  if (state.sort === 'price-asc') list.sort((a, b) => a.price - b.price);
-  else if (state.sort === 'price-desc') list.sort((a, b) => b.price - a.price);
-  else if (state.sort === 'name') list.sort((a, b) => a.name_ru.localeCompare(b.name_ru, 'ru'));
+
+  if (state.sort === 'price-asc') {
+    list.sort((a, b) => a.price - b.price);
+  } else if (state.sort === 'price-desc') {
+    list.sort((a, b) => b.price - a.price);
+  } else if (state.sort === 'name') {
+    list.sort((a, b) => a.name_ru.localeCompare(b.name_ru, 'ru'));
+  } else {
+    // Сортировка "по умолчанию": сначала gear+apparel вперемешку, потом equipment, потом accessories
+    list = sortByDefault(list);
+  }
 
   const grid = document.getElementById('shopGrid');
   const count = document.getElementById('shopCount');
@@ -94,6 +102,42 @@ function render() {
     return;
   }
   grid.innerHTML = list.map(renderProductCard).join('');
+}
+
+// Умная сортировка по умолчанию
+function sortByDefault(list) {
+  // Группа 1: gear + apparel (чередуются)
+  // Группа 2: equipment
+  // Группа 3: accessories
+  const PRIORITY = { 'gear': 1, 'apparel': 1, 'equipment': 2, 'accessories': 3 };
+
+  // Внутригрупповая сортировка: сначала с sort_index, потом по name_ru
+  const innerSort = (a, b) => {
+    const aHas = typeof a.sort_index === 'number';
+    const bHas = typeof b.sort_index === 'number';
+    if (aHas && bHas) return a.sort_index - b.sort_index;
+    if (aHas) return -1;
+    if (bHas) return 1;
+    return (a.name_ru || '').localeCompare(b.name_ru || '', 'ru');
+  };
+
+  // Делим товары на группы
+  const gear = list.filter(p => p.category === 'gear').sort(innerSort);
+  const apparel = list.filter(p => p.category === 'apparel').sort(innerSort);
+  const equipment = list.filter(p => p.category === 'equipment').sort(innerSort);
+  const accessories = list.filter(p => p.category === 'accessories').sort(innerSort);
+  // Прочие категории на всякий случай — между equipment и accessories
+  const other = list.filter(p => !PRIORITY[p.category]).sort(innerSort);
+
+  // Чередование gear и apparel: по очереди берём из обоих списков
+  const mixed = [];
+  const maxLen = Math.max(gear.length, apparel.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (gear[i]) mixed.push(gear[i]);
+    if (apparel[i]) mixed.push(apparel[i]);
+  }
+
+  return [...mixed, ...equipment, ...other, ...accessories];
 }
 
 function declOfNum(n, titles) {

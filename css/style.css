@@ -1314,14 +1314,23 @@ body[data-cat-hidden="true"] .shop-body::before {
   border-bottom: 1px solid var(--line);
   text-align: center;
 }
-.page-hero-inner { max-width: 880px; margin: 0 auto; }
+.page-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  width: 100%;
+  box-sizing: border-box;
+}
 .page-hero h1 {
   font-family: var(--font-display);
-  font-size: var(--page-title-size, clamp(48px, 8vw, 120px));
-  letter-spacing: 0.02em;
+  font-size: var(--page-title-size, clamp(40px, 6vw, 96px));
+  letter-spacing: 0.01em;
   line-height: 0.95;
   margin: 16px 0 12px;
   text-transform: uppercase;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .page-hero-sub {
   font-size: var(--page-subtitle-size, clamp(16px, 1.6vw, 20px));

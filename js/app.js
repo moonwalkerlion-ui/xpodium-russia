@@ -121,6 +121,13 @@ function openProductModal(productId) {
   // Убираем предыдущие открытые модалки (защита от дублей)
   document.querySelectorAll('.product-modal').forEach(m => m.remove());
 
+  // Обновляем URL: добавляем ?product=ID без перезагрузки страницы
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set('product', productId);
+    window.history.pushState({ productId }, '', url.toString());
+  } catch (e) { /* fallback: оставляем URL как есть */ }
+
   let selectedSize = p.sizes[0] || null;
   let selectedColor = p.colors[0] || null;
   let currentImageIndex = 0;
@@ -183,6 +190,14 @@ function openProductModal(productId) {
   // Единая функция закрытия (гарантирует восстановление scroll)
   function closeModal() {
     modal.remove();
+    // Убираем product из URL
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('product')) {
+        url.searchParams.delete('product');
+        window.history.pushState({}, '', url.toString());
+      }
+    } catch (e) { /* пропускаем */ }
     // Снимаем overflow только если нет других открытых модалок
     if (!document.querySelector('.product-modal.open, .cart-overlay.open')) {
       document.body.style.overflow = '';
@@ -389,6 +404,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const id = card.dataset.productId;
     if (id) openProductModal(id);
   });
+
+  // Если в URL есть ?product=ID — открываем модалку автоматически
+  // Ждём пока товары загрузятся
+  (async function() {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product');
+    if (!productId) return;
+    // Ждём загрузки PRODUCTS
+    let attempts = 0;
+    while (PRODUCTS.length === 0 && attempts < 30) {
+      await new Promise(r => setTimeout(r, 100));
+      attempts++;
+    }
+    if (PRODUCTS.length > 0) {
+      openProductModal(productId);
+    }
+  })();
 
   renderCart();
 });
