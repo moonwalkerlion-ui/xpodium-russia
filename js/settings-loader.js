@@ -22,7 +22,19 @@ async function loadSettings() {
 function applySettings() {
   // Бегущая строка (marquee)
   if (SETTINGS.marquee && Array.isArray(SETTINGS.marquee.messages) && SETTINGS.marquee.messages.length) {
-    const msgs = SETTINGS.marquee.messages.map(m => m.text).filter(Boolean);
+    const msgs = SETTINGS.marquee.messages.map(m => {
+      // Нормальный формат: { text: "..." }
+      if (m && typeof m === 'object' && typeof m.text === 'string') return m.text;
+      // Битый формат от Decap: '{"text":"..."}' (строка-JSON внутри строки)
+      if (typeof m === 'string') {
+        try {
+          const parsed = JSON.parse(m);
+          if (parsed && typeof parsed.text === 'string') return parsed.text;
+        } catch (e) { /* не JSON — берём как есть */ }
+        return m;
+      }
+      return '';
+    }).filter(Boolean);
     if (msgs.length) {
       const html = [...msgs, ...msgs, ...msgs].map(t =>
         `<span>${escapeHtml(t)}</span><span>•</span>`
