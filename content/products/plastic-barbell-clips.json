@@ -1,20 +1,20 @@
 {
-  "name_en": "PLASTIC BARBELL CLIPS",
-  "name_ru": "Замки для грифа пластиковые",
+  "category_ru": "Дополнительно",
+  "unit": "pair",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 850,
   "colors": [
     "Чёрный",
     "Розовый"
   ],
   "sizes": [],
-  "price": 850,
-  "unit": "pair",
+  "name_ru": "Замки для грифа пластиковые",
   "images": [
-    "/images/products/plastic-barbell-clips.webp"
+    "/images/uploads/65783688-f5ee-4ee6-947d-51fe399aa748.jpg"
   ],
-  "category": "accessories",
-  "category_ru": "Дополнительно",
   "id": "plastic-barbell-clips",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "name_en": "PLASTIC BARBELL CLIPS",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
