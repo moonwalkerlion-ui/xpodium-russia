@@ -1,7 +1,9 @@
 {
-  "name_en": "XPODIUM STICKY GRIPS",
-  "name_ru": "Липкие накладки XPODIUM Sticky",
+  "category_ru": "Накладки",
+  "unit": "Pair",
+  "subcategory_ru": "Накладки",
   "brand": "XPODIUM",
+  "price": 2950,
   "colors": [
     "Чёрный",
     "Розовый",
@@ -12,18 +14,16 @@
     "M",
     "L"
   ],
-  "price": 2950,
-  "unit": "Pair",
+  "name_ru": "Липкие накладки XPODIUM Sticky",
   "images": [
-    "/images/products/xpodium-sticky-grips.webp",
-    "/images/products/xpodium-sticky-grips-2.webp",
     "/images/products/xpodium-sticky-grips-3.webp",
+    "/images/products/xpodium-sticky-grips.webp",
     "/images/products/xpodium-sticky-grips-4.webp",
-    "/images/products/xpodium-sticky-grips-5.webp"
+    "/images/products/xpodium-sticky-grips-5.webp",
+    "/images/uploads/a48d7057-f325-4b89-8496-523cb43cfef1.jpeg"
   ],
-  "category": "gear",
-  "category_ru": "Накладки",
   "id": "xpodium-sticky-grips",
-  "subcategory": "grips",
-  "subcategory_ru": "Накладки"
+  "name_en": "XPODIUM STICKY GRIPS",
+  "category": "gear",
+  "subcategory": "grips"
 }
