@@ -150,6 +150,29 @@ collections:
           - { label: "Заголовок CTA (нижняя секция перед футером)", name: "cta_title", widget: "string", required: false, default: "Снаряжение, которое работает так же, как ты" }
           - { label: "Подзаголовок CTA", name: "cta_subtitle", widget: "string", required: false, default: "Собрали всё, что нужно для функционального тренинга" }
           - { label: "Текст кнопки CTA", name: "cta_button", widget: "string", required: false, default: "В каталог" }
+          - label: "Скидки от суммы заказа (показываются на главной)"
+            name: "discounts"
+            widget: "object"
+            required: false
+            collapsed: false
+            fields:
+              - { label: "Заголовок блока", name: "title", widget: "string", default: "Скидки от суммы заказа" }
+              - { label: "Подзаголовок", name: "subtitle", widget: "string", required: false, default: "Чем больше заказ — тем больше скидка" }
+              - label: "Уровни скидок"
+                name: "tiers"
+                widget: "list"
+                summary: "{{fields.amount}} → {{fields.discount}}"
+                fields:
+                  - { label: "Сумма от", name: "amount", widget: "string", hint: "Например: 10 000 ₽" }
+                  - { label: "Скидка", name: "discount", widget: "string", hint: "Например: 5%" }
+              - { label: "Показывать блок на сайте", name: "enabled", widget: "boolean", default: true }
+          - label: "ID товаров в блоке «Хиты» на главной"
+            name: "best_sellers"
+            widget: "list"
+            required: false
+            summary: "{{fields.id}}"
+            hint: "Введи ID товаров (как они в адресной строке) — например xpodium-sticky-grips. Порядок = порядок отображения. Если оставить пустым, выберутся первые 8 из каталога."
+            field: { label: "ID товара", name: "id", widget: "string" }
           - label: "4 преимущества (блок «Преимущества» на главной)"
             name: "features"
             widget: "list"
@@ -161,6 +184,19 @@ collections:
               - { label: "Иконка (один символ)", name: "icon", widget: "string", default: "◆" }
               - { label: "Заголовок", name: "title", widget: "string" }
               - { label: "Подпись", name: "text", widget: "string" }
+
+      # --- Страница «Сотрудничество» ---
+      - name: "partners"
+        label: "Страница «Сотрудничество»"
+        file: "content/settings/partners.json"
+        fields:
+          - { label: "Заголовок", name: "title", widget: "string", default: "Сотрудничество с XPODIUM" }
+          - { label: "Подзаголовок", name: "subtitle", widget: "string", default: "Открыты к сотрудничеству с клубами и магазинами" }
+          - { label: "Основной текст", name: "body", widget: "markdown", hint: "Основной текст страницы. Markdown поддерживается." }
+          - { label: "Telegram канал (ник без @)", name: "tg_channel", widget: "string", default: "xpodium_russia", required: false }
+          - { label: "Telegram канал — подпись", name: "tg_channel_label", widget: "string", default: "Канал бренда", required: false }
+          - { label: "Telegram менеджера (ник без @)", name: "tg_manager", widget: "string", default: "barkovdenis", required: false }
+          - { label: "Telegram менеджера — подпись", name: "tg_manager_label", widget: "string", default: "Менеджер по партнёрам", required: false }
 
       # --- Футер ---
       - name: "footer"

@@ -140,6 +140,30 @@ function applySettings() {
         `).join('');
       }
     }
+
+    // Скидки от суммы заказа
+    if (h.discounts) {
+      const section = document.querySelector('[data-setting="discounts_section"]');
+      if (section) {
+        // Если блок выключен — скрываем
+        if (h.discounts.enabled === false) {
+          section.style.display = 'none';
+        } else {
+          section.style.display = '';
+          if (h.discounts.title) setText('[data-setting="discounts_title"]', h.discounts.title);
+          if (h.discounts.subtitle) setText('[data-setting="discounts_subtitle"]', h.discounts.subtitle);
+          const grid = document.querySelector('[data-setting="discounts_tiers"]');
+          if (grid && Array.isArray(h.discounts.tiers) && h.discounts.tiers.length) {
+            grid.innerHTML = h.discounts.tiers.map(t => `
+              <div class="discount-tier">
+                <div class="discount-amount">от ${escapeHtml(t.amount || '')}</div>
+                <div class="discount-value">−${escapeHtml(t.discount || '')}</div>
+              </div>
+            `).join('');
+          }
+        }
+      }
+    }
   }
 
   // Футер
@@ -148,6 +172,40 @@ function applySettings() {
     setText('[data-setting="footer_tagline"]', f.tagline);
     setText('[data-setting="footer_copyright"]', f.copyright);
     setText('[data-setting="footer_right_text"]', f.right_text);
+  }
+
+  // Страница «Сотрудничество»
+  if (SETTINGS.partners) {
+    const p = SETTINGS.partners;
+    setText('[data-setting="partners_title"]', p.title);
+    setText('[data-setting="partners_subtitle"]', p.subtitle);
+    if (p.body) {
+      const bodyEl = document.querySelector('[data-setting="partners_body"]');
+      if (bodyEl) {
+        const paragraphs = p.body.split(/\n\s*\n/).filter(x => x.trim());
+        bodyEl.innerHTML = paragraphs.map((para, i) =>
+          `<p${i === 0 ? ' class="lead"' : ''}>${escapeHtml(para.trim())}</p>`
+        ).join('');
+      }
+    }
+    // Telegram-карточки
+    const list = document.querySelector('.partners-tg-list');
+    if (list && (p.tg_channel || p.tg_manager)) {
+      const cards = [];
+      if (p.tg_channel) {
+        cards.push(`<a href="https://t.me/${escapeHtml(p.tg_channel)}" target="_blank" rel="noopener" class="partners-tg-card">
+          <div class="partners-tg-handle">@${escapeHtml(p.tg_channel)}</div>
+          <div class="partners-tg-label">${escapeHtml(p.tg_channel_label || 'Канал бренда')}</div>
+        </a>`);
+      }
+      if (p.tg_manager) {
+        cards.push(`<a href="https://t.me/${escapeHtml(p.tg_manager)}" target="_blank" rel="noopener" class="partners-tg-card">
+          <div class="partners-tg-handle">@${escapeHtml(p.tg_manager)}</div>
+          <div class="partners-tg-label">${escapeHtml(p.tg_manager_label || 'Менеджер по партнёрам')}</div>
+        </a>`);
+      }
+      list.innerHTML = cards.join('');
+    }
   }
 
   // Логотип / название бренда
