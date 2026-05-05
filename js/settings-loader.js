@@ -236,7 +236,7 @@ function applySettings() {
       }
     }
     if (document.body.classList.contains('story-page')) {
-      applyPageBackgrounds(s.hero_image, s.bg_image);
+      applyPageBackgrounds(s.hero_image, s.bg_image, s.title_size, s.subtitle_size);
     }
   }
 
@@ -272,7 +272,7 @@ function applySettings() {
       list.innerHTML = cards.join('');
     }
     if (document.body.classList.contains('partners-page')) {
-      applyPageBackgrounds(p.hero_image, p.bg_image);
+      applyPageBackgrounds(p.hero_image, p.bg_image, p.title_size, p.subtitle_size);
     }
   }
 
@@ -287,13 +287,13 @@ function applySettings() {
     }
     // Фоны на странице Контакты (хранятся в delivery.json)
     if (document.body.classList.contains('contact-page')) {
-      applyPageBackgrounds(d.hero_image, d.bg_image);
+      applyPageBackgrounds(d.hero_image, d.bg_image, d.title_size, d.subtitle_size);
     }
   }
 }
 
-// Применяет фон-баннер сверху и фоновую картинку под основным контентом
-function applyPageBackgrounds(heroImage, bgImage) {
+// Применяет фон-баннер сверху и фоновую картинку под основным контентом + размеры
+function applyPageBackgrounds(heroImage, bgImage, titleSize, subtitleSize) {
   if (heroImage) {
     const heroEl = document.querySelector('.page-hero-section, .story-hero, .contact-hero, .page-hero');
     if (heroEl) {
@@ -304,6 +304,13 @@ function applyPageBackgrounds(heroImage, bgImage) {
   if (bgImage) {
     document.body.classList.add('has-page-bg');
     document.body.style.setProperty('--page-bg-image', `url("${bgImage}")`);
+  }
+  // Размер заголовка (vw)
+  if (typeof titleSize === 'number' && titleSize > 0) {
+    document.documentElement.style.setProperty('--page-title-size', `${titleSize}vw`);
+  }
+  if (typeof subtitleSize === 'number' && subtitleSize > 0) {
+    document.documentElement.style.setProperty('--page-subtitle-size', `${subtitleSize}vw`);
   }
 }
 

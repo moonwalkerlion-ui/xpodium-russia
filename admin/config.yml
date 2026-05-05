@@ -197,6 +197,8 @@ collections:
           - { label: "Telegram канал — подпись", name: "tg_channel_label", widget: "string", default: "Канал бренда", required: false }
           - { label: "Telegram менеджера (ник без @)", name: "tg_manager", widget: "string", default: "barkovdenis", required: false }
           - { label: "Telegram менеджера — подпись", name: "tg_manager_label", widget: "string", default: "Менеджер по партнёрам", required: false }
+          - { label: "Размер заголовка (vw, по умолчанию 8)", name: "title_size", widget: "number", required: false, default: 8, min: 3, max: 15, hint: "Размер шрифта заголовка страницы. Меньше число = мельче." }
+          - { label: "Размер подзаголовка (vw, по умолчанию 1.6)", name: "subtitle_size", widget: "number", required: false, default: 1.6, min: 0.8, max: 4 }
           - label: "Фото для hero-баннера сверху"
             name: "hero_image"
             widget: "image"
@@ -248,6 +250,8 @@ collections:
           - { label: "Заголовок (строка 2)", name: "title_2", widget: "string" }
           - { label: "Подзаголовок", name: "subtitle", widget: "text" }
           - { label: "Основной текст", name: "body", widget: "markdown" }
+          - { label: "Размер заголовка (vw, по умолчанию 8)", name: "title_size", widget: "number", required: false, default: 8, min: 3, max: 15, hint: "Размер шрифта заголовка страницы. Меньше число = мельче." }
+          - { label: "Размер подзаголовка (vw, по умолчанию 1.6)", name: "subtitle_size", widget: "number", required: false, default: 1.6, min: 0.8, max: 4, hint: "Можно дробное, например 1.4" }
           - label: "Фото для hero-баннера сверху"
             name: "hero_image"
             widget: "image"
@@ -276,6 +280,8 @@ collections:
             name: "returns"
             widget: "list"
             field: { label: "Строка", name: "text", widget: "string" }
+          - { label: "Размер заголовка на стр. Контакты (vw, по умолч. 8)", name: "title_size", widget: "number", required: false, default: 8, min: 3, max: 15 }
+          - { label: "Размер подзаголовка на стр. Контакты (vw, по умолч. 1.6)", name: "subtitle_size", widget: "number", required: false, default: 1.6, min: 0.8, max: 4 }
           - label: "Фото для hero-баннера на странице «Контакты»"
             name: "hero_image"
             widget: "image"
