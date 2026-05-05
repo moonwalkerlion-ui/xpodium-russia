@@ -20,11 +20,10 @@ async function loadSettings() {
 }
 
 function applySettings() {
-  // Бегущая строка (marquee) — собираем из массива messages
+  // Бегущая строка (marquee)
   if (SETTINGS.marquee && Array.isArray(SETTINGS.marquee.messages) && SETTINGS.marquee.messages.length) {
     const msgs = SETTINGS.marquee.messages.map(m => m.text).filter(Boolean);
     if (msgs.length) {
-      // Повторяем дважды для плавной прокрутки
       const html = [...msgs, ...msgs, ...msgs].map(t =>
         `<span>${escapeHtml(t)}</span><span>•</span>`
       ).join('');
@@ -34,7 +33,7 @@ function applySettings() {
     }
   }
 
-  // Контакты (ссылки на Telegram, Instagram)
+  // Контакты
   if (SETTINGS.contacts) {
     const { telegram, order_telegram, instagram, email, phone } = SETTINGS.contacts;
 
@@ -43,18 +42,14 @@ function applySettings() {
       document.querySelectorAll('a[href*="t.me/"]').forEach(a => {
         a.href = tgUrl;
       });
-      // также обновим текст где @username
       document.querySelectorAll('[data-contact="telegram-handle"]').forEach(el => {
         el.textContent = `@${telegram}`;
       });
-      // обновим глобальный конфиг корзины (если уже инициализирован app.js)
       if (typeof SHOP_CONFIG !== 'undefined') {
         SHOP_CONFIG.telegram = telegram;
         SHOP_CONFIG.telegramUrl = tgUrl;
       }
     }
-    // Отдельный ник для приёма заказов (личный TG, не канал)
-    // Если указан — все заказы идут на него, не на общий telegram
     if (typeof SHOP_CONFIG !== 'undefined') {
       const orderHandle = order_telegram || telegram;
       if (orderHandle) {
@@ -88,7 +83,6 @@ function applySettings() {
   if (SETTINGS.home) {
     const h = SETTINGS.home;
 
-    // Hero: собираем заголовок из строк 1 и 2 (если есть hero_title_block — он приоритетнее)
     if (h.hero_title_block !== undefined) {
       const blockEl = document.querySelector('[data-setting="hero_title_block"]');
       if (blockEl) blockEl.innerHTML = h.hero_title_block || '';
@@ -100,7 +94,6 @@ function applySettings() {
       }
     }
 
-    // Размер шрифта hero (vw)
     if (typeof h.hero_title_size === 'number' && h.hero_title_size > 0) {
       const blockEl = document.querySelector('[data-setting="hero_title_block"]');
       if (blockEl) {
@@ -112,13 +105,10 @@ function applySettings() {
     setText('[data-setting="hero_cta"]', h.hero_cta);
     setText('[data-setting="about_title"]', h.about_title);
     setText('[data-setting="about_text"]', h.about_text);
-
-    // CTA в нижней части главной
     setText('[data-setting="cta_title"]', h.cta_title);
     setText('[data-setting="cta_subtitle"]', h.cta_subtitle);
     setText('[data-setting="cta_button"]', h.cta_button);
 
-    // Hero фоновое изображение
     if (h.hero_image) {
       const heroBg = document.querySelector('.hero-bg');
       if (heroBg) {
@@ -127,7 +117,6 @@ function applySettings() {
       }
     }
 
-    // Преимущества (4 блока)
     if (Array.isArray(h.features) && h.features.length) {
       const featuresContainer = document.querySelector('[data-setting="features_list"]');
       if (featuresContainer) {
@@ -141,11 +130,9 @@ function applySettings() {
       }
     }
 
-    // Скидки от суммы заказа
     if (h.discounts) {
       const section = document.querySelector('[data-setting="discounts_section"]');
       if (section) {
-        // Если блок выключен — скрываем
         if (h.discounts.enabled === false) {
           section.style.display = 'none';
         } else {
@@ -174,7 +161,74 @@ function applySettings() {
     setText('[data-setting="footer_right_text"]', f.right_text);
   }
 
-  // Страница «Сотрудничество»
+  // Логотип / название бренда
+  if (SETTINGS.brand && SETTINGS.brand.name) {
+    setText('[data-setting="site_brand"]', SETTINGS.brand.name);
+    document.title = document.title.replace(/^[^—|–-]+/, SETTINGS.brand.name + ' ');
+  }
+
+  // Категории на главной
+  if (SETTINGS.categories && Array.isArray(SETTINGS.categories.items)) {
+    SETTINGS.categories.items.forEach(cat => {
+      const card = document.querySelector(`.cat-card[data-cat="${cat.id}"]`);
+      if (card) {
+        const labelEl = card.querySelector('.cat-label');
+        if (labelEl && cat.label) labelEl.textContent = cat.label;
+        const imgEl = card.querySelector('.cat-img');
+        if (imgEl && cat.image) imgEl.style.backgroundImage = `url('${cat.image}')`;
+        if (cat.hidden) {
+          card.classList.add('cat-card-hidden');
+          card.setAttribute('href', 'javascript:void(0)');
+          card.style.pointerEvents = 'none';
+          if (!card.querySelector('.cat-placeholder')) {
+            const ph = document.createElement('div');
+            ph.className = 'cat-placeholder';
+            ph.textContent = cat.placeholder || 'TO BE ANNOUNCED';
+            card.appendChild(ph);
+          }
+        }
+      }
+      document.querySelectorAll(`a[href*="cat=${cat.id}"]`).forEach(a => {
+        if (!a.querySelector('img') && !a.classList.contains('cat-card') && cat.label) {
+          a.textContent = cat.label;
+        }
+      });
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const currentCat = params.get('cat');
+    if (currentCat) {
+      const matched = SETTINGS.categories.items.find(c => c.id === currentCat);
+      if (matched && matched.hidden) {
+        document.body.setAttribute('data-cat-hidden', 'true');
+        const ph = matched.placeholder || 'TO BE ANNOUNCED';
+        const safe = ph.replace(/"/g, '\\"');
+        document.body.style.setProperty('--cat-placeholder', `"${safe}"`);
+      }
+    }
+  }
+
+  // Our Story
+  if (SETTINGS.story) {
+    const s = SETTINGS.story;
+    setText('[data-setting="story_title_1"]', s.title_1);
+    setText('[data-setting="story_title_2"]', s.title_2);
+    setText('[data-setting="story_subtitle"]', s.subtitle);
+    if (s.body) {
+      const bodyEl = document.querySelector('[data-setting="story_body"]');
+      if (bodyEl) {
+        const paragraphs = s.body.split(/\n\s*\n/).filter(p => p.trim());
+        bodyEl.innerHTML = paragraphs.map((p, i) =>
+          `<p${i === 0 ? ' class="lead"' : ''}>${escapeHtml(p.trim())}</p>`
+        ).join('');
+      }
+    }
+    if (document.body.classList.contains('story-page')) {
+      applyPageBackgrounds(s.hero_image, s.bg_image);
+    }
+  }
+
+  // Партнёры
   if (SETTINGS.partners) {
     const p = SETTINGS.partners;
     setText('[data-setting="partners_title"]', p.title);
@@ -188,7 +242,6 @@ function applySettings() {
         ).join('');
       }
     }
-    // Telegram-карточки
     const list = document.querySelector('.partners-tg-list');
     if (list && (p.tg_channel || p.tg_manager)) {
       const cards = [];
@@ -206,112 +259,8 @@ function applySettings() {
       }
       list.innerHTML = cards.join('');
     }
-    // Применяем фоны (только если страница partners)
     if (document.body.classList.contains('partners-page')) {
       applyPageBackgrounds(p.hero_image, p.bg_image);
-    }
-  }
-
-  // Страница «Контакты» (фоны хранятся в delivery.json)
-  if (SETTINGS.delivery && document.body.classList.contains('contact-page')) {
-    const d = SETTINGS.delivery;
-    applyPageBackgrounds(d.hero_image, d.bg_image);
-  }
-}
-
-// Применяет фон-баннер сверху и фоновую картинку под основным контентом
-function applyPageBackgrounds(heroImage, bgImage) {
-  // Hero-баннер сверху
-  if (heroImage) {
-    const heroEl = document.querySelector('.page-hero, .story-hero, .contact-hero, .page-hero-section');
-    if (heroEl) {
-      heroEl.classList.add('page-hero-bg');
-      heroEl.style.backgroundImage = `url("${heroImage}")`;
-    }
-  }
-  // Фон под основным контентом
-  if (bgImage) {
-    document.body.classList.add('has-page-bg');
-    document.body.style.setProperty('--page-bg-image', `url("${bgImage}")`);
-  }
-}
-
-  // Логотип / название бренда
-  if (SETTINGS.brand && SETTINGS.brand.name) {
-    setText('[data-setting="site_brand"]', SETTINGS.brand.name);
-    document.title = document.title.replace(/^[^—|–-]+/, SETTINGS.brand.name + ' ');
-  }
-
-  // Категории на главной
-  if (SETTINGS.categories && Array.isArray(SETTINGS.categories.items)) {
-    SETTINGS.categories.items.forEach(cat => {
-      // Карточка категории на главной (.cat-card)
-      const card = document.querySelector(`.cat-card[data-cat="${cat.id}"]`);
-      if (card) {
-        // Название
-        const labelEl = card.querySelector('.cat-label');
-        if (labelEl && cat.label) labelEl.textContent = cat.label;
-        // Фоновое фото
-        const imgEl = card.querySelector('.cat-img');
-        if (imgEl && cat.image) imgEl.style.backgroundImage = `url('${cat.image}')`;
-        // Если категория скрыта — добавляем стиль и блокируем переход
-        if (cat.hidden) {
-          card.classList.add('cat-card-hidden');
-          card.setAttribute('href', 'javascript:void(0)');
-          card.style.pointerEvents = 'none';
-          // Добавляем плашку "TO BE ANNOUNCED"
-          if (!card.querySelector('.cat-placeholder')) {
-            const ph = document.createElement('div');
-            ph.className = 'cat-placeholder';
-            ph.textContent = cat.placeholder || 'TO BE ANNOUNCED';
-            card.appendChild(ph);
-          }
-        }
-      }
-      // Также обновляем названия в навигации (выпадающее меню каталога)
-      document.querySelectorAll(`a[href*="cat=${cat.id}"]`).forEach(a => {
-        // Если внутри ссылки нет картинки — это пункт меню, обновляем текст
-        if (!a.querySelector('img') && !a.classList.contains('cat-card') && cat.label) {
-          a.textContent = cat.label;
-        }
-      });
-    });
-
-    // Глобальная защита: если пользователь зашёл напрямую на shop.html?cat=equipment, и она скрыта — редирект на каталог
-    const params = new URLSearchParams(window.location.search);
-    const currentCat = params.get('cat');
-    if (currentCat) {
-      const matched = SETTINGS.categories.items.find(c => c.id === currentCat);
-      if (matched && matched.hidden) {
-        // Показываем плашку вместо товаров
-        document.body.setAttribute('data-cat-hidden', 'true');
-        const ph = matched.placeholder || 'TO BE ANNOUNCED';
-        // Экранируем кавычки для CSS-строки
-        const safe = ph.replace(/"/g, '\\"');
-        document.body.style.setProperty('--cat-placeholder', `"${safe}"`);
-      }
-    }
-  }
-
-  // Our Story
-  if (SETTINGS.story) {
-    const s = SETTINGS.story;
-    setText('[data-setting="story_title_1"]', s.title_1);
-    setText('[data-setting="story_title_2"]', s.title_2);
-    setText('[data-setting="story_subtitle"]', s.subtitle);
-    // body как markdown — просто разбиваем на абзацы
-    if (s.body) {
-      const bodyEl = document.querySelector('[data-setting="story_body"]');
-      if (bodyEl) {
-        const paragraphs = s.body.split(/\n\s*\n/).filter(p => p.trim());
-        bodyEl.innerHTML = paragraphs.map((p, i) =>
-          `<p${i === 0 ? ' class="lead"' : ''}>${escapeHtml(p.trim())}</p>`
-        ).join('');
-      }
-    }
-    // Применяем фоны (только если страница story-page)
-    if (document.body.classList.contains('story-page')) {
-      applyPageBackgrounds(s.hero_image, s.bg_image);
     }
   }
 
@@ -324,6 +273,25 @@ function applyPageBackgrounds(heroImage, bgImage) {
     if (typeof d.free_shipping_from === 'number' && typeof SHOP_CONFIG !== 'undefined') {
       SHOP_CONFIG.freeShippingFrom = d.free_shipping_from;
     }
+    // Фоны на странице Контакты (хранятся в delivery.json)
+    if (document.body.classList.contains('contact-page')) {
+      applyPageBackgrounds(d.hero_image, d.bg_image);
+    }
+  }
+}
+
+// Применяет фон-баннер сверху и фоновую картинку под основным контентом
+function applyPageBackgrounds(heroImage, bgImage) {
+  if (heroImage) {
+    const heroEl = document.querySelector('.page-hero-section, .story-hero, .contact-hero, .page-hero');
+    if (heroEl) {
+      heroEl.classList.add('page-hero-bg');
+      heroEl.style.backgroundImage = `url("${heroImage}")`;
+    }
+  }
+  if (bgImage) {
+    document.body.classList.add('has-page-bg');
+    document.body.style.setProperty('--page-bg-image', `url("${bgImage}")`);
   }
 }
 
@@ -354,7 +322,6 @@ function escapeHtml(s) {
     .replace(/'/g, '&#39;');
 }
 
-// Запускаем сразу при загрузке
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', loadSettings);
 } else {
