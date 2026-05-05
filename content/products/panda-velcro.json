@@ -1,21 +1,21 @@
 {
-  "name_en": "panda Velcro",
-  "name_ru": "Шеврон Panda",
+  "category_ru": "Дополнительно",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 300,
   "colors": [
     "Чёрный"
   ],
   "sizes": [
     "One size"
   ],
-  "price": 300,
-  "unit": "single",
+  "name_ru": "Шеврон Panda",
   "images": [
-    "/images/products/panda-velcro.webp"
+    "/images/uploads/패치_판다.jpeg"
   ],
-  "category": "accessories",
-  "category_ru": "Дополнительно",
   "id": "panda-velcro",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "name_en": "panda Velcro",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
