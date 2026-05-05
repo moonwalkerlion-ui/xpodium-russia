@@ -1199,9 +1199,17 @@ body[data-cat-hidden="true"] .shop-body::before {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+.pm-option > .product-color {
+  flex-shrink: 0;
+}
+.pm-option .pm-option-label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 .pm-option:hover { border-color: var(--fg); }
 .pm-option.selected { background: var(--fg); color: #fff; border-color: var(--fg); }
@@ -1483,4 +1491,13 @@ body.has-page-bg .info-sections {
   .page-hero-bg {
     padding: 100px var(--gutter) 70px;
   }
+}
+
+/* Кликабельные элементы в корзине */
+.cart-item-clickable {
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.cart-item-clickable:hover {
+  opacity: 0.7;
 }

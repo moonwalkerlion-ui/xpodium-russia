@@ -139,8 +139,8 @@ function openProductModal(productId) {
     `<div class="pm-option pm-size ${s === selectedSize ? 'selected' : ''}" data-size="${s}">${s}</div>`
   ).join('');
   const colorsHtml = (p.colors || []).map(c =>
-    `<div class="pm-option pm-color ${c === selectedColor ? 'selected' : ''}" data-color="${c}">
-       <span class="product-color" style="background:${getSwatchColor(c)};display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle;border:1px solid rgba(0,0,0,0.15)"></span>${c}
+    `<div class="pm-option pm-color ${c === selectedColor ? 'selected' : ''}" data-color="${c}" title="${c}">
+       <span class="product-color" style="background:${getSwatchColor(c)};display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.15)"></span><span class="pm-option-label">${c}</span>
      </div>`
   ).join('');
 
@@ -329,11 +329,11 @@ function renderCart() {
   } else {
     itemsEl.innerHTML = CART.map(i => `
       <div class="cart-item">
-        <div class="cart-item-img">
+        <div class="cart-item-img cart-item-clickable" data-product-id="${i.id}">
           ${i.image ? `<img src="${productImageUrl(i.image)}" alt="${i.name}">` : ''}
         </div>
         <div class="cart-item-info">
-          <div class="cart-item-name">${i.name}</div>
+          <div class="cart-item-name cart-item-clickable" data-product-id="${i.id}">${i.name}</div>
           <div class="cart-item-meta">
             ${i.brand} ${i.size ? '· ' + i.size : ''} ${i.color ? '· ' + i.color : ''}
           </div>
@@ -399,10 +399,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Делегирование клика по карточкам товара (работает для динамически добавленных)
   document.body.addEventListener('click', (e) => {
+    // Клик по карточке в каталоге / на главной
     const card = e.target.closest('.product-card[data-product-id]');
-    if (!card) return;
-    const id = card.dataset.productId;
-    if (id) openProductModal(id);
+    if (card) {
+      const id = card.dataset.productId;
+      if (id) openProductModal(id);
+      return;
+    }
+    // Клик по строке товара в корзине (фото или название)
+    const cartLink = e.target.closest('.cart-item-clickable[data-product-id]');
+    if (cartLink) {
+      const id = cartLink.dataset.productId;
+      if (id) {
+        closeCart();
+        openProductModal(id);
+      }
+    }
   });
 
   // Если в URL есть ?product=ID — открываем модалку автоматически
