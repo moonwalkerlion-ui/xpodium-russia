@@ -1,7 +1,9 @@
 {
-  "name_en": "KEY RING",
-  "name_ru": "Брелок",
+  "category_ru": "Дополнительно",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 250,
   "colors": [
     "Зелёный",
     "Жёлтый",
@@ -11,14 +13,13 @@
   "sizes": [
     "One size"
   ],
-  "price": 250,
-  "unit": "single",
+  "name_ru": "Брелок",
   "images": [
-    "/images/products/key-ring.webp"
+    "/images/uploads/71e5b91b13e1069394f4f8280f98ed05.jpg",
+    "/images/uploads/x-thum-11.jpg"
   ],
-  "category": "accessories",
-  "category_ru": "Дополнительно",
   "id": "key-ring",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "name_en": "KEY RING",
+  "category": "accessories",
+  "subcategory": "accessories"
 }
