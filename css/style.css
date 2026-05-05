@@ -1389,3 +1389,78 @@ body[data-cat-hidden="true"] .shop-body::before {
     padding: 48px var(--gutter);
   }
 }
+
+/* ============================
+   Фоны для страниц (О нас, Сотрудничество, Контакты)
+   ============================ */
+
+/* Hero-баннер с фото — общий стиль для всех страниц */
+.page-hero-bg {
+  position: relative;
+  padding: 140px var(--gutter) 100px;
+  text-align: center;
+  background-color: #0a0a0a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+  overflow: hidden;
+}
+.page-hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.65) 100%);
+  z-index: 0;
+}
+.page-hero-bg > * { position: relative; z-index: 1; }
+.page-hero-bg .eyebrow { color: rgba(255,255,255,0.7); }
+.page-hero-bg h1 { color: #fff; }
+.page-hero-bg .tagline,
+.page-hero-bg .page-hero-sub,
+.page-hero-bg p { color: rgba(255,255,255,0.9); }
+
+/* Полупрозрачный фон страницы (под основным контентом) */
+body.has-page-bg {
+  background-image: var(--page-bg-image);
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+body.has-page-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Контент-секции на страницах с фоном — лёгкая полупрозрачная подложка */
+body.has-page-bg .story-section,
+body.has-page-bg .partners-content,
+body.has-page-bg .contact-hero,
+body.has-page-bg .contact-grid,
+body.has-page-bg .info-sections,
+body.has-page-bg .story-values {
+  position: relative;
+}
+
+/* На страницах с фоном — карточки и блоки на белом полупрозрачном фоне */
+body.has-page-bg .story-values,
+body.has-page-bg .info-sections {
+  background: rgba(245, 245, 245, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Mobile fix для background-attachment fixed (плохо работает на iOS) */
+@media (max-width: 768px) {
+  body.has-page-bg {
+    background-attachment: scroll;
+  }
+  .page-hero-bg {
+    padding: 100px var(--gutter) 70px;
+  }
+}

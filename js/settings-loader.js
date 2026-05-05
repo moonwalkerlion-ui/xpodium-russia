@@ -206,7 +206,35 @@ function applySettings() {
       }
       list.innerHTML = cards.join('');
     }
+    // Применяем фоны (только если страница partners)
+    if (document.body.classList.contains('partners-page')) {
+      applyPageBackgrounds(p.hero_image, p.bg_image);
+    }
   }
+
+  // Страница «Контакты» (фоны хранятся в delivery.json)
+  if (SETTINGS.delivery && document.body.classList.contains('contact-page')) {
+    const d = SETTINGS.delivery;
+    applyPageBackgrounds(d.hero_image, d.bg_image);
+  }
+}
+
+// Применяет фон-баннер сверху и фоновую картинку под основным контентом
+function applyPageBackgrounds(heroImage, bgImage) {
+  // Hero-баннер сверху
+  if (heroImage) {
+    const heroEl = document.querySelector('.page-hero, .story-hero, .contact-hero, .page-hero-section');
+    if (heroEl) {
+      heroEl.classList.add('page-hero-bg');
+      heroEl.style.backgroundImage = `url("${heroImage}")`;
+    }
+  }
+  // Фон под основным контентом
+  if (bgImage) {
+    document.body.classList.add('has-page-bg');
+    document.body.style.setProperty('--page-bg-image', `url("${bgImage}")`);
+  }
+}
 
   // Логотип / название бренда
   if (SETTINGS.brand && SETTINGS.brand.name) {
@@ -280,6 +308,10 @@ function applySettings() {
           `<p${i === 0 ? ' class="lead"' : ''}>${escapeHtml(p.trim())}</p>`
         ).join('');
       }
+    }
+    // Применяем фоны (только если страница story-page)
+    if (document.body.classList.contains('story-page')) {
+      applyPageBackgrounds(s.hero_image, s.bg_image);
     }
   }
 

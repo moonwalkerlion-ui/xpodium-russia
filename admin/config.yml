@@ -197,6 +197,16 @@ collections:
           - { label: "Telegram канал — подпись", name: "tg_channel_label", widget: "string", default: "Канал бренда", required: false }
           - { label: "Telegram менеджера (ник без @)", name: "tg_manager", widget: "string", default: "barkovdenis", required: false }
           - { label: "Telegram менеджера — подпись", name: "tg_manager_label", widget: "string", default: "Менеджер по партнёрам", required: false }
+          - label: "Фото для hero-баннера сверху"
+            name: "hero_image"
+            widget: "image"
+            required: false
+            hint: "Большое фото в верхней части страницы. Если не задано — будет тёмный фон."
+          - label: "Фоновая картинка под основным текстом"
+            name: "bg_image"
+            widget: "image"
+            required: false
+            hint: "Фон под текстом и блоками. Если не задано — белый фон."
 
       # --- Футер ---
       - name: "footer"
@@ -238,6 +248,16 @@ collections:
           - { label: "Заголовок (строка 2)", name: "title_2", widget: "string" }
           - { label: "Подзаголовок", name: "subtitle", widget: "text" }
           - { label: "Основной текст", name: "body", widget: "markdown" }
+          - label: "Фото для hero-баннера сверху"
+            name: "hero_image"
+            widget: "image"
+            required: false
+            hint: "Большое фото в верхней части страницы. Если не задано — будет тёмный фон."
+          - label: "Фоновая картинка под основным текстом"
+            name: "bg_image"
+            widget: "image"
+            required: false
+            hint: "Фон под текстом и блоками. Поверх — полупрозрачный белый слой для читаемости. Если не задано — белый фон."
 
       # --- Доставка и условия ---
       - name: "delivery"
@@ -256,3 +276,13 @@ collections:
             name: "returns"
             widget: "list"
             field: { label: "Строка", name: "text", widget: "string" }
+          - label: "Фото для hero-баннера на странице «Контакты»"
+            name: "hero_image"
+            widget: "image"
+            required: false
+            hint: "Большое фото в верхней части страницы Контакты."
+          - label: "Фоновая картинка под основным текстом «Контакты»"
+            name: "bg_image"
+            widget: "image"
+            required: false
+            hint: "Фон под текстом. Если не задано — белый фон."
