@@ -129,22 +129,22 @@ function applySettings() {
       }
     }
 
-    // Преимущества: можно скрыть весь блок
+    // Преимущества: скрываем если выключено галочкой ИЛИ список пуст
     const featuresContainer = document.querySelector('[data-setting="features_list"]');
     if (featuresContainer) {
-      if (h.features_enabled === false) {
+      const enabled = h.features_enabled !== false;
+      const hasItems = Array.isArray(h.features) && h.features.length > 0;
+      if (!enabled || !hasItems) {
         featuresContainer.style.display = 'none';
       } else {
         featuresContainer.style.display = '';
-        if (Array.isArray(h.features) && h.features.length) {
-          featuresContainer.innerHTML = h.features.map(f => `
-            <div class="feature">
-              <div class="feature-icon">${escapeHtml(f.icon || '◆')}</div>
-              <div class="feature-title">${escapeHtml(f.title || '')}</div>
-              <div class="feature-text">${escapeHtml(f.text || '')}</div>
-            </div>
-          `).join('');
-        }
+        featuresContainer.innerHTML = h.features.map(f => `
+          <div class="feature">
+            <div class="feature-icon">${escapeHtml(f.icon || '◆')}</div>
+            <div class="feature-title">${escapeHtml(f.title || '')}</div>
+            <div class="feature-text">${escapeHtml(f.text || '')}</div>
+          </div>
+        `).join('');
       }
     }
 
