@@ -129,16 +129,22 @@ function applySettings() {
       }
     }
 
-    if (Array.isArray(h.features) && h.features.length) {
-      const featuresContainer = document.querySelector('[data-setting="features_list"]');
-      if (featuresContainer) {
-        featuresContainer.innerHTML = h.features.map(f => `
-          <div class="feature">
-            <div class="feature-icon">${escapeHtml(f.icon || '◆')}</div>
-            <div class="feature-title">${escapeHtml(f.title || '')}</div>
-            <div class="feature-text">${escapeHtml(f.text || '')}</div>
-          </div>
-        `).join('');
+    // Преимущества: можно скрыть весь блок
+    const featuresContainer = document.querySelector('[data-setting="features_list"]');
+    if (featuresContainer) {
+      if (h.features_enabled === false) {
+        featuresContainer.style.display = 'none';
+      } else {
+        featuresContainer.style.display = '';
+        if (Array.isArray(h.features) && h.features.length) {
+          featuresContainer.innerHTML = h.features.map(f => `
+            <div class="feature">
+              <div class="feature-icon">${escapeHtml(f.icon || '◆')}</div>
+              <div class="feature-title">${escapeHtml(f.title || '')}</div>
+              <div class="feature-text">${escapeHtml(f.text || '')}</div>
+            </div>
+          `).join('');
+        }
       }
     }
 

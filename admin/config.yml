@@ -173,6 +173,7 @@ collections:
             summary: "{{fields.id}}"
             hint: "Введи ID товаров (как они в адресной строке) — например xpodium-sticky-grips. Порядок = порядок отображения. Если оставить пустым, выберутся первые 8 из каталога."
             field: { label: "ID товара", name: "id", widget: "string" }
+          - { label: "Показывать блок «Преимущества» на главной", name: "features_enabled", widget: "boolean", default: true, hint: "Сними галочку чтобы временно скрыть блок с 4 преимуществами (бесплатная доставка, качество и т.д.)" }
           - label: "4 преимущества (блок «Преимущества» на главной)"
             name: "features"
             widget: "list"
