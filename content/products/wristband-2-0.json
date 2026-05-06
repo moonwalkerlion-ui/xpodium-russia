@@ -1,7 +1,9 @@
 {
-  "name_en": "Wristband 2.0",
-  "name_ru": "Кистевой бинт 2.0",
+  "category_ru": "Кистевые бинты",
+  "unit": "Pair",
+  "subcategory_ru": "Кистевые бинты",
   "brand": "XPODIUM",
+  "price": 1600,
   "colors": [
     "Белый",
     "Чёрный",
@@ -13,10 +15,8 @@
   "sizes": [
     "5cm*155cm"
   ],
-  "price": 950,
-  "unit": "Pair",
+  "name_ru": "Кистевой бинт 2.0",
   "images": [
-    "/images/products/wristband-2-0.webp",
     "/images/products/wristband-2-0-2.webp",
     "/images/products/wristband-2-0-3.webp",
     "/images/products/wristband-2-0-4.webp",
@@ -24,9 +24,8 @@
     "/images/products/wristband-2-0-6.webp",
     "/images/products/wristband-2-0-7.webp"
   ],
-  "category": "gear",
-  "category_ru": "Кистевые бинты",
   "id": "wristband-2-0",
-  "subcategory": "wraps",
-  "subcategory_ru": "Кистевые бинты"
+  "name_en": "Wristband 2.0",
+  "category": "gear",
+  "subcategory": "wraps"
 }
