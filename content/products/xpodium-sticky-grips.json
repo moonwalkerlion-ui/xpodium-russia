@@ -8,13 +8,15 @@
     "Чёрный",
     "Розовый",
     "Жёлтый",
-    "Белый"
+    "Белый",
+    "Хаки",
+    "Синий"
   ],
   "sizes": [
     "M",
     "L"
   ],
-  "name_ru": "Липкие накладки XPODIUM Sticky",
+  "name_ru": "накладки XPODIUM Sticky (без магнезии)",
   "images": [
     "/images/products/xpodium-sticky-grips-3.webp",
     "/images/products/xpodium-sticky-grips.webp",
