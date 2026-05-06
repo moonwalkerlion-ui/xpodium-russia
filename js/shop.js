@@ -22,13 +22,11 @@ if (params.get('cat')) state.category = params.get('cat');
 (async function init() {
   const products = await loadProducts();
 
-  // считаем сколько товаров в каждой категории
   const catCounts = {};
   products.forEach(p => {
     catCounts[p.category] = (catCounts[p.category] || 0) + 1;
   });
 
-  // рендер фильтра категорий
   const catList = document.getElementById('filterCategories');
   let catHtml = `<label><input type="radio" name="cat" value="all" ${state.category === 'all' ? 'checked' : ''}> Все <span class="filter-count">${products.length}</span></label>`;
   Object.keys(CATEGORY_RU).forEach(key => {
@@ -37,7 +35,6 @@ if (params.get('cat')) state.category = params.get('cat');
   });
   catList.innerHTML = catHtml;
 
-  // слушатели
   catList.addEventListener('change', e => {
     state.category = e.target.value;
     updateTitle();
@@ -86,11 +83,8 @@ function render() {
     list.sort((a, b) => a.price - b.price);
   } else if (state.sort === 'price-desc') {
     list.sort((a, b) => b.price - a.price);
-  } else if (state.sort === 'name') {
-    list.sort((a, b) => a.name_ru.localeCompare(b.name_ru, 'ru'));
   } else {
-    // Сортировка "по умолчанию": сначала gear+apparel вперемешку, потом equipment, потом accessories
-    list = sortByDefault(list);
+    list = sortByDefault(list, state.category);
   }
 
   const grid = document.getElementById('shopGrid');
@@ -104,40 +98,140 @@ function render() {
   grid.innerHTML = list.map(renderProductCard).join('');
 }
 
-// Умная сортировка по умолчанию
-function sortByDefault(list) {
-  // Группа 1: gear + apparel (чередуются)
-  // Группа 2: equipment
-  // Группа 3: accessories
-  const PRIORITY = { 'gear': 1, 'apparel': 1, 'equipment': 2, 'accessories': 3 };
+// ============================================
+// Умная сортировка по умолчанию (по группам)
+// ============================================
 
-  // Внутригрупповая сортировка: сначала с sort_index, потом по name_ru
-  const innerSort = (a, b) => {
-    const aHas = typeof a.sort_index === 'number';
-    const bHas = typeof b.sort_index === 'number';
-    if (aHas && bHas) return a.sort_index - b.sort_index;
-    if (aHas) return -1;
-    if (bHas) return 1;
+// Жёсткие правила: ID товара → его место в группе. Меньше число = раньше показывается.
+// Все ID должны быть в нижнем регистре.
+const ORDER_BY_ID = {
+  // ===== НАКЛАДКИ =====
+  'elite-sticky-grips': 100,
+  'xpodium-sticky-grips': 110,
+  'xpodium-carbon-grips': 120,
+  'xpodium-carbon-grips-with-hole': 121,
+  'xpodium-3-0-grip-black': 130,
+  'xpodium-3-0-grip-white': 131,
+  'suede-grip': 140,
+  'suede-grip-with-hole': 141,
+
+  // ===== ОДЕЖДА: МУЖСКОЙ ВЕРХ =====
+  'pro-t-shirts': 200,
+  'pro-vest': 210,
+  'light-fit-t-shirt': 220,
+  '3-4-sleeves-t-shirt': 230,
+  'oversized-shirts': 240,
+  'oversized-shirts-big-logo': 241,
+  'oversized-shirts-small-logo': 242,
+
+  // ===== ХУДИ =====
+  'hoodie': 300,
+  'basic-logo-hoodie': 310,
+
+  // ===== МУЖСКОЙ НИЗ (шорты/штаны) =====
+  'shorts-1-0': 400,
+  'shorts-2-0': 410,
+  'shorts-3-0': 420,
+  'compression-shorts': 430,
+  'long-pants': 440,
+
+  // ===== ЖЕНСКИЙ ВЕРХ =====
+  'sports-bra': 500,
+  'girls-vest': 510,
+  'girls-t-shirts': 520,
+  '3-4-sleeves-t-shirt-shorts': 530, // помечено как мужская в JSON, но это «футболка 3/4 (женская)» по name_ru
+
+  // ===== ЖЕНСКИЙ НИЗ =====
+  'leggings-short': 600,
+  'leggings-long': 610,
+  'zhenskiy-kostyum-xpodium': 620,
+
+  // ===== НОСКИ =====
+  'basic-logo-socks': 700,
+  'lifting-socks': 710,
+  'weightlifting-socks': 720,
+
+  // ===== НАКОЛЕННИКИ / НАЛОКОТНИКИ =====
+  'knee-sleeves-1-0': 800,
+  'knee-sleeves-2-0': 810,
+  'knee-sleeves-3-0': 820,
+  'ultra-knee-leeves': 830,
+  'elbow-sleeves-3-0': 840,
+
+  // ===== РЮКЗАКИ =====
+  'backpack-1-0': 900,
+  'backpack-2-0': 910,
+  'backpack-medium-small': 920,
+  'mini-backpack': 930,
+  'satchel': 940,
+
+  // ===== СКАКАЛКИ =====
+  'jump-rope': 1000,
+  'jump-rope-2-0': 1010,
+
+  // ===== ОСТАЛЬНАЯ ЭКИПИРОВКА =====
+  'pr-belt': 1100,
+  'wristband-1-0': 1110,
+  'wristband-2-0': 1120,
+  'wristband-2-0-2': 1121,
+  'wristband-3-0': 1130,
+  'sweat-band': 1140,
+  'head-bands': 1150,
+
+  // ===== АКСЕССУАРЫ (мелочи) =====
+  'cap-big-logo': 1200,
+  'cap-small-logo': 1210,
+  'sport-bottle': 1220,
+  'chalk': 1230,
+  'massage-ball': 1240,
+  'montrigger': 1250,
+  'lifting-strap': 1260,
+  'alluminium-barbell-clips': 1270,
+  'plastic-barbell-clips': 1280,
+  'plastic-spring-barbell-clips': 1290,
+  'plate-velcro': 1300,
+  'xpodium-velcro': 1310,
+  'xpodium-velcro-2': 1320,
+  'panda-velcro': 1330,
+  'key-ring': 1340,
+  'hookgrip-tape': 1350,
+};
+
+// Вспомогательные множества по группам — для специальных категорий
+const GRIPS_IDS = ['elite-sticky-grips', 'xpodium-sticky-grips', 'xpodium-carbon-grips', 'xpodium-carbon-grips-with-hole', 'xpodium-3-0-grip-black', 'xpodium-3-0-grip-white', 'suede-grip', 'suede-grip-with-hole'];
+const SLEEVES_IDS = ['knee-sleeves-1-0', 'knee-sleeves-2-0', 'knee-sleeves-3-0', 'ultra-knee-leeves', 'elbow-sleeves-3-0'];
+const JUMPROPE_IDS = ['jump-rope', 'jump-rope-2-0'];
+const BACKPACK_IDS = ['backpack-1-0', 'backpack-2-0', 'backpack-medium-small', 'mini-backpack', 'satchel'];
+
+function getGroupOrder(id) {
+  // Если есть в нашем словаре — берём оттуда
+  if (ORDER_BY_ID[id] !== undefined) return ORDER_BY_ID[id];
+  // Если нет — кидаем в самый конец (но всё равно стабильно)
+  return 99999;
+}
+
+function sortByDefault(list, category) {
+  // 1) Сначала отдаём приоритет ручному sort_index из админки (если задан)
+  // 2) Потом сортируем по группе из ORDER_BY_ID
+  // 3) При равенстве — по name_ru
+
+  const sorted = [...list].sort((a, b) => {
+    const aManual = typeof a.sort_index === 'number';
+    const bManual = typeof b.sort_index === 'number';
+    if (aManual && bManual) return a.sort_index - b.sort_index;
+    if (aManual) return -1;
+    if (bManual) return 1;
+
+    // Группа из словаря
+    const aOrder = getGroupOrder(a.id);
+    const bOrder = getGroupOrder(b.id);
+    if (aOrder !== bOrder) return aOrder - bOrder;
+
+    // По name_ru если в одной группе
     return (a.name_ru || '').localeCompare(b.name_ru || '', 'ru');
-  };
+  });
 
-  // Делим товары на группы
-  const gear = list.filter(p => p.category === 'gear').sort(innerSort);
-  const apparel = list.filter(p => p.category === 'apparel').sort(innerSort);
-  const equipment = list.filter(p => p.category === 'equipment').sort(innerSort);
-  const accessories = list.filter(p => p.category === 'accessories').sort(innerSort);
-  // Прочие категории на всякий случай — между equipment и accessories
-  const other = list.filter(p => !PRIORITY[p.category]).sort(innerSort);
-
-  // Чередование gear и apparel: по очереди берём из обоих списков
-  const mixed = [];
-  const maxLen = Math.max(gear.length, apparel.length);
-  for (let i = 0; i < maxLen; i++) {
-    if (gear[i]) mixed.push(gear[i]);
-    if (apparel[i]) mixed.push(apparel[i]);
-  }
-
-  return [...mixed, ...equipment, ...other, ...accessories];
+  return sorted;
 }
 
 function declOfNum(n, titles) {

@@ -1257,15 +1257,42 @@ body[data-cat-hidden="true"] .shop-body::before {
     top: 84px; left: 0; right: 0;
     background: #fff;
     flex-direction: column;
+    align-items: flex-start;
     padding: 24px;
     border-bottom: 1px solid var(--line);
     z-index: 99;
+    gap: 4px;
+  }
+  .nav.mobile-open > a,
+  .nav.mobile-open > .nav-item,
+  .nav.mobile-open > .nav-item > a {
+    width: 100%;
+    text-align: left;
+    padding: 12px 0;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+  }
+  .nav.mobile-open .nav-item {
+    display: flex;
+    flex-direction: column;
   }
   .nav.mobile-open .dropdown {
     position: static;
     opacity: 1; visibility: visible; transform: none;
     border: none;
-    padding-left: 16px;
+    padding: 0 0 0 16px;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav.mobile-open .dropdown a {
+    padding: 8px 0;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
   }
   .hero h1 { font-size: clamp(64px, 18vw, 140px); }
   .product-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
@@ -1490,6 +1517,22 @@ body.has-page-bg .info-sections {
   }
   .page-hero-bg {
     padding: 100px var(--gutter) 70px;
+  }
+  /* Заголовки страниц на мобилке — мельче и обязательно с переносами */
+  .page-hero h1,
+  .story-hero h1,
+  .contact-hero h1 {
+    font-size: clamp(28px, 9vw, 48px) !important;
+    line-height: 1.05;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
+  }
+  .page-hero-sub,
+  .story-hero .tagline,
+  .contact-hero p {
+    font-size: 15px !important;
+    line-height: 1.5;
   }
 }
 
