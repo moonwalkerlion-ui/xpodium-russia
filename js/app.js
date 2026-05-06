@@ -187,6 +187,14 @@ function openProductModal(productId) {
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
 
+  // Предзагружаем все остальные фото товара в фоне (чтобы листание было мгновенным)
+  if (images.length > 1) {
+    images.slice(1).forEach(src => {
+      const img = new Image();
+      img.src = productImageUrl(src);
+    });
+  }
+
   // Единая функция закрытия (гарантирует восстановление scroll)
   function closeModal() {
     modal.remove();
@@ -396,6 +404,23 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('burger')?.addEventListener('click', () => {
     document.querySelector('.nav')?.classList.toggle('mobile-open');
   });
+
+  // Предзагрузка фото товара при наведении на карточку (быстрое открытие модалки)
+  const prefetched = new Set();
+  document.body.addEventListener('mouseenter', (e) => {
+    const card = e.target.closest && e.target.closest('.product-card[data-product-id]');
+    if (!card) return;
+    const id = card.dataset.productId;
+    if (!id || prefetched.has(id)) return;
+    prefetched.add(id);
+    const product = PRODUCTS.find(p => p.id === id);
+    if (!product || !product.images) return;
+    // Грузим первые 2 фото в фоне
+    product.images.slice(0, 2).forEach(src => {
+      const img = new Image();
+      img.src = productImageUrl(src);
+    });
+  }, true);
 
   // Делегирование клика по карточкам товара (работает для динамически добавленных)
   document.body.addEventListener('click', (e) => {

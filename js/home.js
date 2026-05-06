@@ -1,17 +1,25 @@
 // Главная: рендер хитов продаж
 // Источник ID — настройки сайта (settings.home.best_sellers), либо дефолтный список
 (async function() {
-  const products = await loadProducts();
+  // Запускаем параллельно загрузку товаров и настроек
+  const productsPromise = loadProducts();
+
+  // Гарантированно ждём settings.json (если loadSettings есть и SETTINGS ещё нет)
+  let settingsPromise;
+  if (typeof loadSettings === 'function' && typeof SETTINGS === 'undefined') {
+    settingsPromise = loadSettings();
+  } else if (typeof SETTINGS !== 'undefined' && SETTINGS) {
+    settingsPromise = Promise.resolve(SETTINGS);
+  } else {
+    // Фоллбэк: грузим settings.json напрямую
+    settingsPromise = fetch('settings.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : {})
+      .catch(() => ({}));
+  }
+
+  const [products, settings] = await Promise.all([productsPromise, settingsPromise]);
   const grid = document.getElementById('bestSellers');
   if (!grid) return;
-
-  // Ждём пока settings-loader подгрузит SETTINGS
-  // Используем небольшой таймаут на случай если settings ещё грузятся
-  let attempts = 0;
-  while (typeof SETTINGS === 'undefined' && attempts < 20) {
-    await new Promise(r => setTimeout(r, 50));
-    attempts++;
-  }
 
   // Дефолтные хиты (если в админке не задано)
   const defaultIds = [
@@ -25,10 +33,11 @@
     'mini-backpack',
   ];
 
-  // Из settings.home.best_sellers — массив объектов {id: "..."} или строк
+  // Из settings.home.best_sellers
   let pickIds = defaultIds;
-  if (typeof SETTINGS !== 'undefined' && SETTINGS && SETTINGS.home && Array.isArray(SETTINGS.home.best_sellers) && SETTINGS.home.best_sellers.length) {
-    pickIds = SETTINGS.home.best_sellers.map(item =>
+  const cfg = (settings && settings.home) || (typeof SETTINGS !== 'undefined' && SETTINGS && SETTINGS.home) || null;
+  if (cfg && Array.isArray(cfg.best_sellers) && cfg.best_sellers.length) {
+    pickIds = cfg.best_sellers.map(item =>
       typeof item === 'object' && item !== null ? (item.id || '') : String(item)
     ).filter(Boolean);
   }
