@@ -1,7 +1,9 @@
 {
-  "name_en": "Backpack Medium-Small",
-  "name_ru": "Рюкзак Medium-Small",
+  "category_ru": "Рюкзаки и сумки",
+  "unit": "single",
+  "subcategory_ru": "Аксессуары",
   "brand": "XPODIUM",
+  "price": 7500,
   "colors": [
     "Коричневый мокко",
     "Чёрный",
@@ -10,14 +12,13 @@
   "sizes": [
     "27*30*45"
   ],
-  "price": 7500,
-  "unit": "single",
+  "name_ru": "Рюкзак Medium-Small",
   "images": [
-    "/images/products/backpack-medium-small.webp"
+    "/images/products/backpack-medium-small.webp",
+    "/images/uploads/a13f8a2d-b33b-4f81-b546-ab81afa602c3_1_105_c.jpeg"
   ],
-  "category": "accessories",
-  "category_ru": "Рюкзаки и сумки",
   "id": "backpack-medium-small",
-  "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "name_en": "Backpack Medium-Small",
+  "category": "accessories",
+  "subcategory": "accessories"
 }

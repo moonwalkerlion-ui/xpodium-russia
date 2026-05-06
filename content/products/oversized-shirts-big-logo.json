@@ -1,7 +1,9 @@
 {
-  "name_en": "OVERSIZED SHIRTS (BIG LOGO)",
-  "name_ru": "Футболка оверсайз (большое лого)",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 2900,
   "colors": [
     "Чёрный",
     "Серый"
@@ -11,14 +13,14 @@
     "L",
     "XL"
   ],
-  "price": 2900,
-  "unit": "single",
+  "name_ru": "Футболка оверсайз (большое лого)",
   "images": [
-    "/images/products/oversized-shirts-big-logo.webp"
+    "/images/uploads/dsc00222.jpg",
+    "/images/uploads/dsc00230.jpg",
+    "/images/uploads/dsc00259.jpg"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "oversized-shirts-big-logo",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "name_en": "OVERSIZED SHIRTS (BIG LOGO)",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
