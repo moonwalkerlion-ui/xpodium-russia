@@ -1,17 +1,19 @@
 {
-  "name_en": "Hoodie",
-  "name_ru": "Худи",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 4500,
   "colors": [
-    "Чёрный"
+    "Чёрный",
+    "Серый"
   ],
   "sizes": [
     "M",
     "L",
     "XL"
   ],
-  "price": 4500,
-  "unit": "single",
+  "name_ru": "Зип-худи",
   "images": [
     "/images/products/hoodie.webp",
     "/images/products/hoodie-2.webp",
@@ -20,9 +22,8 @@
     "/images/products/hoodie-5.webp",
     "/images/products/hoodie-6.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "hoodie",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "name_en": "Hoodie",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
