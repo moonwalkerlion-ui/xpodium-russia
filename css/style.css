@@ -1331,9 +1331,15 @@ body[data-cat-hidden="true"] .shop-body::before {
     z-index: 2;
   }
   .pm-img {
-    height: 50vh;
-    max-height: 50vh;
-    padding: 4%;
+    height: auto;
+    max-height: 60vh;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+  }
+  .pm-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .pm-nav { width: 36px; height: 36px; font-size: 18px; }
   .pm-prev { left: 10px; }
