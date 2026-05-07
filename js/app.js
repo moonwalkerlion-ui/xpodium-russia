@@ -114,9 +114,21 @@ function renderProductCard(p) {
 }
 
 // --- Модалка товара ---
-function openProductModal(productId) {
+async function openProductModal(productId) {
+  // Если товары ещё не загружены — ждём (на медленном интернете может опередить)
+  if (!PRODUCTS.length) {
+    try {
+      await loadProducts();
+    } catch (e) {
+      console.warn('Не удалось загрузить товары');
+      return;
+    }
+  }
   const p = PRODUCTS.find(x => x.id === productId);
-  if (!p) return;
+  if (!p) {
+    console.warn('Товар не найден:', productId);
+    return;
+  }
 
   // Убираем предыдущие открытые модалки (защита от дублей)
   document.querySelectorAll('.product-modal').forEach(m => m.remove());
@@ -128,8 +140,8 @@ function openProductModal(productId) {
     window.history.pushState({ productId }, '', url.toString());
   } catch (e) { /* fallback: оставляем URL как есть */ }
 
-  let selectedSize = p.sizes[0] || null;
-  let selectedColor = p.colors[0] || null;
+  let selectedSize = (p.sizes && p.sizes[0]) || null;
+  let selectedColor = (p.colors && p.colors[0]) || null;
   let currentImageIndex = 0;
 
   const images = (p.images && p.images.length) ? p.images : [null];
@@ -238,13 +250,33 @@ function openProductModal(productId) {
       thumb.classList.toggle('active', i === index);
     });
   }
-  modal.querySelectorAll('.pm-thumb').forEach(thumb => {
-    thumb.addEventListener('click', () => showImage(parseInt(thumb.dataset.index, 10)));
+
+  // Делегирование клика для thumbnails и стрелок (надёжнее на Android)
+  modal.addEventListener('click', e => {
+    // Клик по миниатюре
+    const thumb = e.target.closest('.pm-thumb');
+    if (thumb && modal.contains(thumb)) {
+      e.preventDefault();
+      e.stopPropagation();
+      const idx = parseInt(thumb.dataset.index, 10);
+      if (!isNaN(idx)) showImage(idx);
+      return;
+    }
+    // Клик по стрелке "назад"
+    if (e.target.closest('.pm-prev')) {
+      e.preventDefault();
+      e.stopPropagation();
+      showImage(currentImageIndex - 1);
+      return;
+    }
+    // Клик по стрелке "вперёд"
+    if (e.target.closest('.pm-next')) {
+      e.preventDefault();
+      e.stopPropagation();
+      showImage(currentImageIndex + 1);
+      return;
+    }
   });
-  const prevBtn = modal.querySelector('.pm-prev');
-  const nextBtn = modal.querySelector('.pm-next');
-  if (prevBtn) prevBtn.addEventListener('click', () => showImage(currentImageIndex - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => showImage(currentImageIndex + 1));
 
   // Клавиши стрелок для навигации
   document.addEventListener('keydown', function onArrow(e) {

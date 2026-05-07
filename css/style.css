@@ -1319,9 +1319,9 @@ body[data-cat-hidden="true"] .shop-body::before {
     overflow: visible;
   }
   .pm-img {
-    height: 60vh;
-    max-height: 60vh;
-    padding: 8%;
+    height: 75vh;
+    max-height: 75vh;
+    padding: 4%;
   }
   .pm-nav { width: 36px; height: 36px; font-size: 18px; }
   .pm-prev { left: 10px; }
@@ -1332,6 +1332,11 @@ body[data-cat-hidden="true"] .shop-body::before {
   .pm-close { top: 12px; right: 12px; }
   .pm-options {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  /* Меньшее затемнение hero-фото на мобилке (там и так темнее визуально) */
+  .page-hero-bg::before {
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
   }
 
   .footer { grid-template-columns: 1fr; }
