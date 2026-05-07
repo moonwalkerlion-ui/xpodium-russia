@@ -1636,3 +1636,25 @@ body.has-page-bg .info-sections {
     text-align: center;
   }
 }
+
+/* Всплывашка с полным названием цвета (для обрезанных кнопок) */
+.color-tooltip {
+  position: fixed;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  max-width: calc(100vw - 16px);
+}
+.color-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

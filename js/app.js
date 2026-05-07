@@ -295,7 +295,14 @@ async function openProductModal(productId) {
       modal.querySelectorAll(`[data-group="${group}"] .pm-option`).forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
       if (group === 'size') selectedSize = el.dataset.size;
-      if (group === 'color') selectedColor = el.dataset.color;
+      if (group === 'color') {
+        selectedColor = el.dataset.color;
+        // Если название обрезано — показываем всплывашку с полным
+        const labelEl = el.querySelector('.pm-option-label');
+        if (labelEl && labelEl.scrollWidth > labelEl.clientWidth + 2) {
+          showColorTooltip(el, el.dataset.color);
+        }
+      }
     });
   });
 
@@ -308,6 +315,41 @@ async function openProductModal(productId) {
 }
 
 // --- Корзина ---
+// Показать всплывашку с полным названием цвета (для обрезанных кнопок на мобиле)
+function showColorTooltip(targetEl, fullName) {
+  // Удаляем предыдущую всплывашку если есть
+  document.querySelectorAll('.color-tooltip').forEach(t => t.remove());
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'color-tooltip';
+  tooltip.textContent = fullName;
+  document.body.appendChild(tooltip);
+
+  // Позиционируем над кнопкой
+  const rect = targetEl.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  let left = rect.left + (rect.width - tooltipRect.width) / 2;
+  // Не выходим за края экрана
+  const margin = 8;
+  if (left < margin) left = margin;
+  if (left + tooltipRect.width > window.innerWidth - margin) {
+    left = window.innerWidth - tooltipRect.width - margin;
+  }
+  const top = rect.top - tooltipRect.height - 8;
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top < 8 ? rect.bottom + 8 : top}px`;
+
+  // Появление с анимацией
+  requestAnimationFrame(() => tooltip.classList.add('visible'));
+
+  // Убираем через 1.5 секунды
+  setTimeout(() => {
+    tooltip.classList.remove('visible');
+    setTimeout(() => tooltip.remove(), 200);
+  }, 1500);
+}
+
 function addToCart(product, size, color) {
   // один "ключ" в корзине = товар + размер + цвет
   const key = `${product.id}|${size||''}|${color||''}`;
