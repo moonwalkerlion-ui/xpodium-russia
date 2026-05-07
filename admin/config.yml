@@ -220,6 +220,16 @@ collections:
           - { label: "Копирайт (внизу слева)", name: "copyright", widget: "string", required: false, default: "© 2026 BRAND. Все права защищены." }
           - { label: "Текст справа внизу", name: "right_text", widget: "string", required: false, default: "Все товары сертифицированы." }
 
+      # --- Юридические реквизиты ИП (для футера и страницы политики ПД) ---
+      - name: "legal"
+        label: "Юридические реквизиты (ИП)"
+        file: "content/settings/legal.json"
+        fields:
+          - { label: "Полное наименование", name: "owner_full_name", widget: "string", default: "ИП Иванов Иван Иванович", hint: "Например: ИП Барков Денис Иванович" }
+          - { label: "ИНН (12 цифр)", name: "inn", widget: "string", default: "000000000000", pattern: ['^\d{12}$', 'Должно быть 12 цифр'] }
+          - { label: "ОГРНИП (15 цифр)", name: "ogrnip", widget: "string", default: "000000000000000", pattern: ['^\d{15}$', 'Должно быть 15 цифр'] }
+          - { label: "Дата актуальности политики ПД", name: "updated_date", widget: "string", default: "7 мая 2026 г.", hint: "Меняй когда обновляешь политику обработки ПД" }
+
       # --- Бегущая строка ---
       - name: "marquee"
         label: "Бегущая строка (сверху)"

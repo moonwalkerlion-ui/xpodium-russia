@@ -179,6 +179,15 @@ function applySettings() {
     setText('[data-setting="footer_right_text"]', f.right_text);
   }
 
+  // Юридические реквизиты (для футера и страницы политики ПД)
+  if (SETTINGS.legal) {
+    const lg = SETTINGS.legal;
+    setText('[data-setting="legal_owner_full_name"]', lg.owner_full_name);
+    setText('[data-setting="legal_inn"]', lg.inn);
+    setText('[data-setting="legal_ogrnip"]', lg.ogrnip);
+    setText('[data-setting="legal_updated_date"]', lg.updated_date);
+  }
+
   // Логотип / название бренда
   if (SETTINGS.brand && SETTINGS.brand.name) {
     setText('[data-setting="site_brand"]', SETTINGS.brand.name);
