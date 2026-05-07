@@ -1309,6 +1309,7 @@ body[data-cat-hidden="true"] .shop-body::before {
     align-items: stretch !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    background: #fff !important;
   }
   .product-modal-inner {
     grid-template-columns: 1fr !important;
@@ -1319,6 +1320,7 @@ body[data-cat-hidden="true"] .shop-body::before {
     max-width: none !important;
     width: 100% !important;
     overflow: visible !important;
+    background: #fff !important;
   }
   .product-modal-inner > .pm-gallery,
   .product-modal-inner > .pm-info {
