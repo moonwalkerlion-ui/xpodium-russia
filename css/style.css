@@ -1304,13 +1304,19 @@ body[data-cat-hidden="true"] .shop-body::before {
   .cat-arrow { width: 32px; height: 32px; opacity: 1; transform: none; margin-bottom: 8px; }
 
   /* Модалка товара на мобилке */
-  .product-modal { padding: 0; align-items: stretch; }
+  .product-modal {
+    padding: 0;
+    align-items: stretch;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .product-modal-inner {
     grid-template-columns: 1fr;
-    height: 100vh;
-    max-height: 100vh;
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
     max-width: none;
-    overflow-y: auto;
+    overflow: visible;
   }
   .product-modal-inner > .pm-gallery,
   .product-modal-inner > .pm-info {
@@ -1318,18 +1324,33 @@ body[data-cat-hidden="true"] .shop-body::before {
     height: auto;
     overflow: visible;
   }
+  .pm-gallery {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+  }
   .pm-img {
-    height: 75vh;
-    max-height: 75vh;
+    height: 50vh;
+    max-height: 50vh;
     padding: 4%;
   }
   .pm-nav { width: 36px; height: 36px; font-size: 18px; }
   .pm-prev { left: 10px; }
   .pm-next { right: 10px; }
-  .pm-thumbs { padding: 8px 12px 12px; gap: 4px; }
-  .pm-thumb { flex: 0 0 52px; height: 52px; }
-  .pm-info { padding: 24px; }
-  .pm-close { top: 12px; right: 12px; }
+  .pm-thumbs {
+    padding: 8px 12px 12px;
+    gap: 6px;
+    overflow-x: auto;
+  }
+  .pm-thumb { flex: 0 0 48px; height: 48px; }
+  .pm-info { padding: 24px; padding-bottom: 40px; }
+  .pm-close {
+    top: 12px;
+    right: 12px;
+    position: fixed;
+    z-index: 10;
+  }
   .pm-options {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
@@ -1337,6 +1358,31 @@ body[data-cat-hidden="true"] .shop-body::before {
   /* Меньшее затемнение hero-фото на мобилке (там и так темнее визуально) */
   .page-hero-bg::before {
     background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
+  }
+
+  /* Футер на мобилке — 2 колонки + бренд сверху на всю ширину */
+  .footer {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 20px;
+    padding: 50px var(--gutter) 24px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+    margin-bottom: 8px;
+  }
+  .footer-logo { font-size: 28px; }
+  .footer-title { font-size: 11px; margin-bottom: 14px; }
+  .footer-col a { font-size: 13px; padding: 5px 0; }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 20px;
+  }
+  .footer-legal {
+    text-align: center;
+    line-height: 1.8;
   }
 
   .footer { grid-template-columns: 1fr; }
@@ -1555,9 +1601,9 @@ body.has-page-bg .info-sections {
   font-size: 12px;
   color: var(--muted);
   letter-spacing: 0.02em;
-  margin-bottom: 8px;
   width: 100%;
   text-align: left;
+  line-height: 1.7;
 }
 .footer-bottom {
   flex-wrap: wrap;
