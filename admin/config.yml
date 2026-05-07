@@ -230,6 +230,28 @@ collections:
           - { label: "ОГРНИП (15 цифр)", name: "ogrnip", widget: "string", default: "000000000000000", pattern: ['^\d{15}$', 'Должно быть 15 цифр'] }
           - { label: "Дата актуальности политики ПД", name: "updated_date", widget: "string", default: "7 мая 2026 г.", hint: "Меняй когда обновляешь политику обработки ПД" }
 
+      # --- Страница «Условия покупки и доставки» ---
+      - name: "terms"
+        label: "Страница «Условия покупки и доставки»"
+        file: "content/settings/terms.json"
+        fields:
+          - { label: "Заголовок страницы", name: "title", widget: "string", default: "Условия покупки и доставки" }
+          - label: "Основной текст"
+            name: "body"
+            widget: "markdown"
+            hint: "Используй ## для заголовков разделов. Можно делать списки через дефис, ссылки [текст](url), жирный текст **так**."
+
+      # --- Страница «Возврат и обмен» ---
+      - name: "returns"
+        label: "Страница «Возврат и обмен»"
+        file: "content/settings/returns.json"
+        fields:
+          - { label: "Заголовок страницы", name: "title", widget: "string", default: "Возврат и обмен" }
+          - label: "Основной текст"
+            name: "body"
+            widget: "markdown"
+            hint: "Используй ## для заголовков разделов. Можно делать списки через дефис, ссылки [текст](url), жирный текст **так**."
+
       # --- Бегущая строка ---
       - name: "marquee"
         label: "Бегущая строка (сверху)"

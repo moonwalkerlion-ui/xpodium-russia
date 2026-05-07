@@ -188,6 +188,26 @@ function applySettings() {
     setText('[data-setting="legal_updated_date"]', lg.updated_date);
   }
 
+  // Страница «Условия покупки и доставки»
+  if (SETTINGS.terms) {
+    const t = SETTINGS.terms;
+    if (t.title) setText('[data-setting="terms_title"]', t.title);
+    if (t.body) {
+      const bodyEl = document.querySelector('[data-setting="terms_body"]');
+      if (bodyEl) bodyEl.innerHTML = renderMarkdown(t.body);
+    }
+  }
+
+  // Страница «Возврат и обмен»
+  if (SETTINGS.returns) {
+    const r = SETTINGS.returns;
+    if (r.title) setText('[data-setting="returns_title"]', r.title);
+    if (r.body) {
+      const bodyEl = document.querySelector('[data-setting="returns_body"]');
+      if (bodyEl) bodyEl.innerHTML = renderMarkdown(r.body);
+    }
+  }
+
   // Логотип / название бренда
   if (SETTINGS.brand && SETTINGS.brand.name) {
     setText('[data-setting="site_brand"]', SETTINGS.brand.name);
@@ -344,6 +364,61 @@ function renderList(selector, items) {
     const text = typeof it === 'object' && it !== null ? it.text : it;
     return `<li>${escapeHtml(text)}</li>`;
   }).join('');
+}
+
+// Простой markdown → HTML парсер для юридических страниц
+function renderMarkdown(md) {
+  if (!md) return '';
+  // Подставляем легальные данные если они уже загружены
+  if (SETTINGS && SETTINGS.legal) {
+    md = md.replace(/\[ФИО владельца\]/g, SETTINGS.legal.owner_full_name || '[ФИО]');
+    md = md.replace(/\[ФИО\]/g, SETTINGS.legal.owner_full_name || '[ФИО]');
+    md = md.replace(/\[ИНН\]/g, SETTINGS.legal.inn || '[ИНН]');
+    md = md.replace(/\[ОГРНИП\]/g, SETTINGS.legal.ogrnip || '[ОГРНИП]');
+  }
+
+  // Экранируем HTML
+  let html = md
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Заголовки
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+
+  // Жирный текст
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  // Ссылки [текст](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+    const isExternal = /^https?:\/\//.test(url);
+    const target = isExternal ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${url}"${target}>${text}</a>`;
+  });
+
+  // Списки: группа подряд идущих строк начинающихся с "- "
+  html = html.replace(/(?:^- .+(?:\n|$))+/gm, (block) => {
+    const items = block.trim().split(/\n/).map(line => {
+      const text = line.replace(/^- /, '');
+      return `<li>${text}</li>`;
+    }).join('');
+    return `<ul>${items}</ul>`;
+  });
+
+  // Параграфы: разбиваем по двойным переносам
+  const blocks = html.split(/\n\s*\n/);
+  html = blocks.map(b => {
+    b = b.trim();
+    if (!b) return '';
+    // Если уже начинается с тега <h2>, <ul>, <h3> — не оборачиваем в <p>
+    if (/^<(h[123]|ul|ol|p)/.test(b)) return b;
+    // Заменяем одиночные переносы на <br> внутри параграфа
+    b = b.replace(/\n/g, '<br>');
+    return `<p>${b}</p>`;
+  }).join('\n');
+
+  return html;
 }
 
 function escapeHtml(s) {
