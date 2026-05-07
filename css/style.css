@@ -1303,26 +1303,28 @@ body[data-cat-hidden="true"] .shop-body::before {
   .cat-label { font-size: clamp(14px, 4vw, 22px); }
   .cat-arrow { width: 32px; height: 32px; opacity: 1; transform: none; margin-bottom: 8px; }
 
-  /* Модалка товара на мобилке */
+  /* Модалка товара на мобилке - простой вертикальный скролл */
   .product-modal {
-    padding: 0;
-    align-items: stretch;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    padding: 0 !important;
+    align-items: stretch !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
   .product-modal-inner {
-    grid-template-columns: 1fr;
-    height: auto;
-    min-height: 100vh;
-    max-height: none;
-    max-width: none;
-    overflow: visible;
+    grid-template-columns: 1fr !important;
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    max-width: none !important;
+    width: 100% !important;
+    overflow: visible !important;
   }
   .product-modal-inner > .pm-gallery,
   .product-modal-inner > .pm-info {
-    max-height: none;
-    height: auto;
-    overflow: visible;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
   }
   .pm-gallery {
     position: relative;
@@ -1358,12 +1360,16 @@ body[data-cat-hidden="true"] .shop-body::before {
     overflow-x: auto;
   }
   .pm-thumb { flex: 0 0 48px; height: 48px; }
-  .pm-info { padding: 24px; padding-bottom: 40px; }
+  .pm-info {
+    padding: 24px !important;
+    padding-bottom: 60px !important;
+    display: block !important;
+  }
   .pm-close {
-    top: 12px;
-    right: 12px;
-    position: fixed;
-    z-index: 10;
+    position: fixed !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 999 !important;
   }
   .pm-options {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
