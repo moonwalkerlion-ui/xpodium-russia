@@ -427,20 +427,28 @@ function detectType(p) {
   if (/grips|nakladki/.test(id) || /накладк/.test(name)) return 'grips';
   // Пояс
   if (/belt|poyas/.test(id) || /пояс/.test(name)) return 'belt';
+  // Налокотники — ДО knees, иначе sleeves их съедает
+  if (/elbow|nalokot/.test(id) || /налокот/.test(name)) return 'elbow';
   // Наколенники
   if (/knee|sleeves|nakolenniki/.test(id) || /наколенн/.test(name)) return 'knees';
   // Скакалка
   if (/rope|skakalka|jump/.test(id) || /скакал/.test(name)) return 'rope';
   // Тейп / хук-грип
   if (/tape|hook|teyp/.test(id) || /тейп|хук/.test(name)) return 'tape';
-  // Кистевые ремни
-  if (/wraps|kist/.test(id) || /кистев|обмотк/.test(name)) return 'wraps';
+  // Лямки для тяги (унисекс — экипировка)
+  if (/lifting-?strap|lyamk/.test(id) || /лямк/.test(name)) return 'straps';
+  // Кистевые ремни / напульсники (включая wristband)
+  if (/wraps|wristband|kist|napuls/.test(id) || /кистев|обмотк|напульс/.test(name)) return 'wraps';
   // Рюкзак / сумка
   if (/backpack|bag|rukzak|sumka/.test(id) || /рюкзак|сумк/.test(name)) return 'bag';
   // Носки
   if (/sock|noski/.test(id) || /носк/.test(name)) return 'socks';
   // Брелок
   if (/keychain|brelok/.test(id) || /брелок|брелк/.test(name)) return 'keychain';
+  // Повязка на голову — ДО top, иначе sweat-band ложно ловится как top через sweat
+  if (/head-?band|sweat-?band|povyazk/.test(id) || /повязк/.test(name)) return 'headband';
+  // Костюм (верх + низ комплектом) — ДО top/bottom
+  if (/kostyum|suit/.test(id) || /костюм/.test(name)) return 'suit';
   // Низ (шорты/штаны/лосины)
   if (/shorts|pants|leggings|losin|shtany|trous/.test(id) ||
       /шорт|штан|лосин|брюк|треник/.test(name)) {
@@ -498,7 +506,6 @@ function buildRecommendations(currentProduct) {
   };
 
   const slots = [];
-  const skipped = [];
 
   // === Слот 1: рюкзак ИЛИ носки (50/50) ===
   const wantBag = coin();
@@ -529,14 +536,18 @@ function buildRecommendations(currentProduct) {
   }
   if (s2) slots.push(s2);
 
-  // === Слот 3: верх (футболка/майка) с учётом пола ===
+  // === Слот 3: верх (top или suit) с учётом пола ===
+  // Костюм может попасть в верх ИЛИ низ — это нормально, он закрывает оба слота визуально
   const tops = all.filter(x => x.type === 'top' && matchGender(x));
-  const s3 = randomItem(tops)?.p || null;
+  const suits = all.filter(x => x.type === 'suit' && matchGender(x));
+  const topPool = [...tops, ...suits];
+  const s3 = randomItem(topPool)?.p || null;
   if (s3) slots.push(s3);
 
-  // === Слот 4: низ (шорты/штаны/лосины) с учётом пола ===
+  // === Слот 4: низ (bottom или suit) с учётом пола, не дублируя костюм из s3 ===
   const bottoms = all.filter(x => x.type === 'bottom' && matchGender(x));
-  const s4 = randomItem(bottoms)?.p || null;
+  const bottomPool = [...bottoms, ...suits.filter(x => x.p.id !== (s3 && s3.id))];
+  const s4 = randomItem(bottomPool)?.p || null;
   if (s4) slots.push(s4);
 
   // === Слот 5: наколенники ===
@@ -544,13 +555,14 @@ function buildRecommendations(currentProduct) {
   const s5 = randomItem(knees)?.p || null;
   if (s5) slots.push(s5);
 
-  // === Слот 6: скакалка ИЛИ тейп для хук-грипа (50/50) ===
+  // === Слот 6: скакалка / тейп / лямки / повязка (рандом среди доступных) ===
+  // Раньше было только rope+tape (50/50). Теперь добавлены straps и headband — экипировка унисекс.
   const ropes = all.filter(x => x.type === 'rope');
   const tapes = all.filter(x => x.type === 'tape');
-  let s6 = null;
-  if (coin() && ropes.length) s6 = randomItem(ropes).p;
-  else if (tapes.length) s6 = randomItem(tapes).p;
-  else if (ropes.length) s6 = randomItem(ropes).p;
+  const straps = all.filter(x => x.type === 'straps');
+  const headbands = all.filter(x => x.type === 'headband');
+  const slot6Pool = [...ropes, ...tapes, ...straps, ...headbands];
+  const s6 = randomItem(slot6Pool)?.p || null;
   if (s6) slots.push(s6);
 
   // Убираем дубли по ID (на случай если один и тот же товар попал в 2 слота)
@@ -565,7 +577,12 @@ function buildRecommendations(currentProduct) {
   // Полезно проверять что все slug'и парсятся правильно
   if (typeof window !== 'undefined' && console && console.groupCollapsed) {
     const usedIds = new Set(finalSlots.map(p => p.id));
-    const unrecognized = all.filter(x => x.type === 'other');
+    // Не шумим в логе аксессуарами и оборудованием — они и не должны попадать в рекомендации
+    const unrecognized = all.filter(x =>
+      x.type === 'other' &&
+      x.p.category !== 'accessories' &&
+      x.p.category !== 'equipment'
+    );
     const recognizedButUnused = all.filter(x =>
       !usedIds.has(x.p.id) && x.type !== 'other'
     );
