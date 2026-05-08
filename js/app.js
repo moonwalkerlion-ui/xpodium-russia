@@ -165,6 +165,9 @@ async function openProductModal(productId) {
       ).join('')}</div>`
     : '';
 
+  // Блок "Вам ещё может понравиться" — показываем товары из противоположной категории
+  const recommendationsHtml = buildRecommendations(p);
+
   const modal = document.createElement('div');
   modal.className = 'product-modal open';
   modal.innerHTML = `
@@ -193,6 +196,7 @@ async function openProductModal(productId) {
           <div class="pm-options" data-group="color">${colorsHtml}</div>
         ` : ''}
         <button class="pm-add" id="pmAdd">Добавить в корзину</button>
+        ${recommendationsHtml}
       </div>
     </div>
   `;
@@ -276,6 +280,19 @@ async function openProductModal(productId) {
       showImage(currentImageIndex + 1);
       return;
     }
+    // Клик по карточке рекомендации — открыть этот товар (закрыть текущую и открыть новую)
+    const recCard = e.target.closest('.pm-rec-card[data-rec-id]');
+    if (recCard) {
+      e.preventDefault();
+      e.stopPropagation();
+      const recId = recCard.dataset.recId;
+      if (recId) {
+        closeModal();
+        // Небольшая задержка чтобы модалка успела закрыться
+        setTimeout(() => openProductModal(recId), 50);
+      }
+      return;
+    }
   });
 
   // Клавиши стрелок для навигации
@@ -304,6 +321,24 @@ async function openProductModal(productId) {
         }
       }
     });
+
+    // На десктопе показываем всплывашку при наведении (если цвет обрезан)
+    // Удаляем нативный title чтобы не дублировать с кастомным
+    if (el.classList.contains('pm-color')) {
+      el.removeAttribute('title');
+      el.addEventListener('mouseenter', () => {
+        const labelEl = el.querySelector('.pm-option-label');
+        if (labelEl && labelEl.scrollWidth > labelEl.clientWidth + 2) {
+          showColorTooltip(el, el.dataset.color, true);
+        }
+      });
+      el.addEventListener('mouseleave', () => {
+        document.querySelectorAll('.color-tooltip.hover-tooltip').forEach(t => {
+          t.classList.remove('visible');
+          setTimeout(() => t.remove(), 200);
+        });
+      });
+    }
   });
 
   // добавление в корзину
@@ -315,13 +350,18 @@ async function openProductModal(productId) {
 }
 
 // --- Корзина ---
-// Показать всплывашку с полным названием цвета (для обрезанных кнопок на мобиле)
-function showColorTooltip(targetEl, fullName) {
-  // Удаляем предыдущую всплывашку если есть
-  document.querySelectorAll('.color-tooltip').forEach(t => t.remove());
+// Показать всплывашку с полным названием цвета
+// isHover=true — тултип не исчезает автоматически (для hover на десктопе), убирается через mouseleave
+function showColorTooltip(targetEl, fullName, isHover) {
+  // Удаляем предыдущие всплывашки этого типа
+  if (isHover) {
+    document.querySelectorAll('.color-tooltip.hover-tooltip').forEach(t => t.remove());
+  } else {
+    document.querySelectorAll('.color-tooltip:not(.hover-tooltip)').forEach(t => t.remove());
+  }
 
   const tooltip = document.createElement('div');
-  tooltip.className = 'color-tooltip';
+  tooltip.className = 'color-tooltip' + (isHover ? ' hover-tooltip' : '');
   tooltip.textContent = fullName;
   document.body.appendChild(tooltip);
 
@@ -343,11 +383,87 @@ function showColorTooltip(targetEl, fullName) {
   // Появление с анимацией
   requestAnimationFrame(() => tooltip.classList.add('visible'));
 
-  // Убираем через 1.5 секунды
-  setTimeout(() => {
-    tooltip.classList.remove('visible');
-    setTimeout(() => tooltip.remove(), 200);
-  }, 1500);
+  // Только для тапа (не hover) — убираем через 1.5 секунды
+  if (!isHover) {
+    setTimeout(() => {
+      tooltip.classList.remove('visible');
+      setTimeout(() => tooltip.remove(), 200);
+    }, 1500);
+  }
+}
+
+// Перемешивает массив (Fisher-Yates) — каждый раз даёт разный порядок
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Строит блок "Вам ещё может понравиться"
+function buildRecommendations(currentProduct) {
+  if (!currentProduct || !currentProduct.category) return '';
+  // Для аксессуаров не показываем рекомендации
+  if (currentProduct.category === 'accessories') return '';
+
+  // Маппинг категорий: какую противоположную показывать
+  const oppositeCategory = {
+    'gear': 'apparel',
+    'apparel': 'gear',
+    'equipment': 'gear',
+  };
+  const targetCategory = oppositeCategory[currentProduct.category];
+  if (!targetCategory) return '';
+
+  // Берём 4 случайных товара из противоположной категории, исключая текущий
+  const candidates = PRODUCTS.filter(p =>
+    p.category === targetCategory && p.id !== currentProduct.id
+  );
+  if (!candidates.length) return '';
+
+  let recommendations = shuffleArray(candidates).slice(0, 4);
+
+  // Бонус: добавляем 1 случайный рюкзак (если категория аксессуары/bags есть в каталоге)
+  // Ищем товары с "рюкзак" / "backpack" в имени или категории "bags"
+  const backpacks = PRODUCTS.filter(p =>
+    p.id !== currentProduct.id &&
+    !recommendations.some(r => r.id === p.id) &&
+    (
+      (p.subcategory === 'bags') ||
+      (p.name_ru && /рюкзак/i.test(p.name_ru)) ||
+      (p.id && /backpack/i.test(p.id))
+    )
+  );
+  if (backpacks.length) {
+    const randomBackpack = backpacks[Math.floor(Math.random() * backpacks.length)];
+    // Добавляем в конец (заменяем 4-ый если есть, или дописываем 5-ым)
+    recommendations.push(randomBackpack);
+  }
+
+  if (!recommendations.length) return '';
+
+  const cardsHtml = recommendations.map(p => {
+    const img = (p.images && p.images[0]) ? productImageUrl(p.images[0]) : '';
+    return `
+      <a class="pm-rec-card" href="?product=${encodeURIComponent(p.id)}" data-rec-id="${p.id}">
+        <div class="pm-rec-img">${img ? `<img src="${img}" alt="${p.name_ru}" loading="lazy">` : ''}</div>
+        <div class="pm-rec-info">
+          <div class="pm-rec-brand">${p.brand}</div>
+          <div class="pm-rec-name">${p.name_ru}</div>
+          <div class="pm-rec-price">${formatPrice(p.price)}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
+
+  return `
+    <div class="pm-recommendations">
+      <div class="pm-rec-title">Вам ещё может понравиться</div>
+      <div class="pm-rec-grid">${cardsHtml}</div>
+    </div>
+  `;
 }
 
 function addToCart(product, size, color) {
