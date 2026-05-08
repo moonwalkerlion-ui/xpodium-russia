@@ -483,11 +483,48 @@ function randomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// Строит блок "Вам ещё может понравиться" — 6 фиксированных слотов
+// Хелпер: формирует HTML блока рекомендаций (используется и обычной и equipment-веткой)
+function renderRecommendationsHtml(items) {
+  if (!items || !items.length) return null;
+  const cardsHtml = items.map(p => {
+    const img = (p.images && p.images[0]) ? productImageUrl(p.images[0]) : '';
+    return `
+      <a class="pm-rec-card" href="?product=${encodeURIComponent(p.id)}" data-rec-id="${p.id}">
+        <div class="pm-rec-img">${img ? `<img src="${img}" alt="${p.name_ru}" loading="lazy">` : ''}</div>
+        <div class="pm-rec-info">
+          <div class="pm-rec-brand">${p.brand}</div>
+          <div class="pm-rec-name">${p.name_ru}</div>
+          <div class="pm-rec-price">${formatPrice(p.price)}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
+  return {
+    cardsHtml,
+    inlineHtml: `
+      <div class="pm-recommendations">
+        <div class="pm-rec-title">Вам ещё может понравиться</div>
+        <div class="pm-rec-grid">${cardsHtml}</div>
+      </div>
+    `,
+  };
+}
+
+// Строит блок "Вам ещё может понравиться"
+// — для основного каталога: 6 фиксированных слотов с разными типами товаров
+// — для оборудования (equipment): до 6 рандомных товаров из этой же категории
 function buildRecommendations(currentProduct) {
   if (!currentProduct) return null;
-  // Для аксессуаров (брелки, носки, рюкзаки) рекомендации не показываем
-  if (currentProduct.category === 'accessories') return null;
+
+  // Для оборудования — рандомные товары из той же категории equipment
+  // (например к штанге предлагать диски, замки, грифы и т.п.)
+  if (currentProduct.category === 'equipment') {
+    const candidates = PRODUCTS.filter(p =>
+      p.id !== currentProduct.id && p.category === 'equipment'
+    );
+    const picked = shuffleArray(candidates).slice(0, 6);
+    return renderRecommendationsHtml(picked);
+  }
 
   const currentId = currentProduct.id;
   const currentGender = detectGender(currentProduct);
@@ -606,30 +643,7 @@ function buildRecommendations(currentProduct) {
 
   if (!finalSlots.length) return null;
 
-  const cardsHtml = finalSlots.map(p => {
-    const img = (p.images && p.images[0]) ? productImageUrl(p.images[0]) : '';
-    return `
-      <a class="pm-rec-card" href="?product=${encodeURIComponent(p.id)}" data-rec-id="${p.id}">
-        <div class="pm-rec-img">${img ? `<img src="${img}" alt="${p.name_ru}" loading="lazy">` : ''}</div>
-        <div class="pm-rec-info">
-          <div class="pm-rec-brand">${p.brand}</div>
-          <div class="pm-rec-name">${p.name_ru}</div>
-          <div class="pm-rec-price">${formatPrice(p.price)}</div>
-        </div>
-      </a>
-    `;
-  }).join('');
-
-  // Возвращаем объект — есть "встроенный" блок (для мобилы) и только сетка карточек (для боковой колонки на десктопе)
-  return {
-    cardsHtml,
-    inlineHtml: `
-      <div class="pm-recommendations">
-        <div class="pm-rec-title">Вам ещё может понравиться</div>
-        <div class="pm-rec-grid">${cardsHtml}</div>
-      </div>
-    `,
-  };
+  return renderRecommendationsHtml(finalSlots);
 }
 
 function addToCart(product, size, color) {
