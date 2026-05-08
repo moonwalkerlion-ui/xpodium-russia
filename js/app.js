@@ -196,8 +196,14 @@ async function openProductModal(productId) {
           <div class="pm-options" data-group="color">${colorsHtml}</div>
         ` : ''}
         <button class="pm-add" id="pmAdd">Добавить в корзину</button>
-        ${recommendationsHtml}
+        ${recommendationsHtml ? recommendationsHtml.inlineHtml : ''}
       </div>
+      ${recommendationsHtml ? `
+        <aside class="pm-recommendations-side">
+          <div class="pm-rec-title">Вам ещё может понравиться</div>
+          <div class="pm-rec-grid">${recommendationsHtml.cardsHtml}</div>
+        </aside>
+      ` : ''}
     </div>
   `;
   document.body.appendChild(modal);
@@ -392,6 +398,62 @@ function showColorTooltip(targetEl, fullName, isHover) {
   }
 }
 
+// === Классификация товаров для рекомендаций ===
+// Определяем пол по slug'у/ID товара
+function detectGender(p) {
+  const id = (p.id || '').toLowerCase();
+  const name = (p.name_ru || '').toLowerCase();
+  // Женское
+  if (/(^|[-_])(women|womens|wmn|girls|ladies|wm)([-_]|$)/.test(id) ||
+      /(^|[-_])(zhensk|zhenskiy|zhenskaya|zhensky)/.test(id) ||
+      /женск|девуш|девич/.test(name)) {
+    return 'female';
+  }
+  // Мужское
+  if (/(^|[-_])(men|mens|boys|mn)([-_]|$)/.test(id) ||
+      /(^|[-_])(muzh|muzhskoy|muzhskaya|muzhsky)/.test(id) ||
+      /мужск|муж\.|мужич/.test(name)) {
+    return 'male';
+  }
+  return 'unisex';
+}
+
+// Определяем «тип» товара для слотов
+function detectType(p) {
+  const id = (p.id || '').toLowerCase();
+  const name = (p.name_ru || '').toLowerCase();
+
+  // Накладки
+  if (/grips|nakladki/.test(id) || /накладк/.test(name)) return 'grips';
+  // Пояс
+  if (/belt|poyas/.test(id) || /пояс/.test(name)) return 'belt';
+  // Наколенники
+  if (/knee|sleeves|nakolenniki/.test(id) || /наколенн/.test(name)) return 'knees';
+  // Скакалка
+  if (/rope|skakalka|jump/.test(id) || /скакал/.test(name)) return 'rope';
+  // Тейп / хук-грип
+  if (/tape|hook|teyp/.test(id) || /тейп|хук/.test(name)) return 'tape';
+  // Кистевые ремни
+  if (/wraps|kist/.test(id) || /кистев|обмотк/.test(name)) return 'wraps';
+  // Рюкзак / сумка
+  if (/backpack|bag|rukzak|sumka/.test(id) || /рюкзак|сумк/.test(name)) return 'bag';
+  // Носки
+  if (/sock|noski/.test(id) || /носк/.test(name)) return 'socks';
+  // Брелок
+  if (/keychain|brelok/.test(id) || /брелок|брелк/.test(name)) return 'keychain';
+  // Низ (шорты/штаны/лосины)
+  if (/shorts|pants|leggings|losin|shtany|trous/.test(id) ||
+      /шорт|штан|лосин|брюк|треник/.test(name)) {
+    return 'bottom';
+  }
+  // Верх (футболка/майка/худи)
+  if (/t-?shirt|tshirt|futbolka|mayka|vest|top|hood|sweat/.test(id) ||
+      /футбол|майк|худи|свитш|топ|джемпер|кофт/.test(name)) {
+    return 'top';
+  }
+  return 'other';
+}
+
 // Перемешивает массив (Fisher-Yates) — каждый раз даёт разный порядок
 function shuffleArray(arr) {
   const a = arr.slice();
@@ -402,49 +464,132 @@ function shuffleArray(arr) {
   return a;
 }
 
-// Строит блок "Вам ещё может понравиться"
+// Случайный 50/50
+function coin() {
+  return Math.random() < 0.5;
+}
+
+// Случайный элемент массива
+function randomItem(arr) {
+  if (!arr || !arr.length) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Строит блок "Вам ещё может понравиться" — 6 фиксированных слотов
 function buildRecommendations(currentProduct) {
-  if (!currentProduct || !currentProduct.category) return '';
-  // Для аксессуаров не показываем рекомендации
-  if (currentProduct.category === 'accessories') return '';
+  if (!currentProduct) return null;
+  // Для аксессуаров (брелки, носки, рюкзаки) рекомендации не показываем
+  if (currentProduct.category === 'accessories') return null;
 
-  // Маппинг категорий: какую противоположную показывать
-  const oppositeCategory = {
-    'gear': 'apparel',
-    'apparel': 'gear',
-    'equipment': 'gear',
+  const currentId = currentProduct.id;
+  const currentGender = detectGender(currentProduct);
+
+  // Все товары в каталоге, классифицированные
+  const all = PRODUCTS.filter(p => p.id !== currentId).map(p => ({
+    p,
+    gender: detectGender(p),
+    type: detectType(p),
+  }));
+
+  // Хелпер: фильтр по полу (если открыт мужской — только мужские+унисекс, и наоборот)
+  const matchGender = (item) => {
+    if (currentGender === 'unisex') return true;
+    return item.gender === currentGender || item.gender === 'unisex';
   };
-  const targetCategory = oppositeCategory[currentProduct.category];
-  if (!targetCategory) return '';
 
-  // Берём 4 случайных товара из противоположной категории, исключая текущий
-  const candidates = PRODUCTS.filter(p =>
-    p.category === targetCategory && p.id !== currentProduct.id
-  );
-  if (!candidates.length) return '';
+  const slots = [];
+  const skipped = [];
 
-  let recommendations = shuffleArray(candidates).slice(0, 4);
+  // === Слот 1: рюкзак ИЛИ носки (50/50) ===
+  const wantBag = coin();
+  let s1 = null;
+  const bags = all.filter(x => x.type === 'bag');
+  const socks = all.filter(x => x.type === 'socks');
+  if (wantBag && bags.length) s1 = randomItem(bags).p;
+  else if (!wantBag && socks.length) s1 = randomItem(socks).p;
+  else if (bags.length) s1 = randomItem(bags).p;
+  else if (socks.length) s1 = randomItem(socks).p;
+  if (s1) slots.push(s1);
 
-  // Бонус: добавляем 1 случайный рюкзак (если категория аксессуары/bags есть в каталоге)
-  // Ищем товары с "рюкзак" / "backpack" в имени или категории "bags"
-  const backpacks = PRODUCTS.filter(p =>
-    p.id !== currentProduct.id &&
-    !recommendations.some(r => r.id === p.id) &&
-    (
-      (p.subcategory === 'bags') ||
-      (p.name_ru && /рюкзак/i.test(p.name_ru)) ||
-      (p.id && /backpack/i.test(p.id))
-    )
-  );
-  if (backpacks.length) {
-    const randomBackpack = backpacks[Math.floor(Math.random() * backpacks.length)];
-    // Добавляем в конец (заменяем 4-ый если есть, или дописываем 5-ым)
-    recommendations.push(randomBackpack);
+  // === Слот 2: накладки (приоритет elite-sticky-grips) ===
+  const allGrips = all.filter(x => x.type === 'grips');
+  const elite = allGrips.find(x => /elite/i.test(x.p.id));
+  const otherGrips = allGrips.filter(x => x !== elite);
+  let s2 = null;
+  if (/elite/i.test(currentId)) {
+    // Открыты Elite — показываем НЕ Elite (любые другие накладки)
+    s2 = randomItem(otherGrips)?.p || null;
+  } else {
+    // Не Elite открыты — 50/50 показываем Elite или другие
+    if (elite && coin()) {
+      s2 = elite.p;
+    } else {
+      s2 = randomItem(allGrips)?.p || null;
+    }
+  }
+  if (s2) slots.push(s2);
+
+  // === Слот 3: верх (футболка/майка) с учётом пола ===
+  const tops = all.filter(x => x.type === 'top' && matchGender(x));
+  const s3 = randomItem(tops)?.p || null;
+  if (s3) slots.push(s3);
+
+  // === Слот 4: низ (шорты/штаны/лосины) с учётом пола ===
+  const bottoms = all.filter(x => x.type === 'bottom' && matchGender(x));
+  const s4 = randomItem(bottoms)?.p || null;
+  if (s4) slots.push(s4);
+
+  // === Слот 5: наколенники ===
+  const knees = all.filter(x => x.type === 'knees');
+  const s5 = randomItem(knees)?.p || null;
+  if (s5) slots.push(s5);
+
+  // === Слот 6: скакалка ИЛИ тейп для хук-грипа (50/50) ===
+  const ropes = all.filter(x => x.type === 'rope');
+  const tapes = all.filter(x => x.type === 'tape');
+  let s6 = null;
+  if (coin() && ropes.length) s6 = randomItem(ropes).p;
+  else if (tapes.length) s6 = randomItem(tapes).p;
+  else if (ropes.length) s6 = randomItem(ropes).p;
+  if (s6) slots.push(s6);
+
+  // Убираем дубли по ID (на случай если один и тот же товар попал в 2 слота)
+  const seen = new Set();
+  const finalSlots = slots.filter(p => {
+    if (seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+
+  // Диагностический лог: какие товары не попали в слоты + какие не распознались по типу
+  // Полезно проверять что все slug'и парсятся правильно
+  if (typeof window !== 'undefined' && console && console.groupCollapsed) {
+    const usedIds = new Set(finalSlots.map(p => p.id));
+    const unrecognized = all.filter(x => x.type === 'other');
+    const recognizedButUnused = all.filter(x =>
+      !usedIds.has(x.p.id) && x.type !== 'other'
+    );
+
+    console.groupCollapsed(`[Рекомендации] Открыт: ${currentProduct.id} (тип: ${detectType(currentProduct)}, пол: ${currentGender})`);
+
+    if (unrecognized.length) {
+      console.warn('⚠ НЕ РАСПОЗНАНЫ (тип: other) — нужно проверить slug:');
+      unrecognized.forEach(x => console.warn(`  • ${x.p.id} | ${x.p.name_ru}`));
+    }
+
+    if (recognizedButUnused.length) {
+      console.log('Не попали в слоты этого открытия (это нормально, набор рандомный):');
+      recognizedButUnused.forEach(x =>
+        console.log(`  • ${x.p.id} (тип: ${x.type}, пол: ${x.gender})`)
+      );
+    }
+
+    console.groupEnd();
   }
 
-  if (!recommendations.length) return '';
+  if (!finalSlots.length) return null;
 
-  const cardsHtml = recommendations.map(p => {
+  const cardsHtml = finalSlots.map(p => {
     const img = (p.images && p.images[0]) ? productImageUrl(p.images[0]) : '';
     return `
       <a class="pm-rec-card" href="?product=${encodeURIComponent(p.id)}" data-rec-id="${p.id}">
@@ -458,12 +603,16 @@ function buildRecommendations(currentProduct) {
     `;
   }).join('');
 
-  return `
-    <div class="pm-recommendations">
-      <div class="pm-rec-title">Вам ещё может понравиться</div>
-      <div class="pm-rec-grid">${cardsHtml}</div>
-    </div>
-  `;
+  // Возвращаем объект — есть "встроенный" блок (для мобилы) и только сетка карточек (для боковой колонки на десктопе)
+  return {
+    cardsHtml,
+    inlineHtml: `
+      <div class="pm-recommendations">
+        <div class="pm-rec-title">Вам ещё может понравиться</div>
+        <div class="pm-rec-grid">${cardsHtml}</div>
+      </div>
+    `,
+  };
 }
 
 function addToCart(product, size, color) {
