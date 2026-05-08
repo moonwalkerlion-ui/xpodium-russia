@@ -1,0 +1,8 @@
+# Красивые URL без .html (как было на Netlify)
+/shop         /shop.html         200
+/our-story    /our-story.html    200
+/contact      /contact.html      200
+/partners     /partners.html     200
+/privacy      /privacy.html      200
+/returns      /returns.html      200
+/terms        /terms.html        200
