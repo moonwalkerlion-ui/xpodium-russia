@@ -1,0 +1,50 @@
+name: Deploy to Beget
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # позволяет запустить вручную из вкладки Actions на GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build content (products.json, settings.json)
+        run: node build-content.js
+
+      - name: Deploy to Beget via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./
+          local-dir: ./
+          # Исключаем dev-файлы которые на проде не нужны
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/build-content.js
+            **/migrate-photos.js
+            **/migrate-photos.py
+            **/migrate-photos-v2.py
+            **/fix-product-images.py
+            **/README.md
+            **/netlify.toml
+            **/_redirects
+            **/content/**
+            **/.gitignore
+            **/.DS_Store
+            **/package.json
+            **/package-lock.json
