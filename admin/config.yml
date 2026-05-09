@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: moonwalkerlion-ui/xpodium-russia
   branch: main
+  base_url: https://xpodium-oauth.moonwalkerlion.workers.dev
+  auth_endpoint: auth
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -8,9 +11,9 @@ public_folder: "/images/uploads"
 locale: "ru"
 
 # Настройка показывать превью внутри админки
-site_url: https://xpodium-russia.netlify.app
-display_url: https://xpodium-russia.netlify.app
-logo_url: https://xpodium-russia.netlify.app/images/placeholder.svg
+site_url: https://xpodium-russia.pages.dev
+display_url: https://xpodium-russia.pages.dev
+logo_url: https://xpodium-russia.pages.dev/images/placeholder.svg
 
 collections:
   # ============================
