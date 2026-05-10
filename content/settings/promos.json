@@ -1,3 +1,54 @@
 {
-  "items": []
+  "items": [
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "РУССУ"
+    },
+    {
+      "active": true,
+      "code": "КОРОЛЕВА",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "code": "КРАВТС",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "ИВАШКА"
+    },
+    {
+      "active": true,
+      "code": "ОЛОНЦЕВ",
+      "discount_pct": 12
+    },
+    {
+      "active": true,
+      "code": "САВА",
+      "discount_pct": 13
+    },
+    {
+      "active": true,
+      "code": "ИЛЬИН",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "ЭРДЫНЕЕВА"
+    },
+    {
+      "active": true,
+      "code": "ФЕДОТОВ",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "code": "ЯБУРОВА",
+      "discount_pct": 15
+    }
+  ]
 }
