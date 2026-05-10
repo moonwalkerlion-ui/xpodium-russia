@@ -328,3 +328,26 @@ collections:
             widget: "image"
             required: false
             hint: "Фон под текстом. Если не задано — белый фон."
+
+  # ============================
+  # ПРОМОКОДЫ
+  # ============================
+  - name: "promos"
+    label: "Промокоды"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "list"
+        label: "Список промокодов"
+        file: "content/settings/promos.json"
+        fields:
+          - label: "Промокоды"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.code}} — {{fields.discount_pct}}%"
+            allow_add: true
+            fields:
+              - { label: "Код (буквы/цифры, без пробелов)", name: "code", widget: "string", hint: "Например: WELCOME15. Регистр не важен — клиент может ввести любым." }
+              - { label: "Скидка, %", name: "discount_pct", widget: "number", min: 1, max: 100, value_type: "int", hint: "Процент скидки. Например 10 = -10%." }
+              - { label: "Активен", name: "active", widget: "boolean", default: true, hint: "Отключи галочку чтобы временно деактивировать промо без удаления." }

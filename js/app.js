@@ -340,7 +340,8 @@ async function openProductModal(productId) {
       });
       el.addEventListener('mouseleave', () => {
         document.querySelectorAll('.color-tooltip.hover-tooltip').forEach(t => {
-          t.classList.remove('visible');
+          t.style.opacity = '0';
+          t.style.transform = 'translateY(4px)';
           setTimeout(() => t.remove(), 200);
         });
       });
@@ -357,42 +358,66 @@ async function openProductModal(productId) {
 
 // --- Корзина ---
 // Показать всплывашку с полным названием цвета
-// isHover=true — тултип не исчезает автоматически (для hover на десктопе), убирается через mouseleave
+// Все стили inline — работает независимо от style.css
+// isHover=true — тултип для hover на десктопе (убирается через mouseleave)
+// isHover=false — тултип для тапа на мобиле (исчезает через 1.5с)
 function showColorTooltip(targetEl, fullName, isHover) {
   // Удаляем предыдущие всплывашки этого типа
-  if (isHover) {
-    document.querySelectorAll('.color-tooltip.hover-tooltip').forEach(t => t.remove());
-  } else {
-    document.querySelectorAll('.color-tooltip:not(.hover-tooltip)').forEach(t => t.remove());
-  }
+  const selector = isHover ? '.color-tooltip.hover-tooltip' : '.color-tooltip:not(.hover-tooltip)';
+  document.querySelectorAll(selector).forEach(t => t.remove());
 
   const tooltip = document.createElement('div');
   tooltip.className = 'color-tooltip' + (isHover ? ' hover-tooltip' : '');
   tooltip.textContent = fullName;
+
+  // Все стили — inline, чтобы работало без зависимости от style.css
+  Object.assign(tooltip.style, {
+    position: 'fixed',
+    zIndex: '10000',
+    background: '#0a0a0a',
+    color: '#ffffff',
+    padding: '8px 14px',
+    borderRadius: '6px',
+    fontSize: '15px',
+    fontWeight: '500',
+    fontFamily: 'inherit',
+    whiteSpace: 'nowrap',
+    pointerEvents: 'none',
+    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+    opacity: '0',
+    transform: 'translateY(4px)',
+    transition: 'opacity 0.18s ease, transform 0.18s ease',
+    letterSpacing: '0.01em',
+  });
+
   document.body.appendChild(tooltip);
 
   // Позиционируем над кнопкой
   const rect = targetEl.getBoundingClientRect();
   const tooltipRect = tooltip.getBoundingClientRect();
   let left = rect.left + (rect.width - tooltipRect.width) / 2;
-  // Не выходим за края экрана
   const margin = 8;
   if (left < margin) left = margin;
   if (left + tooltipRect.width > window.innerWidth - margin) {
     left = window.innerWidth - tooltipRect.width - margin;
   }
-  const top = rect.top - tooltipRect.height - 8;
+  const topAbove = rect.top - tooltipRect.height - 8;
+  const finalTop = topAbove < 8 ? rect.bottom + 8 : topAbove;
 
   tooltip.style.left = `${left}px`;
-  tooltip.style.top = `${top < 8 ? rect.bottom + 8 : top}px`;
+  tooltip.style.top = `${finalTop}px`;
 
-  // Появление с анимацией
-  requestAnimationFrame(() => tooltip.classList.add('visible'));
+  // Появление с анимацией (через rAF, чтобы браузер успел отрисовать начальное состояние)
+  requestAnimationFrame(() => {
+    tooltip.style.opacity = '1';
+    tooltip.style.transform = 'translateY(0)';
+  });
 
   // Только для тапа (не hover) — убираем через 1.5 секунды
   if (!isHover) {
     setTimeout(() => {
-      tooltip.classList.remove('visible');
+      tooltip.style.opacity = '0';
+      tooltip.style.transform = 'translateY(4px)';
       setTimeout(() => tooltip.remove(), 200);
     }, 1500);
   }
@@ -646,6 +671,177 @@ function buildRecommendations(currentProduct) {
   return renderRecommendationsHtml(finalSlots);
 }
 
+// =====================================================
+// СКИДКИ ОТ СУММЫ ЗАКАЗА + ПРОМОКОДЫ
+// =====================================================
+// Логика «А»: применяется БОЛЬШАЯ из двух (auto-discount от суммы или промокод).
+// Не складываются — клиенту считается одна, наибольшая.
+
+// Состояние:
+let APPLIED_PROMO = null;       // { code, discount_pct } если применён
+let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — отсортировано по возрастанию
+let PROMO_CODES = [];           // [{ code, discount_pct, active }] — только активные
+let SHOP_SETTINGS_LOADED = false;
+
+// Парсеры. Поддерживают и числа и форматированные строки из админки ("10 000 ₽", "5%")
+function parseRubleAmount(v) {
+  if (typeof v === 'number') return v;
+  if (!v) return 0;
+  // Убираем всё кроме цифр (пробелы между разрядами, символ ₽, точки и т.п.)
+  const digits = String(v).replace(/[^\d]/g, '');
+  return parseInt(digits, 10) || 0;
+}
+function parsePercent(v) {
+  if (typeof v === 'number') return v;
+  if (!v) return 0;
+  const m = String(v).match(/(\d+(?:[.,]\d+)?)/);
+  return m ? parseFloat(m[1].replace(',', '.')) : 0;
+}
+
+// Загружает settings.json (генерируется build-content.js из content/settings/*.json)
+// и заполняет DISCOUNT_TIERS + PROMO_CODES за один запрос.
+async function loadShopSettings() {
+  if (SHOP_SETTINGS_LOADED) return;
+  SHOP_SETTINGS_LOADED = true;
+  try {
+    const res = await fetch('settings.json?v=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    // Скидки от суммы (settings.home.discounts)
+    const d = data.home && data.home.discounts;
+    if (d && d.enabled !== false && Array.isArray(d.tiers)) {
+      DISCOUNT_TIERS = d.tiers
+        .map(t => ({
+          minAmount: parseRubleAmount(t.amount),
+          percent: parsePercent(t.discount),
+        }))
+        .filter(t => t.minAmount > 0 && t.percent > 0)
+        .sort((a, b) => a.minAmount - b.minAmount);
+    }
+
+    // Промокоды (settings.promos.items)
+    const p = data.promos;
+    if (p && Array.isArray(p.items)) {
+      PROMO_CODES = p.items
+        .filter(x => x && x.active !== false && x.code)
+        .map(x => ({
+          code: String(x.code).trim().toUpperCase(),
+          discount_pct: parsePercent(x.discount_pct),
+        }))
+        .filter(x => x.code && x.discount_pct > 0);
+    }
+  } catch (e) {
+    console.warn('[Shop settings] загрузка не удалась', e);
+  }
+}
+
+// Совместимость со старыми вызовами в инициализации
+async function loadDiscountTiers() {
+  await loadShopSettings();
+  return DISCOUNT_TIERS;
+}
+async function loadPromoCodes() {
+  await loadShopSettings();
+  return PROMO_CODES;
+}
+
+// Возвращает % автоматической скидки для данной суммы (берёт максимально подходящий уровень)
+function findAutoDiscountPercent(subtotal) {
+  if (!DISCOUNT_TIERS.length) return 0;
+  let best = 0;
+  for (const t of DISCOUNT_TIERS) {
+    if (subtotal >= t.minAmount && t.percent > best) best = t.percent;
+  }
+  return best;
+}
+
+// Полный расчёт корзины со скидками
+function cartCalculations() {
+  const subtotal = CART.reduce((s, i) => s + i.price * i.qty, 0);
+  const autoPercent = findAutoDiscountPercent(subtotal);
+  const promoPercent = APPLIED_PROMO ? parsePercent(APPLIED_PROMO.discount_pct) : 0;
+
+  // Вариант А — побеждает бóльшая скидка
+  let appliedSource = null;
+  let appliedPercent = 0;
+  if (autoPercent >= promoPercent && autoPercent > 0) {
+    appliedSource = 'auto';
+    appliedPercent = autoPercent;
+  } else if (promoPercent > 0) {
+    appliedSource = 'promo';
+    appliedPercent = promoPercent;
+  }
+
+  const discountAmount = Math.round(subtotal * appliedPercent / 100);
+  const total = subtotal - discountAmount;
+
+  // Найдём минимальную сумму следующего уровня (для подсказки «доберите до...»)
+  const nextTier = DISCOUNT_TIERS.find(t => subtotal < t.minAmount);
+
+  return {
+    subtotal,
+    appliedSource,    // 'auto' | 'promo' | null
+    appliedPercent,
+    discountAmount,
+    total,
+    autoPercent,      // для информации
+    promoPercent,
+    nextTier,         // следующий уровень который ещё не достигнут
+  };
+}
+
+// Применить промокод по коду. Возвращает { ok: true } или { ok: false, error }.
+function applyPromoCode(rawCode) {
+  const trimmed = String(rawCode || '').trim().toUpperCase();
+  if (!trimmed) {
+    return { ok: false, error: 'Введите промокод' };
+  }
+  const found = PROMO_CODES.find(p =>
+    String(p.code || '').trim().toUpperCase() === trimmed
+  );
+  if (!found) {
+    return { ok: false, error: 'Такого промокода нет' };
+  }
+  APPLIED_PROMO = {
+    code: String(found.code).trim().toUpperCase(),
+    discount_pct: parsePercent(found.discount_pct),
+  };
+  return { ok: true };
+}
+
+function clearPromoCode() {
+  APPLIED_PROMO = null;
+}
+
+// Хендлеры для UI (вызываются из onclick в renderCart)
+function applyPromoFromInput() {
+  const input = document.getElementById('promoInput');
+  const msgEl = document.getElementById('promoMessage');
+  if (!input) return;
+  const result = applyPromoCode(input.value);
+  if (!result.ok) {
+    if (msgEl) {
+      msgEl.textContent = result.error;
+      msgEl.style.color = '#c83030';
+    }
+    return;
+  }
+  // Успех — рендерим заново, поле сменится на «Применён: ...»
+  renderCart();
+}
+
+function clearPromoAndRender() {
+  clearPromoCode();
+  renderCart();
+}
+
+// Делаем доступными для inline onclick
+if (typeof window !== 'undefined') {
+  window.applyPromoFromInput = applyPromoFromInput;
+  window.clearPromoAndRender = clearPromoAndRender;
+}
+
 function addToCart(product, size, color) {
   // один "ключ" в корзине = товар + размер + цвет
   const key = `${product.id}|${size||''}|${color||''}`;
@@ -702,38 +898,102 @@ function renderCart() {
   const itemsEl = document.getElementById('cartItems');
   if (!itemsEl) return;
 
+  // Пустая корзина
   if (!CART.length) {
     itemsEl.innerHTML = '<div class="cart-empty">Корзина пуста<br><br>Добавьте что-нибудь из каталога</div>';
-  } else {
-    itemsEl.innerHTML = CART.map(i => `
-      <div class="cart-item">
-        <div class="cart-item-img cart-item-clickable" data-product-id="${i.id}">
-          ${i.image ? `<img src="${productImageUrl(i.image)}" alt="${i.name}">` : ''}
-        </div>
-        <div class="cart-item-info">
-          <div class="cart-item-name cart-item-clickable" data-product-id="${i.id}">${i.name}</div>
-          <div class="cart-item-meta">
-            ${i.brand} ${i.size ? '· ' + i.size : ''} ${i.color ? '· ' + i.color : ''}
-          </div>
-          <div class="qty">
-            <button onclick="updateQty('${i.key}', -1)">−</button>
-            <span>${i.qty}</span>
-            <button onclick="updateQty('${i.key}', 1)">+</button>
-          </div>
-        </div>
-        <div class="cart-item-right">
-          <div class="cart-item-price">${formatPrice(i.price * i.qty)}</div>
-          <button class="cart-item-remove" onclick="removeItem('${i.key}')">Удалить</button>
-        </div>
-      </div>
-    `).join('');
+    const totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = formatPrice(0);
+    const checkoutBtn = document.getElementById('cartCheckout');
+    if (checkoutBtn) checkoutBtn.disabled = true;
+    return;
   }
 
+  // Список товаров
+  const itemsHtml = CART.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-img cart-item-clickable" data-product-id="${i.id}">
+        ${i.image ? `<img src="${productImageUrl(i.image)}" alt="${i.name}">` : ''}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name cart-item-clickable" data-product-id="${i.id}">${i.name}</div>
+        <div class="cart-item-meta">
+          ${i.brand} ${i.size ? '· ' + i.size : ''} ${i.color ? '· ' + i.color : ''}
+        </div>
+        <div class="qty">
+          <button onclick="updateQty('${i.key}', -1)">−</button>
+          <span>${i.qty}</span>
+          <button onclick="updateQty('${i.key}', 1)">+</button>
+        </div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price">${formatPrice(i.price * i.qty)}</div>
+        <button class="cart-item-remove" onclick="removeItem('${i.key}')">Удалить</button>
+      </div>
+    </div>
+  `).join('');
+
+  // Расчёт скидок
+  const calc = cartCalculations();
+
+  // Блок промокода (либо форма ввода, либо «применён»)
+  let promoBlock;
+  if (APPLIED_PROMO) {
+    const wins = calc.appliedSource === 'promo';
+    promoBlock = `
+      <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-top:14px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
+        <span>Промокод <strong>${APPLIED_PROMO.code}</strong> · −${APPLIED_PROMO.discount_pct}%${wins ? '' : ' (не применён — авто-скидка выгоднее)'}</span>
+        <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Убрать</button>
+      </div>
+    `;
+  } else {
+    promoBlock = `
+      <div class="cart-promo-form" style="display:flex;gap:8px;margin-top:14px;">
+        <input type="text" id="promoInput" placeholder="Промокод" autocomplete="off"
+               style="flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;"
+               onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromoFromInput();}">
+        <button onclick="applyPromoFromInput()"
+                style="padding:10px 18px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;">Применить</button>
+      </div>
+      <div id="promoMessage" style="font-size:13px;margin-top:6px;min-height:18px;"></div>
+    `;
+  }
+
+  // Блок «Подытог + Скидка» (только если есть скидка)
+  let summaryHtml = '';
+  if (calc.appliedPercent > 0) {
+    const label = calc.appliedSource === 'promo'
+      ? `Промокод ${APPLIED_PROMO.code} (−${calc.appliedPercent}%)`
+      : `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
+    summaryHtml = `
+      <div class="cart-summary" style="margin-top:14px;padding-top:14px;border-top:1px solid #eee;font-size:14px;">
+        <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px;">
+          <span>Подытог:</span>
+          <span>${formatPrice(calc.subtotal)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;color:#0a8a3e;font-weight:500;">
+          <span>${label}:</span>
+          <span>−${formatPrice(calc.discountAmount)}</span>
+        </div>
+      </div>
+    `;
+  } else if (calc.nextTier) {
+    // Подсказка «доберите до следующего уровня»
+    const need = calc.nextTier.minAmount - calc.subtotal;
+    summaryHtml = `
+      <div class="cart-next-tier" style="margin-top:14px;padding:10px 12px;background:#f7f7f7;border-radius:6px;font-size:13px;color:#555;text-align:center;">
+        Доберите ${formatPrice(need)} — получите скидку ${calc.nextTier.percent}%
+      </div>
+    `;
+  }
+
+  itemsEl.innerHTML = itemsHtml + promoBlock + summaryHtml;
+
+  // Итоговая сумма с учётом скидки
   const totalEl = document.getElementById('cartTotal');
-  if (totalEl) totalEl.textContent = formatPrice(cartTotal());
+  if (totalEl) totalEl.textContent = formatPrice(calc.total);
 
   const checkoutBtn = document.getElementById('cartCheckout');
-  if (checkoutBtn) checkoutBtn.disabled = CART.length === 0;
+  if (checkoutBtn) checkoutBtn.disabled = false;
 }
 
 function openCart() {
@@ -749,6 +1009,8 @@ function closeCart() {
 
 function checkoutToTelegram() {
   if (!CART.length) return;
+  const calc = cartCalculations();
+
   let msg = 'Здравствуйте! Хочу оформить заказ:\n\n';
   CART.forEach((i, idx) => {
     msg += `${idx + 1}. ${i.name}`;
@@ -756,7 +1018,19 @@ function checkoutToTelegram() {
     if (i.color) msg += ` · ${i.color}`;
     msg += ` — ${i.qty} шт — ${formatPrice(i.price * i.qty)}\n`;
   });
-  msg += `\nИтого: ${formatPrice(cartTotal())}\n\n`;
+
+  if (calc.appliedPercent > 0) {
+    msg += `\nПодытог: ${formatPrice(calc.subtotal)}\n`;
+    if (calc.appliedSource === 'promo') {
+      msg += `Промокод ${APPLIED_PROMO.code}: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
+    } else {
+      msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
+    }
+    msg += `Итого: ${formatPrice(calc.total)}\n\n`;
+  } else {
+    msg += `\nИтого: ${formatPrice(calc.total)}\n\n`;
+  }
+
   msg += `Имя: \nГород: \nАдрес доставки: \nСпособ оплаты: `;
 
   // Используем orderTelegramUrl (личный TG для заказов), а если его нет — обычный telegramUrl
@@ -828,6 +1102,12 @@ document.addEventListener('DOMContentLoaded', () => {
       openProductModal(productId);
     }
   })();
+
+  // Загружаем настройки скидок и промокоды в фоне
+  // (после загрузки — перерендер корзины чтобы подсказка про скидки появилась сразу)
+  Promise.all([loadDiscountTiers(), loadPromoCodes()]).then(() => {
+    renderCart();
+  });
 
   renderCart();
 });
