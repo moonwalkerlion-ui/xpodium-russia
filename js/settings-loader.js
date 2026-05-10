@@ -369,6 +369,11 @@ function renderList(selector, items) {
 // Простой markdown → HTML парсер для юридических страниц
 function renderMarkdown(md) {
   if (!md) return '';
+
+  // Убираем обратные слэши которыми Decap CMS экранирует [ и ]
+  // (без этого на странице видны буквальные \ перед/после данных)
+  md = md.replace(/\\([\[\]])/g, '$1');
+
   // Подставляем легальные данные если они уже загружены
   if (SETTINGS && SETTINGS.legal) {
     md = md.replace(/\[ФИО владельца\]/g, SETTINGS.legal.owner_full_name || '[ФИО]');
@@ -397,10 +402,10 @@ function renderMarkdown(md) {
     return `<a href="${url}"${target}>${text}</a>`;
   });
 
-  // Списки: группа подряд идущих строк начинающихся с "- "
-  html = html.replace(/(?:^- .+(?:\n|$))+/gm, (block) => {
+  // Списки: группа подряд идущих строк начинающихся с "- " или "* "
+  html = html.replace(/(?:^[-*] .+(?:\n|$))+/gm, (block) => {
     const items = block.trim().split(/\n/).map(line => {
-      const text = line.replace(/^- /, '');
+      const text = line.replace(/^[-*] /, '');
       return `<li>${text}</li>`;
     }).join('');
     return `<ul>${items}</ul>`;
