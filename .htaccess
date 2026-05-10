@@ -1,0 +1,11 @@
+# Включаем модуль перезаписи URL
+RewriteEngine On
+
+# Если запрос к существующему файлу или папке — отдаём как есть (картинки, css, js, и т.п.)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Если запрос к /something и существует /something.html — отдаём его
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
