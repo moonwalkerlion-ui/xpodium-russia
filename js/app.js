@@ -898,9 +898,21 @@ function renderCart() {
   const itemsEl = document.getElementById('cartItems');
   if (!itemsEl) return;
 
+  // Готовим контейнер для промо+скидки в футере (вне прокрутки, всегда виден)
+  // Создаём один раз и переиспользуем при последующих рендерах
+  const footerEl = document.querySelector('.cart-footer');
+  const totalRow = footerEl ? footerEl.querySelector('.cart-total') : null;
+  let extrasEl = footerEl ? footerEl.querySelector('#cartExtras') : null;
+  if (footerEl && totalRow && !extrasEl) {
+    extrasEl = document.createElement('div');
+    extrasEl.id = 'cartExtras';
+    footerEl.insertBefore(extrasEl, totalRow);
+  }
+
   // Пустая корзина
   if (!CART.length) {
     itemsEl.innerHTML = '<div class="cart-empty">Корзина пуста<br><br>Добавьте что-нибудь из каталога</div>';
+    if (extrasEl) extrasEl.innerHTML = '';
     const totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = formatPrice(0);
     const checkoutBtn = document.getElementById('cartCheckout');
@@ -908,7 +920,7 @@ function renderCart() {
     return;
   }
 
-  // Список товаров
+  // Список товаров — только в прокручиваемую область
   const itemsHtml = CART.map(i => `
     <div class="cart-item">
       <div class="cart-item-img cart-item-clickable" data-product-id="${i.id}">
@@ -932,6 +944,8 @@ function renderCart() {
     </div>
   `).join('');
 
+  itemsEl.innerHTML = itemsHtml;
+
   // Расчёт скидок
   const calc = cartCalculations();
 
@@ -940,21 +954,21 @@ function renderCart() {
   if (APPLIED_PROMO) {
     const wins = calc.appliedSource === 'promo';
     promoBlock = `
-      <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-top:14px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
+      <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
         <span>Промокод <strong>${APPLIED_PROMO.code}</strong> · −${APPLIED_PROMO.discount_pct}%${wins ? '' : ' (не применён — авто-скидка выгоднее)'}</span>
         <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Убрать</button>
       </div>
     `;
   } else {
     promoBlock = `
-      <div class="cart-promo-form" style="display:flex;gap:8px;margin-top:14px;">
+      <div class="cart-promo-form" style="display:flex;gap:8px;margin-bottom:6px;">
         <input type="text" id="promoInput" placeholder="Промокод" autocomplete="off"
-               style="flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;"
+               style="flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;background:#fff;color:#0a0a0a;"
                onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromoFromInput();}">
         <button onclick="applyPromoFromInput()"
                 style="padding:10px 18px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;">Применить</button>
       </div>
-      <div id="promoMessage" style="font-size:13px;margin-top:6px;min-height:18px;"></div>
+      <div id="promoMessage" style="font-size:13px;margin-bottom:8px;min-height:18px;"></div>
     `;
   }
 
@@ -965,7 +979,7 @@ function renderCart() {
       ? `Промокод ${APPLIED_PROMO.code} (−${calc.appliedPercent}%)`
       : `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
     summaryHtml = `
-      <div class="cart-summary" style="margin-top:14px;padding-top:14px;border-top:1px solid #eee;font-size:14px;">
+      <div class="cart-summary" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee;font-size:14px;">
         <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px;">
           <span>Подытог:</span>
           <span>${formatPrice(calc.subtotal)}</span>
@@ -980,13 +994,16 @@ function renderCart() {
     // Подсказка «доберите до следующего уровня»
     const need = calc.nextTier.minAmount - calc.subtotal;
     summaryHtml = `
-      <div class="cart-next-tier" style="margin-top:14px;padding:10px 12px;background:#f7f7f7;border-radius:6px;font-size:13px;color:#555;text-align:center;">
+      <div class="cart-next-tier" style="margin-bottom:12px;padding:10px 12px;background:#f7f7f7;border-radius:6px;font-size:13px;color:#555;text-align:center;">
         Доберите ${formatPrice(need)} — получите скидку ${calc.nextTier.percent}%
       </div>
     `;
   }
 
-  itemsEl.innerHTML = itemsHtml + promoBlock + summaryHtml;
+  // Промо-форма + summary — в футер (всегда видны, не уплывают за прокруткой)
+  if (extrasEl) {
+    extrasEl.innerHTML = promoBlock + summaryHtml;
+  }
 
   // Итоговая сумма с учётом скидки
   const totalEl = document.getElementById('cartTotal');
