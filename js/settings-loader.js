@@ -374,14 +374,6 @@ function renderMarkdown(md) {
   // (без этого на странице видны буквальные \ перед/после данных)
   md = md.replace(/\\([\[\]])/g, '$1');
 
-  // Подставляем легальные данные если они уже загружены
-  if (SETTINGS && SETTINGS.legal) {
-    md = md.replace(/\[ФИО владельца\]/g, SETTINGS.legal.owner_full_name || '[ФИО]');
-    md = md.replace(/\[ФИО\]/g, SETTINGS.legal.owner_full_name || '[ФИО]');
-    md = md.replace(/\[ИНН\]/g, SETTINGS.legal.inn || '[ИНН]');
-    md = md.replace(/\[ОГРНИП\]/g, SETTINGS.legal.ogrnip || '[ОГРНИП]');
-  }
-
   // Экранируем HTML
   let html = md
     .replace(/&/g, '&amp;')
