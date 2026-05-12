@@ -3,51 +3,56 @@
     {
       "active": true,
       "discount_pct": 15,
-      "code": "РУССУ"
+      "code": "Russu"
     },
     {
       "active": true,
-      "code": "КОРОЛЕВА",
+      "code": "Koroleva",
       "discount_pct": 15
     },
     {
       "active": true,
-      "code": "КРАВТС",
-      "discount_pct": 15
-    },
-    {
-      "active": true,
-      "discount_pct": 15,
-      "code": "ИВАШКА"
-    },
-    {
-      "active": true,
-      "code": "ОЛОНЦЕВ",
-      "discount_pct": 12
-    },
-    {
-      "active": true,
-      "code": "САВА",
-      "discount_pct": 13
-    },
-    {
-      "active": true,
-      "code": "ИЛЬИН",
+      "code": "Kravts",
       "discount_pct": 15
     },
     {
       "active": true,
       "discount_pct": 15,
-      "code": "ЭРДЫНЕЕВА"
+      "code": "Ivashka"
     },
     {
       "active": true,
-      "code": "ФЕДОТОВ",
+      "code": "Olontsev",
       "discount_pct": 15
     },
     {
       "active": true,
-      "code": "ЯБУРОВА",
+      "code": "Sava",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "code": "Ilin",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "Erdyneeva"
+    },
+    {
+      "active": true,
+      "code": "Fedotov",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "code": "Furia",
+      "discount_pct": 15
+    },
+    {
+      "active": true,
+      "code": "Gorokhov",
       "discount_pct": 15
     }
   ]
