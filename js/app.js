@@ -955,7 +955,7 @@ function renderCart() {
     const wins = calc.appliedSource === 'promo';
     promoBlock = `
       <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
-        <span>Промокод <strong>${APPLIED_PROMO.code}</strong> · −${APPLIED_PROMO.discount_pct}%${wins ? '' : ' (не применён — авто-скидка выгоднее)'}</span>
+        <span>Промокод <strong>${APPLIED_PROMO.code}</strong> −${APPLIED_PROMO.discount_pct}%${wins ? '' : ' (не применён — авто-скидка выгоднее)'}</span>
         <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Убрать</button>
       </div>
     `;
@@ -981,7 +981,7 @@ function renderCart() {
     summaryHtml = `
       <div class="cart-summary" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee;font-size:14px;">
         <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px;">
-          <span>Подытог:</span>
+          <span>Сумма заказа:</span>
           <span>${formatPrice(calc.subtotal)}</span>
         </div>
         <div style="display:flex;justify-content:space-between;color:#0a8a3e;font-weight:500;">
@@ -1037,7 +1037,7 @@ function checkoutToTelegram() {
   });
 
   if (calc.appliedPercent > 0) {
-    msg += `\nПодытог: ${formatPrice(calc.subtotal)}\n`;
+    msg += `\nСумма заказа: ${formatPrice(calc.subtotal)}\n`;
     if (calc.appliedSource === 'promo') {
       msg += `Промокод ${APPLIED_PROMO.code}: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
     } else {
