@@ -266,6 +266,16 @@ collections:
             summary: "{{fields.text}}"
             field: { label: "Фраза", name: "text", widget: "string" }
 
+      # --- Подарок при заказе ---
+      - name: "gift"
+        label: "Подарок при заказе"
+        file: "content/settings/gift.json"
+        fields:
+          - { label: "Включить акцию", name: "enabled", widget: "boolean", default: false, hint: "Выключи когда акция закончится — подарок перестанет добавляться" }
+          - { label: "Сумма заказа от (₽)", name: "min_amount", widget: "number", default: 5000, min: 0, hint: "При сумме корзины от этого значения товар добавляется как подарок" }
+          - { label: "ID товара-подарка", name: "product_id", widget: "string", default: "sweat-band", hint: "ID товара из URL. Например для https://сайт/shop.html?cat=gear&product=sweat-band — это sweat-band" }
+          - { label: "Пометка к подарку", name: "note", widget: "string", default: "укажите цвет менеджеру", required: false, hint: "Текст под названием подарка в корзине" }
+
       # --- Контакты ---
       - name: "contacts"
         label: "Контакты и соцсети"

@@ -681,6 +681,7 @@ function buildRecommendations(currentProduct) {
 let APPLIED_PROMO = null;       // { code, discount_pct } если применён
 let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — отсортировано по возрастанию
 let PROMO_CODES = [];           // [{ code, discount_pct, active }] — только активные
+let GIFT_CONFIG = null;         // { minAmount, productId, note } или null если выключено
 let SHOP_SETTINGS_LOADED = false;
 
 // Парсеры. Поддерживают и числа и форматированные строки из админки ("10 000 ₽", "5%")
@@ -730,6 +731,18 @@ async function loadShopSettings() {
           discount_pct: parsePercent(x.discount_pct),
         }))
         .filter(x => x.code && x.discount_pct > 0);
+    }
+
+    // Подарок при заказе (settings.gift)
+    const g = data.gift;
+    if (g && g.enabled && g.product_id) {
+      GIFT_CONFIG = {
+        minAmount: parseRubleAmount(g.min_amount) || 5000,
+        productId: String(g.product_id).trim(),
+        note: g.note || '',
+      };
+    } else {
+      GIFT_CONFIG = null;
     }
   } catch (e) {
     console.warn('[Shop settings] загрузка не удалась', e);
@@ -788,6 +801,28 @@ function cartCalculations() {
     autoPercent,      // для информации
     promoPercent,
     nextTier,         // следующий уровень который ещё не достигнут
+  };
+}
+
+// Возвращает товар-подарок если акция активна и сумма достаточна.
+// Сам товар НЕ хранится в CART — добавляется виртуально при рендере и в TG-сообщении.
+function getActiveGiftItem() {
+  if (!GIFT_CONFIG || !PRODUCTS.length || !CART.length) return null;
+  const subtotal = CART.reduce((s, i) => s + i.price * i.qty, 0);
+  if (subtotal < GIFT_CONFIG.minAmount) return null;
+
+  const product = PRODUCTS.find(p =>
+    p.id === GIFT_CONFIG.productId ||
+    p.slug === GIFT_CONFIG.productId
+  );
+  if (!product) return null;
+
+  return {
+    id: product.id,
+    name: product.name_ru || product.name || 'Подарок',
+    brand: product.brand || '',
+    image: product.images && product.images[0] ? product.images[0] : null,
+    note: GIFT_CONFIG.note,
   };
 }
 
@@ -946,6 +981,28 @@ function renderCart() {
 
   itemsEl.innerHTML = itemsHtml;
 
+  // Виртуальный товар-подарок (если активна акция и сумма достаточна)
+  const gift = getActiveGiftItem();
+  if (gift) {
+    const giftImg = gift.image ? productImageUrl(gift.image) : '';
+    const giftEl = document.createElement('div');
+    giftEl.className = 'cart-item cart-item-gift';
+    giftEl.style.cssText = 'background:#fff8e1;border-radius:6px;padding:10px;margin-top:6px;';
+    giftEl.innerHTML = `
+      <div class="cart-item-img">
+        ${giftImg ? `<img src="${giftImg}" alt="${gift.name}">` : ''}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">🎁 ${gift.name}</div>
+        <div class="cart-item-meta" style="color:#a77b00;">${gift.note ? '*' + gift.note : 'В подарок к заказу'}</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price" style="color:#0a8a3e;font-weight:600;">Подарок</div>
+      </div>
+    `;
+    itemsEl.appendChild(giftEl);
+  }
+
   // Расчёт скидок
   const calc = cartCalculations();
 
@@ -1027,6 +1084,7 @@ function closeCart() {
 function checkoutToTelegram() {
   if (!CART.length) return;
   const calc = cartCalculations();
+  const gift = getActiveGiftItem();
 
   let msg = 'Здравствуйте! Хочу оформить заказ:\n\n';
   CART.forEach((i, idx) => {
@@ -1035,6 +1093,12 @@ function checkoutToTelegram() {
     if (i.color) msg += ` · ${i.color}`;
     msg += ` — ${i.qty} шт — ${formatPrice(i.price * i.qty)}\n`;
   });
+
+  if (gift) {
+    msg += `\n🎁 Подарок: ${gift.name}`;
+    if (gift.note) msg += ` (${gift.note})`;
+    msg += '\n';
+  }
 
   if (calc.appliedPercent > 0) {
     msg += `\nСумма заказа: ${formatPrice(calc.subtotal)}\n`;
