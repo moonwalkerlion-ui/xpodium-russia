@@ -238,7 +238,7 @@ img { max-width: 100%; display: block; }
 .hero h1 {
   font-family: var(--font-display);
   font-size: clamp(72px, 14vw, 220px);
-  line-height: 0.85;
+  line-height: 0.95;
   letter-spacing: -0.01em;
   margin-bottom: 24px;
   font-weight: 400;
@@ -1362,7 +1362,7 @@ body[data-cat-hidden="true"] .shop-body::before {
     text-align: left;
     width: 100%;
   }
-  .hero h1 { font-size: clamp(64px, 18vw, 140px); }
+  .hero h1 { font-size: clamp(64px, 18vw, 140px); line-height: 1; }
   .product-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
 
   /* Категории на мобилке — 2×2, квадратные карточки */

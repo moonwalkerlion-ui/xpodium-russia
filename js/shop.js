@@ -118,9 +118,23 @@ function matchesGender(p) {
 }
 
 function matchesFilters(p) {
-  if (state.category !== 'all' && p.category !== state.category) return false;
-  // Фильтр по полу — применяется только в категории одежды
-  if (state.category === 'apparel' && !matchesGender(p)) return false;
+  // Категория «Одежда» — особый случай (учитываем унисекс из других категорий)
+  if (state.category === 'apparel') {
+    if (state.gender === 'all') {
+      // Таб «Все» — только товары с category=apparel
+      if (p.category !== 'apparel') return false;
+    } else {
+      // Таб «Мужская» или «Женская» — фильтр по полу.
+      // matchesGender() возвращает true для соответствующего пола И для унисекс.
+      // Это позволяет унисекс-носкам и др. товарам из accessories попасть в таб.
+      if (!matchesGender(p)) return false;
+      // Отсеиваем товары без определённого пола (рюкзаки, накладки и пр. не-унисекс)
+      if (getApparelGender(p) === null) return false;
+    }
+  } else if (state.category !== 'all') {
+    if (p.category !== state.category) return false;
+  }
+
   if (state.price !== 'all') {
     const pr = p.price;
     if (state.price === 'lt1000' && pr >= 1000) return false;
@@ -265,24 +279,46 @@ function getGroupOrder(id) {
   return 99999;
 }
 
+// Группировка для табов «Мужская» / «Женская»:
+// 1 — товары родного пола (мужские для men-таба, женские для women-таба)
+// 2 — унисекс (кроме носков)
+// 3 — носки
+// 4 — всё остальное
+function getGenderSortGroup(p, gender) {
+  if (gender === 'men' && p.subcategory === 'apparel-men' && !p.unisex) return 1;
+  if (gender === 'women' && p.subcategory === 'apparel-women' && !p.unisex) return 1;
+  if (p.unisex && p.subcategory !== 'socks') return 2;
+  if (p.subcategory === 'socks') return 3;
+  return 4;
+}
+
 function sortByDefault(list, category) {
-  // 1) Сначала отдаём приоритет ручному sort_index из админки (если задан)
-  // 2) Потом сортируем по группе из ORDER_BY_ID
-  // 3) При равенстве — по name_ru
+  // Внутри табов пола в одежде — сначала группируем (родное / унисекс / носки), потом по ORDER_BY_ID
+  // Иначе — стандартная сортировка по ORDER_BY_ID + sort_index
+
+  const useGenderGrouping = state.category === 'apparel' && state.gender !== 'all';
 
   const sorted = [...list].sort((a, b) => {
+    // Группа по гендеру (только в табах "Мужская"/"Женская")
+    if (useGenderGrouping) {
+      const aGroup = getGenderSortGroup(a, state.gender);
+      const bGroup = getGenderSortGroup(b, state.gender);
+      if (aGroup !== bGroup) return aGroup - bGroup;
+    }
+
+    // 1) Ручной sort_index из админки (если задан) — приоритет внутри группы
     const aManual = typeof a.sort_index === 'number';
     const bManual = typeof b.sort_index === 'number';
     if (aManual && bManual) return a.sort_index - b.sort_index;
     if (aManual) return -1;
     if (bManual) return 1;
 
-    // Группа из словаря
+    // 2) Группа из словаря ORDER_BY_ID
     const aOrder = getGroupOrder(a.id);
     const bOrder = getGroupOrder(b.id);
     if (aOrder !== bOrder) return aOrder - bOrder;
 
-    // По name_ru если в одной группе
+    // 3) По name_ru если в одной группе
     return (a.name_ru || '').localeCompare(b.name_ru || '', 'ru');
   });
 
