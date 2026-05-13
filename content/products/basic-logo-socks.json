@@ -21,5 +21,6 @@
   "in_stock": true,
   "name_en": "Basic Logo Socks",
   "category": "apparel",
-  "subcategory": "socks"
+  "subcategory": "socks",
+  "unisex": true
 }

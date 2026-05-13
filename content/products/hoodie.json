@@ -25,5 +25,6 @@
   "id": "hoodie",
   "name_en": "Hoodie",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "subcategory": "apparel-men",
+  "unisex": true
 }

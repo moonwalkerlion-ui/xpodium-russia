@@ -10,12 +10,10 @@
     "Коричневый"
   ],
   "sizes": [
-    "XS",
-    "S",
     "M",
     "L",
     "XL",
-    "2  Extra large"
+    "XXL"
   ],
   "price": 2500,
   "unit": "single",
@@ -26,5 +24,6 @@
   "category_ru": "Одежда мужская",
   "id": "light-fit-t-shirt",
   "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "subcategory_ru": "Одежда мужская",
+  "unisex": true
 }

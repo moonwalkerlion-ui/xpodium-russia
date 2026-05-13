@@ -6,8 +6,10 @@
     "Чёрный"
   ],
   "sizes": [
-    "Size 1",
-    "Size 2"
+    "M",
+    "L",
+    "XL",
+    "XXL"
   ],
   "price": 4400,
   "unit": "single",
@@ -29,5 +31,6 @@
   "category_ru": "Одежда мужская",
   "id": "basic-logo-hoodie",
   "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "subcategory_ru": "Одежда мужская",
+  "unisex": true
 }

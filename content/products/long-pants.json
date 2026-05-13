@@ -10,7 +10,8 @@
   "sizes": [
     "M",
     "L",
-    "Extra large                                      2XL"
+    "XL",
+    "XXL"
   ],
   "name_ru": "Спортивные брюки (унисекс)",
   "images": [
@@ -21,5 +22,6 @@
   "id": "long-pants",
   "name_en": "Long pants",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "subcategory": "apparel-men",
+  "unisex": true
 }

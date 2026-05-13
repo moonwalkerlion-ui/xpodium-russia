@@ -20,5 +20,6 @@
   "in_stock": true,
   "name_en": "Lifting Socks",
   "category": "apparel",
-  "subcategory": "socks"
+  "subcategory": "socks",
+  "unisex": true
 }

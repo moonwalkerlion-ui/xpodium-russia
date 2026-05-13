@@ -36,5 +36,6 @@
   "in_stock": true,
   "name_en": "3/4 Sleeves t-shirt",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "subcategory": "apparel-men",
+  "unisex": true
 }
