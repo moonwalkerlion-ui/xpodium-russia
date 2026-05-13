@@ -1116,8 +1116,88 @@ function checkoutToTelegram() {
 
   // Используем orderTelegramUrl (личный TG для заказов), а если его нет — обычный telegramUrl
   const targetUrl = SHOP_CONFIG.orderTelegramUrl || SHOP_CONFIG.telegramUrl;
-  const url = `${targetUrl}?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
+  // Открываем Telegram с предзаполненным текстом.
+  // На десктопе/iOS параметр ?text= обычно подхватывается. На Android — нет (поэтому ниже копируем в буфер).
+  window.open(`${targetUrl}?text=${encodeURIComponent(msg)}`, '_blank');
+
+  // На Android — копируем в буфер + показываем подсказку (на случай если ?text= не подхватился)
+  const isAndroid = /Android/i.test(navigator.userAgent || '');
+  if (isAndroid) {
+    copyToClipboard(msg).then(ok => {
+      if (ok) {
+        showCheckoutToast('Если поле сообщения пустое — задержите палец и нажмите «Вставить»');
+      }
+    });
+  }
+}
+
+// Копирование текста в буфер обмена. Возвращает Promise<boolean> успешно ли.
+function copyToClipboard(text) {
+  // Современный путь — Clipboard API (нужен HTTPS, что у нас есть)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).then(() => true).catch(() => fallbackCopy(text));
+  }
+  return Promise.resolve(fallbackCopy(text));
+}
+
+// Запасной способ через скрытый textarea + execCommand (старые браузеры)
+function fallbackCopy(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Тост-уведомление снизу экрана (исчезает через 6 секунд)
+function showCheckoutToast(message) {
+  // Убираем предыдущий тост если есть
+  document.querySelectorAll('.checkout-toast').forEach(t => t.remove());
+
+  const toast = document.createElement('div');
+  toast.className = 'checkout-toast';
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: 'fixed',
+    left: '50%',
+    bottom: '24px',
+    transform: 'translateX(-50%) translateY(20px)',
+    background: '#0a0a0a',
+    color: '#ffffff',
+    padding: '14px 22px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    fontFamily: 'inherit',
+    maxWidth: '92vw',
+    lineHeight: '1.4',
+    textAlign: 'center',
+    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+    zIndex: '10001',
+    opacity: '0',
+    transition: 'opacity 0.25s ease, transform 0.25s ease',
+    pointerEvents: 'none',
+  });
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  });
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 6000);
 }
 
 // --- Инициализация ---

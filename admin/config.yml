@@ -71,6 +71,7 @@ collections:
           - { label: "Рюкзаки и сумки", value: "bags" }
           - { label: "Носки", value: "socks" }
           - { label: "Мелочи", value: "extras" }
+      - { label: "Унисекс (показывать и в мужском, и в женском фильтрах)", name: "unisex", widget: "boolean", default: false, required: false, hint: "Только для одежды. Включи если товар подходит обоим полам — он появится и в табе «Мужская», и в «Женская»" }
       - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
       - { label: "Старая цена (₽, для скидки)", name: "old_price", widget: "number", required: false, min: 0, step: 50 }
       - { label: "Описание", name: "description", widget: "text", required: false }

@@ -13,11 +13,13 @@ const state = {
   category: 'all',
   price: 'all',
   sort: 'default',
+  gender: 'all',  // 'all' | 'men' | 'women' — фильтр пола для одежды
 };
 
 // Парсим query string
 const params = new URLSearchParams(location.search);
 if (params.get('cat')) state.category = params.get('cat');
+if (params.get('gender')) state.gender = params.get('gender');
 
 (async function init() {
   const products = await loadProducts();
@@ -37,6 +39,8 @@ if (params.get('cat')) state.category = params.get('cat');
 
   catList.addEventListener('change', e => {
     state.category = e.target.value;
+    state.gender = 'all';  // сбрасываем пол при смене категории
+    updateGenderTabs();
     updateTitle();
     render();
   });
@@ -48,6 +52,17 @@ if (params.get('cat')) state.category = params.get('cat');
     render();
   });
 
+  // Кнопки табов пол (мужская / женская)
+  document.getElementById('shopGenderTabs')?.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-gender]');
+    if (!btn) return;
+    state.gender = btn.dataset.gender;
+    updateGenderTabs();
+    updateTitle();
+    render();
+  });
+
+  updateGenderTabs();
   updateTitle();
   render();
 })();
@@ -58,14 +73,54 @@ function updateTitle() {
   if (state.category === 'all') {
     t.textContent = 'Каталог';
     s.textContent = 'Экипировка для тех, кто тренируется всерьёз';
+  } else if (state.category === 'apparel' && state.gender === 'men') {
+    t.textContent = 'Мужская одежда';
+    s.textContent = '';
+  } else if (state.category === 'apparel' && state.gender === 'women') {
+    t.textContent = 'Женская одежда';
+    s.textContent = '';
   } else {
     t.textContent = CATEGORY_RU[state.category] || 'Каталог';
     s.textContent = '';
   }
 }
 
+// Управление видимостью и состоянием табов "пол"
+function updateGenderTabs() {
+  const tabs = document.getElementById('shopGenderTabs');
+  if (!tabs) return;
+  // Показываем только в категории одежды
+  tabs.style.display = (state.category === 'apparel') ? 'flex' : 'none';
+  // Подсветка активной кнопки
+  tabs.querySelectorAll('button[data-gender]').forEach(btn => {
+    const isActive = btn.dataset.gender === state.gender;
+    btn.style.background = isActive ? '#0a0a0a' : '#ffffff';
+    btn.style.color = isActive ? '#ffffff' : '#555555';
+    btn.style.borderColor = isActive ? '#0a0a0a' : '#e0e0e0';
+  });
+}
+
+// Определяет пол товара одежды
+function getApparelGender(p) {
+  if (p.unisex) return 'unisex';
+  if (p.subcategory === 'apparel-men') return 'men';
+  if (p.subcategory === 'apparel-women') return 'women';
+  return null;
+}
+
+// Проверяет соответствует ли товар фильтру пола (только для одежды)
+function matchesGender(p) {
+  if (state.gender === 'all') return true;
+  const g = getApparelGender(p);
+  if (state.gender === 'men') return g === 'men' || g === 'unisex';
+  if (state.gender === 'women') return g === 'women' || g === 'unisex';
+  return true;
+}
+
 function matchesFilters(p) {
   if (state.category !== 'all' && p.category !== state.category) return false;
+  // Фильтр по полу — применяется только в категории одежды
+  if (state.category === 'apparel' && !matchesGender(p)) return false;
   if (state.price !== 'all') {
     const pr = p.price;
     if (state.price === 'lt1000' && pr >= 1000) return false;
@@ -139,7 +194,7 @@ const ORDER_BY_ID = {
   'sports-bra': 500,
   'girls-vest': 510,
   'girls-t-shirts': 520,
-  '3-4-sleeves-t-shirt-shorts': 530, // помечено как мужская в JSON, но это «футболка 3/4 (женская)» по name_ru
+  '3-4-sleeves-t-shirt-shorts': 530,
 
   // ===== ЖЕНСКИЙ НИЗ =====
   'leggings-short': 600,
