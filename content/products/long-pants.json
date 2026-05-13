@@ -1,7 +1,9 @@
 {
-  "name_en": "Long pants",
-  "name_ru": "Штаны длинные",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 3300,
   "colors": [
     "Чёрный"
   ],
@@ -10,16 +12,14 @@
     "L",
     "Extra large                                      2XL"
   ],
-  "price": 3300,
-  "unit": "single",
+  "name_ru": "Спортивные брюки (унисекс)",
   "images": [
     "/images/products/long-pants.webp",
     "/images/products/long-pants-2.webp",
     "/images/products/long-pants-3.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "long-pants",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "name_en": "Long pants",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
