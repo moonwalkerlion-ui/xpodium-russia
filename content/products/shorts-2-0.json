@@ -1,7 +1,9 @@
 {
-  "name_en": "Shorts 2.0",
-  "name_ru": "Шорты 2.0",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 3500,
   "colors": [
     "Чёрный",
     "Серый"
@@ -9,20 +11,17 @@
   "sizes": [
     "M",
     "L",
-    "XL",
-    "XXL"
+    "XL"
   ],
-  "price": 3500,
-  "unit": "single",
+  "name_ru": "Шорты 2.0",
   "images": [
     "/images/products/shorts-2-0.webp",
     "/images/products/shorts-2-0-2.webp",
     "/images/products/shorts-2-0-3.webp",
     "/images/products/shorts-2-0-4.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "shorts-2-0",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "name_en": "Shorts 2.0",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
