@@ -1,7 +1,9 @@
 {
-  "name_en": "Compression shorts",
-  "name_ru": "Шорты компрессионные",
+  "category_ru": "Одежда мужская",
+  "unit": "single",
+  "subcategory_ru": "Одежда мужская",
   "brand": "XPODIUM",
+  "price": 1850,
   "colors": [
     "Чёрный",
     "Серый"
@@ -9,18 +11,15 @@
   "sizes": [
     "M",
     "L",
-    "XL",
-    "XXL"
+    "XL"
   ],
-  "price": 1850,
-  "unit": "single",
+  "name_ru": "Шорты компрессионные",
   "images": [
     "/images/products/compression-shorts.webp",
     "/images/products/compression-shorts-2.webp"
   ],
-  "category": "apparel",
-  "category_ru": "Одежда мужская",
   "id": "compression-shorts",
-  "subcategory": "apparel-men",
-  "subcategory_ru": "Одежда мужская"
+  "name_en": "Compression shorts",
+  "category": "apparel",
+  "subcategory": "apparel-men"
 }
