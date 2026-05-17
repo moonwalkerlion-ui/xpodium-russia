@@ -54,6 +54,11 @@
       "active": true,
       "code": "Gorokhov",
       "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "Ruhlina"
     }
   ]
 }
