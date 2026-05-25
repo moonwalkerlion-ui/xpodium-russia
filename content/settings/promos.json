@@ -59,6 +59,11 @@
       "active": true,
       "discount_pct": 15,
       "code": "Ruhlina"
+    },
+    {
+      "active": true,
+      "code": "Litovchenko",
+      "discount_pct": 15
     }
   ]
 }
