@@ -1,7 +1,9 @@
 {
-  "name_en": "Knee sleeves 3.0",
-  "name_ru": "Наколенники 3.0",
+  "category_ru": "Наколенники и налокотники",
+  "unit": "Pair",
+  "subcategory_ru": "Наколенники и налокотники",
   "brand": "XPODIUM",
+  "price": 3300,
   "colors": [
     "Серый",
     "Зелёный",
@@ -14,8 +16,7 @@
     "L",
     "XL"
   ],
-  "price": 3300,
-  "unit": "Pair",
+  "name_ru": "Наколенники 3.0 (5мм)",
   "images": [
     "/images/products/knee-sleeves-3-0.webp",
     "/images/products/knee-sleeves-3-0-2.webp",
@@ -24,9 +25,8 @@
     "/images/products/knee-sleeves-3-0-5.webp",
     "/images/products/knee-sleeves-3-0-6.webp"
   ],
-  "category": "gear",
-  "category_ru": "Наколенники и налокотники",
   "id": "knee-sleeves-3-0",
-  "subcategory": "sleeves",
-  "subcategory_ru": "Наколенники и налокотники"
+  "name_en": "Knee sleeves 3.0",
+  "category": "gear",
+  "subcategory": "sleeves"
 }
