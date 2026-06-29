@@ -1118,7 +1118,8 @@ function checkoutToTelegram() {
   const targetUrl = SHOP_CONFIG.orderTelegramUrl || SHOP_CONFIG.telegramUrl;
   // Открываем Telegram с предзаполненным текстом.
   // На десктопе/iOS параметр ?text= обычно подхватывается. На Android — нет (поэтому ниже копируем в буфер).
-  window.open(`${targetUrl}?text=${encodeURIComponent(msg)}`, '_blank');
+  
+  if (typeof ym !== 'undefined') ym(109646659, 'reachGoal', 'telegram_order'); window.open(`${targetUrl}?text=${encodeURIComponent(msg)}`, '_blank');
 
   // На Android — копируем в буфер + показываем подсказку (на случай если ?text= не подхватился)
   const isAndroid = /Android/i.test(navigator.userAgent || '');
