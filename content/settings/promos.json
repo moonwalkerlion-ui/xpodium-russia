@@ -64,6 +64,11 @@
       "active": true,
       "code": "Litovchenko",
       "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "paykes"
     }
   ]
 }
