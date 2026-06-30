@@ -5,7 +5,9 @@
   "brand": "XPODIUM",
   "price": 5050,
   "colors": [
-    "Чёрный"
+    "Чёрный",
+    "Красный",
+    "Синий"
   ],
   "sizes": [
     "XS",
@@ -16,11 +18,10 @@
   ],
   "name_ru": "Наколенники Ultra (7мм)",
   "images": [
-    "/images/products/ultra-knee-leeves-4.webp",
+    "/images/uploads/325.jpg",
     "/images/products/ultra-knee-leeves.webp",
-    "/images/products/ultra-knee-leeves-2.webp",
-    "/images/products/ultra-knee-leeves-3.webp",
-    "/images/products/ultra-knee-leeves-5.webp"
+    "/images/uploads/329.jpg",
+    "/images/uploads/330.jpg"
   ],
   "id": "ultra-knee-leeves",
   "in_stock": true,
