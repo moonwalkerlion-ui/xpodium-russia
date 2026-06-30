@@ -54,7 +54,7 @@
 </div>
 
 <header class="header">
-  <a href="index.html" class="logo"><span data-setting="site_brand">BRAND</span></a>
+  <a href="/" class="logo"><span data-setting="site_brand">BRAND</span></a>
   <nav class="nav">
     <div class="nav-item has-dropdown">
       <a href="shop.html">Каталог</a>
@@ -66,6 +66,7 @@
         <a href="shop.html">Всё</a>
       </div>
     </div>
+    <a href="gym.html">Зал под ключ</a>
     <a href="our-story.html">О нас</a>
     <a href="partners.html">Сотрудничество</a>
     <a href="contact.html">Контакты</a>
@@ -117,6 +118,12 @@
         <option value="price-desc">Сначала дорогие</option>
       </select>
     </div>
+    <!-- Табы пол (показываются JS-ом только в категории «Одежда») -->
+    <div class="shop-gender-tabs" id="shopGenderTabs" style="display:none; gap:8px; margin-bottom:18px; flex-wrap:wrap;">
+      <button type="button" data-gender="all"   style="flex:1; min-width:90px; padding:11px 16px; background:#0a0a0a; color:#fff; border:1px solid #0a0a0a; border-radius:6px; font-family:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.15s ease;">Все</button>
+      <button type="button" data-gender="men"   style="flex:1; min-width:90px; padding:11px 16px; background:#fff;    color:#555; border:1px solid #e0e0e0; border-radius:6px; font-family:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.15s ease;">Мужская</button>
+      <button type="button" data-gender="women" style="flex:1; min-width:90px; padding:11px 16px; background:#fff;    color:#555; border:1px solid #e0e0e0; border-radius:6px; font-family:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.15s ease;">Женская</button>
+    </div>
     <div class="shop-grid" id="shopGrid"></div>
   </main>
 </div>
@@ -129,6 +136,7 @@
   <div class="footer-col">
     <div class="footer-title">Магазин</div>
     <a href="shop.html">Каталог</a>
+    <a href="gym.html">Зал под ключ</a>
     <a href="our-story.html">О нас</a>
     <a href="partners.html">Сотрудничество</a>
     <a href="contact.html">Контакты</a>
