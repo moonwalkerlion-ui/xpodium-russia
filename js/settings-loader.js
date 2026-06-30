@@ -275,6 +275,23 @@ function applySettings() {
     }
   }
 
+  // Галерея «Зал под ключ» (gym_gallery)
+  if (SETTINGS.gym_gallery) {
+    const g = SETTINGS.gym_gallery;
+    setText('[data-setting="gym_gallery_subtitle"]', g.subtitle);
+    const grid = document.getElementById('gymGalleryGrid');
+    if (grid && Array.isArray(g.items) && g.items.length) {
+      grid.innerHTML = g.items
+        .filter(it => it && it.image)
+        .map(it => {
+          const src = escapeHtml(it.image);
+          const alt = escapeHtml(it.alt || 'Оборудование XPODIUM в зале');
+          return `<a href="${src}" target="_blank" rel="noopener"><img src="${src}" alt="${alt}" loading="lazy"></a>`;
+        })
+        .join('');
+    }
+  }
+
   // Партнёры
   if (SETTINGS.partners) {
     const p = SETTINGS.partners;

@@ -1,0 +1,14 @@
+{
+  "subtitle": "Реальное оборудование XPODIUM в залах",
+  "items": [
+    { "image": "/images/gym/gym-01-rigs.jpg", "alt": "Рамы и турники XPODIUM" },
+    { "image": "/images/gym/gym-02-flooring.jpg", "alt": "Резиновое напольное покрытие" },
+    { "image": "/images/gym/gym-03-turf.jpg", "alt": "Искусственная трава для зон" },
+    { "image": "/images/gym/gym-04-barbells.jpg", "alt": "Грифы и штанги" },
+    { "image": "/images/gym/gym-05-storage.jpg", "alt": "Стеллаж с инвентарём" },
+    { "image": "/images/gym/gym-06-plates.jpg", "alt": "Бамперные диски" },
+    { "image": "/images/gym/gym-07-dumbbells.jpg", "alt": "Стойка с гантелями" },
+    { "image": "/images/gym/gym-08-wallballs.jpg", "alt": "Медболы XPODIUM" },
+    { "image": "/images/gym/gym-09-boxes.jpg", "alt": "Плиобоксы и инвентарь" }
+  ]
+}

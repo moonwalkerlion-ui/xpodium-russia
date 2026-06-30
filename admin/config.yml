@@ -277,6 +277,22 @@ collections:
           - { label: "ID товара-подарка", name: "product_id", widget: "string", default: "sweat-band", hint: "ID товара из URL. Например для https://сайт/shop.html?cat=gear&product=sweat-band — это sweat-band" }
           - { label: "Пометка к подарку", name: "note", widget: "string", default: "укажите цвет менеджеру", required: false, hint: "Текст под названием подарка в корзине" }
 
+      # --- Галерея «Зал под ключ» ---
+      - name: "gym_gallery"
+        label: "Галерея «Зал под ключ»"
+        file: "content/settings/gym_gallery.json"
+        fields:
+          - { label: "Подпись над галереей", name: "subtitle", widget: "string", default: "Реальное оборудование XPODIUM в залах", required: false }
+          - label: "Фотографии"
+            name: "items"
+            widget: "list"
+            label_singular: "Фото"
+            summary: "{{fields.alt}}"
+            hint: "Перетаскивай для изменения порядка. Лучше держать кратное 3 (6, 9, 12) — тогда сетка ровная"
+            fields:
+              - { label: "Фото", name: "image", widget: "image", media_folder: "/images/gym", public_folder: "/images/gym" }
+              - { label: "Описание (alt)", name: "alt", widget: "string", required: false, hint: "Короткое описание для SEO и доступности" }
+
       # --- Контакты ---
       - name: "contacts"
         label: "Контакты и соцсети"
