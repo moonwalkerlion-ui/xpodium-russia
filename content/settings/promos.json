@@ -69,6 +69,11 @@
       "active": true,
       "discount_pct": 15,
       "code": "paykes"
+    },
+    {
+      "active": true,
+      "code": "fomina",
+      "discount_pct": 15
     }
   ]
 }
