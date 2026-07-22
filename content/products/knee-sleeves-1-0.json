@@ -29,5 +29,38 @@
   "id": "knee-sleeves-1-0",
   "name_en": "Knee sleeves 1.0",
   "category": "gear",
-  "subcategory": "sleeves"
+  "subcategory": "sleeves",
+  "size_chart": {
+    "enabled": true,
+    "col_1_label": "Обхват колена",
+    "col_2_label": "",
+    "rows": [
+      {
+        "size": "XS",
+        "value_1": "31–33 см",
+        "value_2": ""
+      },
+      {
+        "size": "S",
+        "value_1": "33–35 см",
+        "value_2": ""
+      },
+      {
+        "size": "M",
+        "value_1": "35–37 см",
+        "value_2": ""
+      },
+      {
+        "size": "L",
+        "value_1": "37–40 см",
+        "value_2": ""
+      },
+      {
+        "size": "XL",
+        "value_1": "40–43 см",
+        "value_2": ""
+      }
+    ],
+    "note": "Измерьте обхват ноги по центру колена."
+  }
 }

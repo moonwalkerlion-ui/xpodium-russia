@@ -22,5 +22,23 @@
   "category_ru": "Накладки",
   "id": "suede-grip-with-hole",
   "subcategory": "grips",
-  "subcategory_ru": "Накладки"
+  "subcategory_ru": "Накладки",
+  "size_chart": {
+    "enabled": true,
+    "col_1_label": "Длина ладони",
+    "col_2_label": "Длина рабочей поверхности",
+    "rows": [
+      {
+        "size": "M",
+        "value_1": "до 10 см",
+        "value_2": "13,5 см"
+      },
+      {
+        "size": "L",
+        "value_1": "от 10 см",
+        "value_2": "14,5 см"
+      }
+    ],
+    "note": "Измерьте длину ладони от основания пальцев до запястья. По размерам S и XL уточните у менеджера."
+  }
 }

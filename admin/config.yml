@@ -81,6 +81,27 @@ collections:
         required: false
         summary: "{{fields.size}}"
         field: { label: "Размер", name: "size", widget: "string" }
+      - label: "Таблица размеров"
+        name: "size_chart"
+        widget: "object"
+        required: false
+        collapsed: true
+        hint: "Показывается в карточке товара под кнопками выбора размера. Если строк нет — таблицы не будет"
+        fields:
+          - { label: "Показывать таблицу", name: "enabled", widget: "boolean", default: true, required: false }
+          - { label: "Название 1-й колонки", name: "col_1_label", widget: "string", required: false, default: "Замер", hint: "Например «Обхват талии» или «Длина ладони»" }
+          - { label: "Название 2-й колонки", name: "col_2_label", widget: "string", required: false, hint: "Оставь пустым если замер один — колонка не покажется" }
+          - label: "Строки таблицы"
+            name: "rows"
+            widget: "list"
+            required: false
+            label_singular: "Строка"
+            summary: "{{fields.size}} — {{fields.value_1}}"
+            fields:
+              - { label: "Размер", name: "size", widget: "string" }
+              - { label: "Значение 1-й колонки", name: "value_1", widget: "string", required: false }
+              - { label: "Значение 2-й колонки", name: "value_2", widget: "string", required: false }
+          - { label: "Примечание под таблицей", name: "note", widget: "text", required: false, hint: "Как правильно мерить, особенности" }
       - label: "Цвета"
         name: "colors"
         widget: "list"
@@ -292,45 +313,6 @@ collections:
             fields:
               - { label: "Фото", name: "image", widget: "image", media_folder: "/images/gym", public_folder: "/images/gym" }
               - { label: "Описание (alt)", name: "alt", widget: "string", required: false, hint: "Короткое описание для SEO и доступности" }
-
-      # --- Таблицы размеров ---
-      - name: "size_charts"
-        label: "Таблицы размеров"
-        file: "content/settings/size_charts.json"
-        fields:
-          - label: "Таблицы"
-            name: "charts"
-            widget: "list"
-            label_singular: "Таблица"
-            summary: "{{fields.subcategory}}"
-            hint: "Одна таблица на подкатегорию — она покажется у всех товаров этой подкатегории"
-            fields:
-              - label: "Для какой подкатегории"
-                name: "subcategory"
-                widget: "select"
-                options:
-                  - { label: "Накладки", value: "grips" }
-                  - { label: "Наколенники и налокотники", value: "sleeves" }
-                  - { label: "Пояса", value: "belts" }
-                  - { label: "Кистевые бинты", value: "wraps" }
-                  - { label: "Скакалки", value: "jumpropes" }
-                  - { label: "Одежда мужская", value: "apparel-men" }
-                  - { label: "Одежда женская", value: "apparel-women" }
-                  - { label: "Рюкзаки и сумки", value: "bags" }
-                  - { label: "Носки", value: "socks" }
-                  - { label: "Мелочи", value: "extras" }
-              - { label: "Название 1-й колонки", name: "col_1_label", widget: "string", default: "Замер", hint: "Например «Обхват талии» или «Длина ладони»" }
-              - { label: "Название 2-й колонки", name: "col_2_label", widget: "string", required: false, hint: "Оставь пустым если замер только один — колонка не покажется" }
-              - label: "Строки таблицы"
-                name: "rows"
-                widget: "list"
-                label_singular: "Строка"
-                summary: "{{fields.size}} — {{fields.value_1}}"
-                fields:
-                  - { label: "Размер", name: "size", widget: "string", hint: "XS, S, M, L, XL" }
-                  - { label: "Значение 1-й колонки", name: "value_1", widget: "string", hint: "Например «73–80 см» или «до 73 см»" }
-                  - { label: "Значение 2-й колонки", name: "value_2", widget: "string", required: false }
-              - { label: "Примечание под таблицей", name: "note", widget: "text", required: false, hint: "Как правильно мерить, особенности" }
 
       # --- Контакты ---
       - name: "contacts"

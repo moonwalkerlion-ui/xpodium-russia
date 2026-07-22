@@ -34,5 +34,38 @@
   "id": "pr-belt",
   "name_en": "PR belt",
   "category": "gear",
-  "subcategory": "belts"
+  "subcategory": "belts",
+  "size_chart": {
+    "enabled": true,
+    "col_1_label": "Обхват талии",
+    "col_2_label": "",
+    "rows": [
+      {
+        "size": "XS",
+        "value_1": "до 73 см",
+        "value_2": ""
+      },
+      {
+        "size": "S",
+        "value_1": "73–80 см",
+        "value_2": ""
+      },
+      {
+        "size": "M",
+        "value_1": "80–87 см",
+        "value_2": ""
+      },
+      {
+        "size": "L",
+        "value_1": "87–93 см",
+        "value_2": ""
+      },
+      {
+        "size": "XL",
+        "value_1": "93–99 см",
+        "value_2": ""
+      }
+    ],
+    "note": "Измерьте обхват талии и выберите соответствующий размер. Ширина пояса — 10,5 см."
+  }
 }
