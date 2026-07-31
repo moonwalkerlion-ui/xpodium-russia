@@ -74,6 +74,11 @@
       "active": true,
       "code": "fomina",
       "discount_pct": 15
+    },
+    {
+      "active": true,
+      "discount_pct": 15,
+      "code": "kulagina"
     }
   ]
 }
