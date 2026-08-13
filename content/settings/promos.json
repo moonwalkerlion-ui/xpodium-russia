@@ -79,6 +79,11 @@
       "active": true,
       "discount_pct": 15,
       "code": "kulagina"
+    },
+    {
+      "active": true,
+      "code": "samonina",
+      "discount_pct": 15
     }
   ]
 }
