@@ -25,7 +25,7 @@
       "id": "equipment",
       "label": "Оборудование",
       "image": "/images/categories/equipment.webp",
-      "hidden": true,
+      "hidden": false,
       "placeholder": "СКОРО"
     }
   ]

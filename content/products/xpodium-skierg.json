@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "xpodium-skierg",
+  "name_ru": "Лыжный тренажёр XPODIUM (+ напольная подставка)",
+  "name_en": "XPODIUM SkiErg with Stand",
+  "brand": "XPODIUM",
+  "price": 135000,
+  "description": "Лыжный тренажёр XPODIUM в комплекте с напольной подставкой. Не требует крепления к стене — можно переставлять по залу. Воздушное сопротивление, монитор с показателями.",
+  "images": [
+    "/images/products/xpodium-skierg.webp",
+    "/images/products/xpodium-skierg-2.webp",
+    "/images/products/xpodium-skierg-3.webp"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "xpodium-rig-skierg",
+  "name_ru": "Настенный лыжный тренажёр XPODIUM (НОВИНКА!)",
+  "name_en": "XPODIUM Rig SkiErg",
+  "brand": "XPODIUM",
+  "price": 125000,
+  "description": "Настенный лыжный тренажёр XPODIUM — крепится на раму или стену и не занимает место на полу. Решение для залов с ограниченной площадью.",
+  "images": [
+    "/images/products/xpodium-rig-skierg.webp",
+    "/images/products/xpodium-rig-skierg-2.webp",
+    "/images/products/xpodium-rig-skierg-3.webp"
+  ]
+}

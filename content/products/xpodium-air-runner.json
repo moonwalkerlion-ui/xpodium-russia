@@ -1,0 +1,20 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "xpodium-air-runner",
+  "name_ru": "Механическая беговая дорожка XPODIUM Air Runner",
+  "name_en": "XPODIUM Air Runner",
+  "brand": "XPODIUM",
+  "price": 350000,
+  "description": "Механическая беговая дорожка XPODIUM Air Runner с изогнутым полотном. Работает без электричества — скорость задаёт сам атлет. Изогнутая дека снижает нагрузку на суставы.",
+  "images": [
+    "/images/products/xpodium-air-runner.webp"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "xpodium-echo-bike",
+  "name_ru": "Велотренажёр XPODIUM Echo Bike",
+  "name_en": "XPODIUM Echo Bike",
+  "brand": "XPODIUM",
+  "price": 125000,
+  "description": "Воздушный велотренажёр XPODIUM Echo Bike с подвижными рукоятками — работают руки и ноги одновременно. Сопротивление растёт вместе с интенсивностью.",
+  "images": [
+    "/images/products/xpodium-echo-bike.webp",
+    "/images/products/xpodium-echo-bike-2.webp",
+    "/images/products/xpodium-echo-bike-3.webp"
+  ]
+}

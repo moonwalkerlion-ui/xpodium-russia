@@ -14,12 +14,14 @@ const state = {
   price: 'all',
   sort: 'default',
   gender: 'all',  // 'all' | 'men' | 'women' — фильтр пола для одежды
+  equip: 'all',   // 'all' | 'functional' | 'strength' — подкатегория оборудования
 };
 
 // Парсим query string
 const params = new URLSearchParams(location.search);
 if (params.get('cat')) state.category = params.get('cat');
 if (params.get('gender')) state.gender = params.get('gender');
+if (params.get('sub')) state.equip = params.get('sub');
 
 (async function init() {
   const products = await loadProducts();
@@ -40,7 +42,9 @@ if (params.get('gender')) state.gender = params.get('gender');
   catList.addEventListener('change', e => {
     state.category = e.target.value;
     state.gender = 'all';  // сбрасываем пол при смене категории
+    state.equip = 'all';   // и подкатегорию оборудования
     updateGenderTabs();
+    updateEquipTabs();
     updateTitle();
     render();
   });
@@ -62,7 +66,18 @@ if (params.get('gender')) state.gender = params.get('gender');
     render();
   });
 
+  // Кнопки табов подкатегорий оборудования (тренажёры / силовой тренинг)
+  document.getElementById('shopEquipTabs')?.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-sub]');
+    if (!btn) return;
+    state.equip = btn.dataset.sub;
+    updateEquipTabs();
+    updateTitle();
+    render();
+  });
+
   updateGenderTabs();
+  updateEquipTabs();
   updateTitle();
   render();
 })();
@@ -79,6 +94,12 @@ function updateTitle() {
   } else if (state.category === 'apparel' && state.gender === 'women') {
     t.textContent = 'Женская одежда';
     s.textContent = '';
+  } else if (state.category === 'equipment' && state.equip === 'functional') {
+    t.textContent = 'Функциональный тренинг';
+    s.textContent = '';
+  } else if (state.category === 'equipment' && state.equip === 'strength') {
+    t.textContent = 'Силовой тренинг';
+    s.textContent = '';
   } else {
     t.textContent = CATEGORY_RU[state.category] || 'Каталог';
     s.textContent = '';
@@ -94,6 +115,21 @@ function updateGenderTabs() {
   // Подсветка активной кнопки
   tabs.querySelectorAll('button[data-gender]').forEach(btn => {
     const isActive = btn.dataset.gender === state.gender;
+    btn.style.background = isActive ? '#0a0a0a' : '#ffffff';
+    btn.style.color = isActive ? '#ffffff' : '#555555';
+    btn.style.borderColor = isActive ? '#0a0a0a' : '#e0e0e0';
+  });
+}
+
+// Управление видимостью и состоянием табов подкатегорий оборудования
+function updateEquipTabs() {
+  const tabs = document.getElementById('shopEquipTabs');
+  if (!tabs) return;
+  // Показываем только в категории оборудования
+  tabs.style.display = (state.category === 'equipment') ? 'flex' : 'none';
+  // Подсветка активной кнопки
+  tabs.querySelectorAll('button[data-sub]').forEach(btn => {
+    const isActive = btn.dataset.sub === state.equip;
     btn.style.background = isActive ? '#0a0a0a' : '#ffffff';
     btn.style.color = isActive ? '#ffffff' : '#555555';
     btn.style.borderColor = isActive ? '#0a0a0a' : '#e0e0e0';
@@ -133,6 +169,10 @@ function matchesFilters(p) {
     }
   } else if (state.category !== 'all') {
     if (p.category !== state.category) return false;
+    // Внутри оборудования — фильтр по подкатегории (тренажёры / силовой тренинг)
+    if (state.category === 'equipment' && state.equip !== 'all') {
+      if (p.subcategory !== state.equip) return false;
+    }
   }
 
   if (state.price !== 'all') {
@@ -264,6 +304,16 @@ const ORDER_BY_ID = {
   'panda-velcro': 1330,
   'key-ring': 1340,
   'hookgrip-tape': 1350,
+
+  // ===== ОБОРУДОВАНИЕ: ТРЕНАЖЁРЫ (порядок как в таблице поставщика) =====
+  'c2-rower': 1400,
+  'c2-skierg': 1410,
+  'c2-bike': 1420,
+  'xpodium-air-runner': 1430,
+  'xpodium-rower': 1440,
+  'xpodium-skierg': 1450,
+  'xpodium-rig-skierg': 1460,
+  'xpodium-echo-bike': 1470,
 };
 
 // Вспомогательные множества по группам — для специальных категорий

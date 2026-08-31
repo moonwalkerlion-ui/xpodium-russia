@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "xpodium-rower",
+  "name_ru": "Гребной тренажёр XPODIUM",
+  "name_en": "XPODIUM Rower",
+  "brand": "XPODIUM",
+  "price": 135000,
+  "description": "Гребной тренажёр XPODIUM с воздушным сопротивлением и монитором. Прочная рама, плавный ход, подходит для интенсивных групповых тренировок.",
+  "images": [
+    "/images/products/xpodium-rower.webp",
+    "/images/products/xpodium-rower-2.webp",
+    "/images/products/xpodium-rower-3.webp"
+  ]
+}

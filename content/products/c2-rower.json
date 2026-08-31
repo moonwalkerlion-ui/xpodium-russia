@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "c2-rower",
+  "name_ru": "Гребной тренажёр Concept2",
+  "name_en": "Concept2 RowErg",
+  "brand": "Concept2",
+  "price": 160000,
+  "description": "Гребной тренажёр Concept2 RowErg с монитором PM5 — эталон гребли в кроссфите и на соревнованиях. Воздушное сопротивление растёт вместе с интенсивностью, конструкция разбирается для хранения.",
+  "images": [
+    "/images/products/c2-rower.webp",
+    "/images/products/c2-rower-2.webp",
+    "/images/products/c2-rower-3.webp"
+  ]
+}

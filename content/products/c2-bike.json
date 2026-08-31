@@ -1,0 +1,21 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "c2-bike",
+  "name_ru": "Велотренажёр BikeErg Concept2",
+  "name_en": "Concept2 BikeErg",
+  "brand": "Concept2",
+  "price": 180000,
+  "description": "Воздушный велотренажёр Concept2 BikeErg с монитором PM5. Сопротивление регулируется заслонкой маховика, нагрузка растёт вместе с интенсивностью педалирования.",
+  "images": [
+    "/images/products/c2-bike.webp",
+    "/images/products/c2-bike-2.webp"
+  ]
+}

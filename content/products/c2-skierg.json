@@ -1,0 +1,22 @@
+{
+  "category": "equipment",
+  "category_ru": "Оборудование",
+  "subcategory": "functional",
+  "subcategory_ru": "Функциональный тренинг",
+  "unit": "single",
+  "colors": [
+    "Чёрный"
+  ],
+  "sizes": [],
+  "id": "c2-skierg",
+  "name_ru": "Лыжный тренажёр Concept2 (+ напольная подставка)",
+  "name_en": "Concept2 SkiErg with Stand",
+  "brand": "Concept2",
+  "price": 180000,
+  "description": "Лыжный тренажёр Concept2 SkiErg с монитором PM5 в комплекте с напольной подставкой. Прорабатывает верх тела и корпус, воздушное сопротивление регулируется интенсивностью работы.",
+  "images": [
+    "/images/products/c2-skierg.webp",
+    "/images/products/c2-skierg-2.webp",
+    "/images/products/c2-skierg-3.webp"
+  ]
+}
