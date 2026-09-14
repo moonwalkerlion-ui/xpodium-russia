@@ -18,5 +18,51 @@
     "/images/products/xpodium-rower.webp",
     "/images/products/xpodium-rower-2.webp",
     "/images/products/xpodium-rower-3.webp"
+  ],
+  "specs": [
+    {
+      "label": "Габариты",
+      "value": "2360 × 645 × 1130 мм"
+    },
+    {
+      "label": "Материалы",
+      "value": "Сталь / ABS-пластик / PU-подушка"
+    },
+    {
+      "label": "Макс. нагрузка",
+      "value": "135 кг"
+    },
+    {
+      "label": "Сопротивление",
+      "value": "Воздушное, 10 уровней"
+    },
+    {
+      "label": "Система",
+      "value": "Вентилятор + цепной привод"
+    },
+    {
+      "label": "Сиденье",
+      "value": "PU-пена"
+    },
+    {
+      "label": "Подключение",
+      "value": "Bluetooth FTMS"
+    },
+    {
+      "label": "Сертификация",
+      "value": "EN957"
+    },
+    {
+      "label": "Показатели монитора",
+      "value": "Время, темп, дистанция, калории, ватты, средние ватты, drag-фактор, пульс, сплит"
+    },
+    {
+      "label": "Программы",
+      "value": "Quick Start, цель, обратный отсчёт, интервал"
+    },
+    {
+      "label": "Вес нетто",
+      "value": "39 кг"
+    }
   ]
 }

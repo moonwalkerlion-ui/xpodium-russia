@@ -12,7 +12,7 @@
     "L",
     "XL"
   ],
-  "name_ru": "Шорты 3.0",
+  "name_ru": "Шорты тренировочные HYBRID",
   "images": [
     "/images/products/shorts-3-0.webp",
     "/images/products/shorts-3-0-2.webp",
@@ -29,7 +29,7 @@
   ],
   "id": "shorts-3-0",
   "in_stock": true,
-  "name_en": "Shorts 3.0",
+  "name_en": "HYBRID TRAINING SHORTS",
   "category": "apparel",
   "subcategory": "apparel-men"
 }

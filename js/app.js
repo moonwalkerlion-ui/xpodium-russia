@@ -107,7 +107,7 @@ function renderProductCard(p) {
       <div class="product-img"><img src="${img}" alt="${safeName}" loading="lazy"></div>
       <div class="product-brand">${p.brand || ''}</div>
       <div class="product-name">${p.name_ru || ''}</div>
-      <div class="product-price">${formatPrice(p.price)}</div>
+      <div class="product-price">${hasVariablePrice(p) ? 'от ' : ''}${formatPrice(getMinPrice(p))}</div>
       ${colors ? `<div class="product-colors">${colors}</div>` : ''}
     </div>
   `;
@@ -186,7 +186,8 @@ async function openProductModal(productId) {
       <div class="pm-info">
         <div class="pm-brand">${p.brand}</div>
         <h2 class="pm-title">${p.name_ru}</h2>
-        <div class="pm-price">${formatPrice(p.price)}</div>
+        <div class="pm-price" id="pmPrice">${formatPrice(getPriceFor(p, selectedSize))}</div>
+        ${descriptionHtml(p)}
         ${p.sizes && p.sizes.length ? `
           <div class="pm-section-label">Размер</div>
           <div class="pm-options" data-group="size">${sizesHtml}</div>
@@ -197,6 +198,7 @@ async function openProductModal(productId) {
           <div class="pm-options" data-group="color">${colorsHtml}</div>
         ` : ''}
         <button class="pm-add" id="pmAdd">Добавить в корзину</button>
+        ${specsHtml(p)}
         ${recommendationsHtml ? recommendationsHtml.inlineHtml : ''}
       </div>
       ${recommendationsHtml ? `
@@ -318,7 +320,12 @@ async function openProductModal(productId) {
       const group = el.parentElement.dataset.group;
       modal.querySelectorAll(`[data-group="${group}"] .pm-option`).forEach(x => x.classList.remove('selected'));
       el.classList.add('selected');
-      if (group === 'size') selectedSize = el.dataset.size;
+      if (group === 'size') {
+        selectedSize = el.dataset.size;
+        // Если у размеров разные цены — пересчитываем показанную цену
+        const priceEl = modal.querySelector('#pmPrice');
+        if (priceEl) priceEl.textContent = formatPrice(getPriceFor(p, selectedSize));
+      }
       if (group === 'color') {
         selectedColor = el.dataset.color;
         // Если название обрезано — показываем всплывашку с полным
@@ -837,6 +844,82 @@ function toggleSizeChart() {
 }
 window.toggleSizeChart = toggleSizeChart;
 
+// --- Описание и характеристики товара ---
+
+// Блок описания под ценой
+function descriptionHtml(product) {
+  const text = product && product.description;
+  if (!text || !String(text).trim()) return '';
+  return `
+    <div class="pm-description" style="margin:14px 0 4px;font-size:15px;line-height:1.65;color:#333;">
+      ${escapeHtmlText(text)}
+    </div>
+  `;
+}
+
+// Блок характеристик: список пар «параметр — значение»
+function specsHtml(product) {
+  const specs = product && product.specs;
+  if (!Array.isArray(specs)) return '';
+  const rows = specs.filter(s => s && s.label && s.value);
+  if (!rows.length) return '';
+
+  const body = rows.map(s => `
+    <tr>
+      <td style="padding:9px 14px 9px 0;font-size:14px;color:#666;border-bottom:1px solid #f0f0f0;vertical-align:top;width:42%;">${escapeHtmlText(s.label)}</td>
+      <td style="padding:9px 0;font-size:14px;color:#0a0a0a;border-bottom:1px solid #f0f0f0;vertical-align:top;">${escapeHtmlText(s.value)}</td>
+    </tr>
+  `).join('');
+
+  return `
+    <div class="pm-specs" style="margin-top:22px;">
+      <div class="pm-section-label">Характеристики</div>
+      <table style="width:100%;border-collapse:collapse;font-family:inherit;margin-top:6px;">
+        <tbody>${body}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+// --- Цены, зависящие от размера ---
+// В карточке товара можно задать size_prices: [{size: "75 LB", price: 5800}, ...]
+// Размеры, которых там нет, продаются по базовой цене product.price.
+
+function getSizePriceMap(product) {
+  const list = product && product.size_prices;
+  if (!Array.isArray(list)) return null;
+  const map = {};
+  list.forEach(x => {
+    if (x && x.size && Number(x.price) > 0) map[String(x.size).trim()] = Number(x.price);
+  });
+  return Object.keys(map).length ? map : null;
+}
+
+// Цена товара с учётом выбранного размера
+function getPriceFor(product, size) {
+  const map = getSizePriceMap(product);
+  if (map && size && map[String(size).trim()] != null) return map[String(size).trim()];
+  return Number(product.price) || 0;
+}
+
+// Минимальная цена по всем вариантам — для витрины каталога
+function getMinPrice(product) {
+  const map = getSizePriceMap(product);
+  if (!map) return Number(product.price) || 0;
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+  const values = sizes.map(s => getPriceFor(product, typeof s === 'object' ? s.size : s));
+  return values.length ? Math.min(...values) : Number(product.price) || 0;
+}
+
+// У товара цены различаются по размерам?
+function hasVariablePrice(product) {
+  const map = getSizePriceMap(product);
+  if (!map) return false;
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+  const values = sizes.map(s => getPriceFor(product, typeof s === 'object' ? s.size : s));
+  return new Set(values).size > 1;
+}
+
 // Возвращает % автоматической скидки для данной суммы (берёт максимально подходящий уровень)
 function findAutoDiscountPercent(subtotal) {
   if (!DISCOUNT_TIERS.length) return 0;
@@ -967,7 +1050,7 @@ function addToCart(product, size, color) {
       id: product.id,
       name: product.name_ru,
       brand: product.brand,
-      price: product.price,
+      price: getPriceFor(product, size),
       image: product.images && product.images[0] ? product.images[0] : null,
       size, color,
       qty: 1,

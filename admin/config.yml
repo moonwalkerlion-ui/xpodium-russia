@@ -104,6 +104,28 @@ collections:
               - { label: "Значение 1-й колонки", name: "value_1", widget: "string", required: false }
               - { label: "Значение 2-й колонки", name: "value_2", widget: "string", required: false }
           - { label: "Примечание под таблицей", name: "note", widget: "text", required: false, hint: "Как правильно мерить, особенности" }
+      - label: "Характеристики"
+        name: "specs"
+        widget: "list"
+        required: false
+        collapsed: true
+        label_singular: "Характеристика"
+        summary: "{{fields.label}}: {{fields.value}}"
+        hint: "Таблица под кнопкой «Добавить в корзину». Перетаскивай строки для смены порядка"
+        fields:
+          - { label: "Параметр", name: "label", widget: "string", hint: "Например «Габариты» или «Макс. нагрузка»" }
+          - { label: "Значение", name: "value", widget: "string" }
+      - label: "Цены по размерам"
+        name: "size_prices"
+        widget: "list"
+        required: false
+        collapsed: true
+        label_singular: "Цена за размер"
+        summary: "{{fields.size}} — {{fields.price}} ₽"
+        hint: "Заполняй только если цена зависит от размера. Размер должен совпадать с полем «Размеры». Незаполненные размеры продаются по основной цене"
+        fields:
+          - { label: "Размер", name: "size", widget: "string", hint: "Точно как в поле «Размеры», например 75 LB" }
+          - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
       - label: "Цвета"
         name: "colors"
         widget: "list"
