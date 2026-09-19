@@ -1162,10 +1162,7 @@ function renderCart() {
   if (APPLIED_PROMO) {
     promoBlock = `
       <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
-        <span>
-          <strong>${APPLIED_PROMO.code}</strong> — бонус к заказу
-          <span style="display:block;font-size:12px;opacity:0.7;margin-top:3px;">Менеджер подберёт его при оформлении</span>
-        </span>
+        <span><strong>${APPLIED_PROMO.code}</strong> — бонус к заказу</span>
         <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;">Убрать</button>
       </div>
     `;
