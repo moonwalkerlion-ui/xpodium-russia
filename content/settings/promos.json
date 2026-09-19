@@ -1,89 +1,72 @@
 {
   "items": [
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "Russu"
+      "code": "Russu",
+      "active": true
     },
     {
-      "active": true,
       "code": "Koroleva",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
       "code": "Kravts",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "Ivashka"
+      "code": "Ivashka",
+      "active": true
     },
     {
-      "active": true,
       "code": "Olontsev",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
       "code": "Sava",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
       "code": "Ilin",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "Erdyneeva"
+      "code": "Erdyneeva",
+      "active": true
     },
     {
-      "active": true,
       "code": "Fedotov",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
       "code": "Furia",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
       "code": "Gorokhov",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "Ruhlina"
+      "code": "Ruhlina",
+      "active": true
     },
     {
-      "active": true,
       "code": "Litovchenko",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "paykes"
+      "code": "paykes",
+      "active": true
     },
     {
-      "active": true,
       "code": "fomina",
-      "discount_pct": 15
+      "active": true
     },
     {
-      "active": true,
-      "discount_pct": 15,
-      "code": "kulagina"
+      "code": "kulagina",
+      "active": true
     },
     {
-      "active": true,
       "code": "samonina",
-      "discount_pct": 15
+      "active": true
     }
   ]
 }

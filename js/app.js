@@ -686,9 +686,9 @@ function buildRecommendations(currentProduct) {
 // Не складываются — клиенту считается одна, наибольшая.
 
 // Состояние:
-let APPLIED_PROMO = null;       // { code, discount_pct } если применён
+let APPLIED_PROMO = null;       // { code } если применён — даёт бонус, на сумму не влияет
 let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — отсортировано по возрастанию
-let PROMO_CODES = [];           // [{ code, discount_pct, active }] — только активные
+let PROMO_CODES = [];           // [{ code }] — только активные
 let GIFT_CONFIG = null;         // { minAmount, productId, note } или null если выключено
 let SHOP_SETTINGS_LOADED = false;
 
@@ -736,9 +736,8 @@ async function loadShopSettings() {
         .filter(x => x && x.active !== false && x.code)
         .map(x => ({
           code: String(x.code).trim().toUpperCase(),
-          discount_pct: parsePercent(x.discount_pct),
         }))
-        .filter(x => x.code && x.discount_pct > 0);
+        .filter(x => x.code);
     }
 
     // Подарок при заказе (settings.gift)
@@ -931,21 +930,14 @@ function findAutoDiscountPercent(subtotal) {
 }
 
 // Полный расчёт корзины со скидками
+// Промокод на сумму НЕ влияет: он даёт бонус, который подбирает менеджер.
+// Скидка считается только от суммы заказа.
 function cartCalculations() {
   const subtotal = CART.reduce((s, i) => s + i.price * i.qty, 0);
   const autoPercent = findAutoDiscountPercent(subtotal);
-  const promoPercent = APPLIED_PROMO ? parsePercent(APPLIED_PROMO.discount_pct) : 0;
 
-  // Вариант А — побеждает бóльшая скидка
-  let appliedSource = null;
-  let appliedPercent = 0;
-  if (autoPercent >= promoPercent && autoPercent > 0) {
-    appliedSource = 'auto';
-    appliedPercent = autoPercent;
-  } else if (promoPercent > 0) {
-    appliedSource = 'promo';
-    appliedPercent = promoPercent;
-  }
+  const appliedSource = autoPercent > 0 ? 'auto' : null;
+  const appliedPercent = autoPercent > 0 ? autoPercent : 0;
 
   const discountAmount = Math.round(subtotal * appliedPercent / 100);
   const total = subtotal - discountAmount;
@@ -955,12 +947,11 @@ function cartCalculations() {
 
   return {
     subtotal,
-    appliedSource,    // 'auto' | 'promo' | null
+    appliedSource,    // 'auto' | null
     appliedPercent,
     discountAmount,
     total,
-    autoPercent,      // для информации
-    promoPercent,
+    autoPercent,
     nextTier,         // следующий уровень который ещё не достигнут
   };
 }
@@ -1001,7 +992,6 @@ function applyPromoCode(rawCode) {
   }
   APPLIED_PROMO = {
     code: String(found.code).trim().toUpperCase(),
-    discount_pct: parsePercent(found.discount_pct),
   };
   return { ok: true };
 }
@@ -1170,11 +1160,13 @@ function renderCart() {
   // Блок промокода (либо форма ввода, либо «применён»)
   let promoBlock;
   if (APPLIED_PROMO) {
-    const wins = calc.appliedSource === 'promo';
     promoBlock = `
       <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
-        <span>Промокод <strong>${APPLIED_PROMO.code}</strong> −${APPLIED_PROMO.discount_pct}%${wins ? '' : ' (не применён — авто-скидка выгоднее)'}</span>
-        <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Убрать</button>
+        <span>
+          <strong>${APPLIED_PROMO.code}</strong> — бонус к заказу
+          <span style="display:block;font-size:12px;opacity:0.7;margin-top:3px;">Менеджер подберёт его при оформлении</span>
+        </span>
+        <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;">Убрать</button>
       </div>
     `;
   } else {
@@ -1190,12 +1182,10 @@ function renderCart() {
     `;
   }
 
-  // Блок «Подытог + Скидка» (только если есть скидка)
+  // Блок «Сумма заказа + Скидка» (только если есть скидка от суммы)
   let summaryHtml = '';
   if (calc.appliedPercent > 0) {
-    const label = calc.appliedSource === 'promo'
-      ? `Промокод ${APPLIED_PROMO.code} (−${calc.appliedPercent}%)`
-      : `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
+    const label = `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
     summaryHtml = `
       <div class="cart-summary" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee;font-size:14px;">
         <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px;">
@@ -1261,13 +1251,13 @@ function checkoutToTelegram() {
     msg += '\n';
   }
 
+  if (APPLIED_PROMO) {
+    msg += `\nПромокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
+  }
+
   if (calc.appliedPercent > 0) {
     msg += `\nСумма заказа: ${formatPrice(calc.subtotal)}\n`;
-    if (calc.appliedSource === 'promo') {
-      msg += `Промокод ${APPLIED_PROMO.code}: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
-    } else {
-      msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
-    }
+    msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
     msg += `Итого: ${formatPrice(calc.total)}\n\n`;
   } else {
     msg += `\nИтого: ${formatPrice(calc.total)}\n\n`;
