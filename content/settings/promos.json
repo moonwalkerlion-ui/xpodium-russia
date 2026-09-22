@@ -67,6 +67,10 @@
     {
       "code": "samonina",
       "active": true
+    },
+    {
+      "active": true,
+      "code": "archi"
     }
   ]
 }
