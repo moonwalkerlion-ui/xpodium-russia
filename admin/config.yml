@@ -322,6 +322,47 @@ collections:
           - { label: "ID товара-подарка", name: "product_id", widget: "string", default: "sweat-band", hint: "ID товара из URL. Например для https://сайт/shop.html?cat=gear&product=sweat-band — это sweat-band" }
           - { label: "Пометка к подарку", name: "note", widget: "string", default: "укажите цвет менеджеру", required: false, hint: "Текст под названием подарка в корзине" }
 
+      # --- Акция «N тренажёров → подарок» ---
+      - name: "machine_promo"
+        label: "Акция: тренажёры + подарок"
+        file: "content/settings/machine_promo.json"
+        fields:
+          - { label: "Включить акцию", name: "enabled", widget: "boolean", default: false, hint: "Выключи — пропадут плашки, счётчик в корзине, подарок и готовые комплекты" }
+          - { label: "Сколько тренажёров нужно купить", name: "required_qty", widget: "number", default: 3, min: 1, value_type: "int", hint: "Одинаковые тренажёры тоже засчитываются (например, 3 гребных)" }
+          - label: "Какие тренажёры участвуют"
+            name: "eligible"
+            widget: "relation"
+            collection: "products"
+            value_field: "{{slug}}"
+            search_fields: ["name_ru"]
+            display_fields: ["name_ru"]
+            multiple: true
+            hint: "Подарок в число участвующих лучше не добавлять — иначе 3 подарка дадут четвёртый бесплатно"
+          - label: "Товар-подарок"
+            name: "gift_id"
+            widget: "relation"
+            collection: "products"
+            value_field: "{{slug}}"
+            search_fields: ["name_ru"]
+            display_fields: ["name_ru"]
+          - { label: "Как называть подарок в текстах", name: "gift_label", widget: "string", default: "настенный SkiErg", hint: "Подставляется в фразы вроде «… — настенный SkiErg в подарок»" }
+          - { label: "Подарок за каждые N (а не один на заказ)", name: "repeat", widget: "boolean", default: false, required: false, hint: "Включено: 6 тренажёров = 2 подарка. Выключено: подарок один на заказ" }
+          - { label: "Акция действует до (включительно)", name: "end_date", widget: "datetime", required: false, default: "", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, hint: "Пусто — без срока. После даты акция выключится сама" }
+          - label: "Готовые комплекты в каталоге"
+            name: "bundles"
+            widget: "list"
+            required: false
+            collapsed: true
+            label_singular: "Комплект"
+            summary: "{{fields.title}}"
+            hint: "Показываются в «Оборудование → Функциональный тренинг». Цена считается из текущих цен товаров"
+            fields:
+              - { label: "Название", name: "title", widget: "string" }
+              - label: "Состав (можно повторять один тренажёр)"
+                name: "items"
+                widget: "list"
+                field: { label: "Тренажёр", name: "id", widget: "relation", collection: "products", value_field: "{{slug}}", search_fields: ["name_ru"], display_fields: ["name_ru"] }
+
       # --- Галерея «Зал под ключ» ---
       - name: "gym_gallery"
         label: "Галерея «Зал под ключ»"

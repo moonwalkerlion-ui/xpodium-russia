@@ -408,6 +408,7 @@
 <section class="gym-cta" id="gym-cta">
   <h2>Соберём ваш зал</h2>
   <p>Расскажите о проекте — подберём оборудование, сделаем проект и рассчитаем смету.</p>
+  <div id="gymPromo"></div>
   <button class="btn-primary" id="gymQuoteBtn">Создай свой зал</button>
 </section>
 
@@ -469,7 +470,7 @@
   (function() {
     const ORDER_TG = 'barkovdenis'; // личный TG менеджера для заявок
     function openGymQuote() {
-      const msg = [
+      const lines = [
         'Здравствуйте! Интересует зал под ключ.',
         '',
         'Тип объекта (дом / коммерческий зал / студия): ',
@@ -480,7 +481,12 @@
         '',
         'Имя: ',
         'Телефон: ',
-      ].join('\n');
+      ];
+      // Если идёт акция «N тренажёров → подарок» — упоминаем её в заявке
+      if (typeof MACHINE_PROMO !== 'undefined' && MACHINE_PROMO) {
+        lines.splice(1, 0, '🎁 Хочу участвовать в акции: ' + MACHINE_PROMO.requiredQty + ' ' + machinesWord(MACHINE_PROMO.requiredQty) + ' XPODIUM + ' + MACHINE_PROMO.giftLabel + ' в подарок');
+      }
+      const msg = lines.join('\n');
       const url = 'https://t.me/' + ORDER_TG + '?text=' + encodeURIComponent(msg);
       window.open(url, '_blank');
 
@@ -490,6 +496,20 @@
         navigator.clipboard.writeText(msg).catch(function(){});
       }
     }
+    // Блок акции над кнопкой — только пока акция включена
+    loadShopSettings().then(function() {
+      const box = document.getElementById('gymPromo');
+      if (!box || typeof MACHINE_PROMO === 'undefined' || !MACHINE_PROMO) return;
+      const until = promoUntilText();
+      box.innerHTML =
+        '<div style="max-width:520px;margin:-12px auto 32px;padding:14px 18px;border:1px solid rgba(255,255,255,0.35);border-radius:8px;font-size:15px;line-height:1.5;">' +
+          '🎁 <strong>' + MACHINE_PROMO.requiredQty + ' ' + machinesWord(MACHINE_PROMO.requiredQty) + ' XPODIUM</strong> — ' +
+          escapeHtmlText(MACHINE_PROMO.giftLabel) + ' в подарок.' +
+          ' Вешается на риг или стену и не занимает пол.' +
+          (until ? '<span style="opacity:0.65;"> Акция ' + escapeHtmlText(until) + '.</span>' : '') +
+        '</div>';
+    }).catch(function(){});
+
     const heroBtn = document.querySelector('.gym-hero-cta');
     const ctaBtn = document.getElementById('gymQuoteBtn');
     // Hero-кнопка плавно скроллит к блоку CTA

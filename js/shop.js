@@ -25,6 +25,8 @@ if (params.get('sub')) state.equip = params.get('sub');
 
 (async function init() {
   const products = await loadProducts();
+  // Настройки нужны для плашек акции и готовых комплектов
+  try { await loadShopSettings(); } catch (e) {}
 
   const catCounts = {};
   products.forEach(p => {
@@ -196,6 +198,8 @@ function render() {
     list = sortByDefault(list, state.category);
   }
 
+  renderBundles();
+
   const grid = document.getElementById('shopGrid');
   const count = document.getElementById('shopCount');
   count.textContent = `${list.length} ${declOfNum(list.length, ['товар','товара','товаров'])}`;
@@ -205,6 +209,71 @@ function render() {
     return;
   }
   grid.innerHTML = list.map(renderProductCard).join('');
+}
+
+// ============================================
+// Готовые комплекты по акции «N тренажёров → подарок»
+// ============================================
+function renderBundles() {
+  const box = document.getElementById('shopBundles');
+  if (!box) return;
+
+  const showHere = state.category === 'equipment' && (state.equip === 'all' || state.equip === 'functional');
+  const promo = (typeof MACHINE_PROMO !== 'undefined') ? MACHINE_PROMO : null;
+  if (!showHere || !promo || !promo.bundles.length) { box.innerHTML = ''; return; }
+
+  const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  const cards = promo.bundles.map((b, idx) => {
+    const items = b.ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+    if (items.length !== b.ids.length) return '';           // какой-то товар пропал из каталога — комплект не показываем
+    const total = items.reduce((s, p) => s + (Number(p.price) || 0), 0);
+
+    // Повторы показываем как «Гребной тренажёр XPODIUM × 3»
+    const counted = [];
+    items.forEach(p => {
+      const ex = counted.find(c => c.p.id === p.id);
+      ex ? ex.n++ : counted.push({ p, n: 1 });
+    });
+    // Всегда до трёх миниатюр — по позициям комплекта (у «3 × гребной» будут три гребных)
+    const thumbs = items.slice(0, 3).map(p => `
+      <div style="flex:1;aspect-ratio:1;background:#fff;border-radius:6px;overflow:hidden;">
+        <img src="${productImageUrl(p.images && p.images[0])}" alt="${esc(p.name_ru)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>`).join('');
+    const list = counted.map(c => `<li style="margin:3px 0;">${esc(c.p.name_ru)}${c.n > 1 ? ` × ${c.n}` : ''}</li>`).join('');
+
+    return `
+      <div class="bundle-card" style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--soft-bg, #f4f4f4);border-radius:10px;">
+        <div style="display:flex;gap:8px;">${thumbs}</div>
+        <div style="font-weight:700;font-size:16px;">${esc(b.title)}</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:#555;line-height:1.4;">${list}</ul>
+        <div style="font-size:13px;color:#0a8a3e;font-weight:600;">🎁 + ${esc(promo.giftLabel)} в подарок</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;">
+          <div style="font-weight:700;font-size:18px;">${formatPrice(total)}</div>
+          <button type="button" data-bundle="${idx}" style="padding:10px 14px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;">В корзину</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  if (!cards.trim()) { box.innerHTML = ''; return; }
+
+  const until = (typeof promoUntilText === 'function') ? promoUntilText() : '';
+  box.innerHTML = `
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+        <h3 style="margin:0;font-size:20px;font-weight:800;">Готовые кардио-зоны</h3>
+        ${until ? `<span style="font-size:13px;color:#888;">Акция ${esc(until)}</span>` : ''}
+      </div>
+      <p style="margin:0 0 14px;font-size:14px;color:#666;">${promo.requiredQty} ${machinesWord(promo.requiredQty)} XPODIUM — ${esc(promo.giftLabel)} в подарок. Добавьте комплект одной кнопкой или соберите свой из каталога ниже.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">${cards}</div>
+    </div>`;
+
+  box.querySelectorAll('button[data-bundle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const b = promo.bundles[Number(btn.dataset.bundle)];
+      if (b) addBundleToCart(b.ids);
+    });
+  });
 }
 
 // ============================================

@@ -1,0 +1,40 @@
+{
+  "enabled": true,
+  "required_qty": 3,
+  "eligible": [
+    "xpodium-air-runner",
+    "xpodium-rower",
+    "xpodium-skierg",
+    "xpodium-echo-bike"
+  ],
+  "gift_id": "xpodium-rig-skierg",
+  "gift_label": "настенный SkiErg",
+  "repeat": false,
+  "end_date": "",
+  "bundles": [
+    {
+      "title": "Кардио-зона: база",
+      "items": [
+        "xpodium-rower",
+        "xpodium-skierg",
+        "xpodium-echo-bike"
+      ]
+    },
+    {
+      "title": "Кардио-зона с беговой",
+      "items": [
+        "xpodium-air-runner",
+        "xpodium-rower",
+        "xpodium-echo-bike"
+      ]
+    },
+    {
+      "title": "Гребной блок",
+      "items": [
+        "xpodium-rower",
+        "xpodium-rower",
+        "xpodium-rower"
+      ]
+    }
+  ]
+}

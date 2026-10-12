@@ -1814,3 +1814,11 @@ body.has-page-bg .info-sections {
     gap: 10px;
   }
 }
+
+/* Заголовок каталога на телефоне: длинные слова («Функциональный тренинг») не должны вылезать за экран */
+@media (max-width: 600px) {
+  .shop-title {
+    font-size: clamp(30px, 9.5vw, 48px);
+    overflow-wrap: break-word;
+  }
+}

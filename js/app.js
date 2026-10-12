@@ -104,7 +104,7 @@ function renderProductCard(p) {
   const safeName = String(p.name_ru || '').replace(/"/g, '&quot;');
   return `
     <div class="product-card" data-product-id="${safeId}">
-      <div class="product-img"><img src="${img}" alt="${safeName}" loading="lazy"></div>
+      <div class="product-img">${machinePromoBadge(p)}<img src="${img}" alt="${safeName}" loading="lazy"></div>
       <div class="product-brand">${p.brand || ''}</div>
       <div class="product-name">${p.name_ru || ''}</div>
       <div class="product-price">${hasVariablePrice(p) ? 'от ' : ''}${formatPrice(getMinPrice(p))}</div>
@@ -124,6 +124,8 @@ async function openProductModal(productId) {
       return;
     }
   }
+  // Настройки нужны для строки об акции в карточке (загрузка кешируется)
+  try { await loadShopSettings(); } catch (e) { /* без настроек просто не будет строки */ }
   const p = PRODUCTS.find(x => x.id === productId);
   if (!p) {
     console.warn('Товар не найден:', productId);
@@ -187,6 +189,7 @@ async function openProductModal(productId) {
         <div class="pm-brand">${p.brand}</div>
         <h2 class="pm-title">${p.name_ru}</h2>
         <div class="pm-price" id="pmPrice">${formatPrice(getPriceFor(p, selectedSize))}</div>
+        ${machinePromoLine(p)}
         ${descriptionHtml(p)}
         ${p.sizes && p.sizes.length ? `
           <div class="pm-section-label">Размер</div>
@@ -690,6 +693,7 @@ let APPLIED_PROMO = null;       // { code } если применён — даё
 let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — отсортировано по возрастанию
 let PROMO_CODES = [];           // [{ code }] — только активные
 let GIFT_CONFIG = null;         // { minAmount, productId, note } или null если выключено
+let MACHINE_PROMO = null;       // акция «N тренажёров → подарок», см. parseMachinePromo
 let SHOP_SETTINGS_LOADED = false;
 
 // Парсеры. Поддерживают и числа и форматированные строки из админки ("10 000 ₽", "5%")
@@ -709,8 +713,14 @@ function parsePercent(v) {
 
 // Загружает settings.json (генерируется build-content.js из content/settings/*.json)
 // и заполняет DISCOUNT_TIERS + PROMO_CODES за один запрос.
-async function loadShopSettings() {
-  if (SHOP_SETTINGS_LOADED) return;
+// Повторные вызовы ждут одну и ту же загрузку (раньше второй вызов возвращался до прихода данных)
+let SHOP_SETTINGS_PROMISE = null;
+function loadShopSettings() {
+  if (!SHOP_SETTINGS_PROMISE) SHOP_SETTINGS_PROMISE = loadShopSettingsOnce();
+  return SHOP_SETTINGS_PROMISE;
+}
+
+async function loadShopSettingsOnce() {
   SHOP_SETTINGS_LOADED = true;
   try {
     const res = await fetch('settings.json?v=' + Date.now(), { cache: 'no-store' });
@@ -751,10 +761,157 @@ async function loadShopSettings() {
     } else {
       GIFT_CONFIG = null;
     }
+
+    // Акция «N тренажёров → подарок» (settings.machine_promo)
+    MACHINE_PROMO = parseMachinePromo(data.machine_promo);
   } catch (e) {
     console.warn('[Shop settings] загрузка не удалась', e);
   }
 }
+
+// ============================================
+// Акция: купи N тренажёров — получи подарок
+// ============================================
+
+// Сегодняшняя дата в формате YYYY-MM-DD (по времени посетителя)
+function todayISO() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+// Из админки приходят строки или объекты — приводим к списку id
+function toIdList(v) {
+  if (!Array.isArray(v)) return [];
+  return v
+    .map(x => (x && typeof x === 'object') ? (x.id || x.product || '') : x)
+    .map(x => String(x || '').trim())
+    .filter(Boolean);
+}
+
+function parseMachinePromo(mp) {
+  if (!mp || !mp.enabled) return null;
+  const eligible = toIdList(mp.eligible);
+  const giftId = String(mp.gift_id || '').trim();
+  if (!eligible.length || !giftId) return null;
+
+  const endDate = mp.end_date ? String(mp.end_date).slice(0, 10) : '';
+  if (endDate && todayISO() > endDate) return null;   // акция закончилась
+
+  const requiredQty = Math.max(1, parseInt(mp.required_qty, 10) || 3);
+  const bundles = Array.isArray(mp.bundles)
+    ? mp.bundles
+        .map(b => ({ title: String((b && b.title) || '').trim(), ids: toIdList(b && b.items) }))
+        .filter(b => b.title && b.ids.length)
+    : [];
+
+  return {
+    requiredQty,
+    eligible: new Set(eligible),
+    giftId,
+    giftLabel: String(mp.gift_label || 'настенный SkiErg').trim(),
+    repeat: !!mp.repeat,
+    endDate,
+    bundles,
+  };
+}
+
+// «3 тренажёра», «1 тренажёр», «5 тренажёров»
+function machinesWord(n) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return 'тренажёр';
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'тренажёра';
+  return 'тренажёров';
+}
+
+// «при покупке 3 тренажёров», «при покупке 1 тренажёра»
+function machinesWordGen(n) {
+  return (n % 10 === 1 && n % 100 !== 11) ? 'тренажёра' : 'тренажёров';
+}
+
+// «до 31 октября» — для плашек и карточек
+function promoUntilText() {
+  if (!MACHINE_PROMO || !MACHINE_PROMO.endDate) return '';
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const [y, m, d] = MACHINE_PROMO.endDate.split('-').map(Number);
+  if (!y || !m || !d) return '';
+  return `до ${d} ${months[m - 1]}`;
+}
+
+function isPromoEligible(product) {
+  return !!(MACHINE_PROMO && product && MACHINE_PROMO.eligible.has(product.id));
+}
+
+function isPromoGift(product) {
+  return !!(MACHINE_PROMO && product && product.id === MACHINE_PROMO.giftId);
+}
+
+// Сколько участвующих тренажёров в корзине и сколько подарков положено
+function getMachinePromoState() {
+  if (!MACHINE_PROMO) return null;
+  const req = MACHINE_PROMO.requiredQty;
+  const count = CART
+    .filter(i => MACHINE_PROMO.eligible.has(i.id))
+    .reduce((s, i) => s + i.qty, 0);
+  const gifts = MACHINE_PROMO.repeat ? Math.floor(count / req) : (count >= req ? 1 : 0);
+  return { count, gifts, need: Math.max(0, req - count) };
+}
+
+// Товар-подарок для показа в корзине и в сообщении (сам в CART не лежит)
+function getMachinePromoGift() {
+  const st = getMachinePromoState();
+  if (!st || !st.gifts) return null;
+  const p = PRODUCTS.find(x => x.id === MACHINE_PROMO.giftId);
+  return {
+    qty: st.gifts,
+    name: p ? (p.name_ru || 'Подарок') : MACHINE_PROMO.giftLabel,
+    image: p && p.images && p.images[0] ? p.images[0] : null,
+    found: !!p,
+  };
+}
+
+// Короткая строка-условие для карточек товара
+function machinePromoLine(product) {
+  if (!MACHINE_PROMO) return '';
+  const req = MACHINE_PROMO.requiredQty;
+  const until = promoUntilText();
+  let text = '';
+  if (isPromoEligible(product)) {
+    text = `Купите ${req} ${machinesWord(req)} XPODIUM — ${MACHINE_PROMO.giftLabel} в подарок`;
+  } else if (isPromoGift(product)) {
+    text = `Можно получить в подарок при покупке ${req} ${machinesWordGen(req)} XPODIUM`;
+  } else {
+    return '';
+  }
+  return `
+    <div class="pm-promo" style="margin:12px 0 4px;padding:11px 14px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;line-height:1.45;">
+      🎁 ${escapeHtmlText(text)}${until ? `<span style="opacity:0.65;"> · ${escapeHtmlText(until)}</span>` : ''}
+    </div>
+  `;
+}
+
+// Маленькая плашка на карточке в каталоге
+function machinePromoBadge(product) {
+  if (!MACHINE_PROMO) return '';
+  let text = '';
+  if (isPromoEligible(product)) text = `🎁 Подарок за ${MACHINE_PROMO.requiredQty}`;
+  else if (isPromoGift(product)) text = '🎁 Можно в подарок';
+  else return '';
+  return `<span class="product-promo-badge" style="position:absolute;top:10px;left:10px;z-index:2;padding:5px 9px;background:#0a0a0a;color:#fff;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:0.02em;line-height:1;pointer-events:none;">${text}</span>`;
+}
+
+// Добавить в корзину сразу несколько товаров (готовый комплект)
+function addBundleToCart(ids) {
+  (ids || []).forEach(id => {
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!p) return;
+    const size = (p.sizes && p.sizes.length) ? (typeof p.sizes[0] === 'object' ? p.sizes[0].size : p.sizes[0]) : null;
+    const color = (p.colors && p.colors.length) ? p.colors[0] : null;
+    addToCart(p, size, color);
+  });
+  openCart();
+}
+window.addBundleToCart = addBundleToCart;
 
 // Совместимость со старыми вызовами в инициализации
 async function loadDiscountTiers() {
@@ -932,27 +1089,48 @@ function findAutoDiscountPercent(subtotal) {
 // Полный расчёт корзины со скидками
 // Промокод на сумму НЕ влияет: он даёт бонус, который подбирает менеджер.
 // Скидка считается только от суммы заказа.
+// Тренажёры (Оборудование → Функциональный тренинг) не участвуют в скидке от суммы:
+// ни в пороге, ни в базе расчёта.
+function isExcludedFromAutoDiscount(product) {
+  return !!product && product.category === 'equipment' && product.subcategory === 'functional';
+}
+
+function cartItemExcluded(item) {
+  // Флаг пишется при добавлении в корзину; для старых позиций смотрим каталог
+  if (typeof item.no_discount === 'boolean') return item.no_discount;
+  return isExcludedFromAutoDiscount(PRODUCTS.find(p => p.id === item.id));
+}
+
 function cartCalculations() {
   const subtotal = CART.reduce((s, i) => s + i.price * i.qty, 0);
-  const autoPercent = findAutoDiscountPercent(subtotal);
+  const discountableSubtotal = CART
+    .filter(i => !cartItemExcluded(i))
+    .reduce((s, i) => s + i.price * i.qty, 0);
+  const hasExcluded = CART.some(cartItemExcluded);
+
+  const autoPercent = findAutoDiscountPercent(discountableSubtotal);
 
   const appliedSource = autoPercent > 0 ? 'auto' : null;
   const appliedPercent = autoPercent > 0 ? autoPercent : 0;
 
-  const discountAmount = Math.round(subtotal * appliedPercent / 100);
+  const discountAmount = Math.round(discountableSubtotal * appliedPercent / 100);
   const total = subtotal - discountAmount;
 
-  // Найдём минимальную сумму следующего уровня (для подсказки «доберите до...»)
-  const nextTier = DISCOUNT_TIERS.find(t => subtotal < t.minAmount);
+  // Следующий уровень (для подсказки «доберите до...») — только если в корзине есть что-то кроме тренажёров
+  const nextTier = discountableSubtotal > 0
+    ? DISCOUNT_TIERS.find(t => discountableSubtotal < t.minAmount)
+    : null;
 
   return {
     subtotal,
-    appliedSource,    // 'auto' | null
+    discountableSubtotal, // сумма без тренажёров — от неё считается скидка
+    hasExcluded,          // в корзине есть тренажёры
+    appliedSource,        // 'auto' | null
     appliedPercent,
     discountAmount,
     total,
     autoPercent,
-    nextTier,         // следующий уровень который ещё не достигнут
+    nextTier,             // следующий уровень который ещё не достигнут
   };
 }
 
@@ -1044,6 +1222,7 @@ function addToCart(product, size, color) {
       image: product.images && product.images[0] ? product.images[0] : null,
       size, color,
       qty: 1,
+      no_discount: isExcludedFromAutoDiscount(product),
     });
   }
   saveCart();
@@ -1154,8 +1333,46 @@ function renderCart() {
     itemsEl.appendChild(giftEl);
   }
 
+  // Подарок по акции «N тренажёров» (виртуальный, в CART не лежит)
+  const promoGift = getMachinePromoGift();
+  if (promoGift) {
+    // На страницах без каталога товаров ещё нет — догружаем и перерисовываем с фото и названием
+    if (!promoGift.found && !PRODUCTS.length && !window.__promoProductsLoading) {
+      window.__promoProductsLoading = true;
+      loadProducts().then(() => { if (PRODUCTS.length) renderCart(); }).catch(() => {});
+    }
+    const pgImg = promoGift.image ? productImageUrl(promoGift.image) : '';
+    const pgEl = document.createElement('div');
+    pgEl.className = 'cart-item cart-item-gift';
+    pgEl.style.cssText = 'background:#fff8e1;border-radius:6px;padding:10px;margin-top:6px;';
+    pgEl.innerHTML = `
+      <div class="cart-item-img">
+        ${pgImg ? `<img src="${pgImg}" alt="${escapeHtmlText(promoGift.name)}">` : ''}
+      </div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">🎁 ${escapeHtmlText(promoGift.name)}</div>
+        <div class="cart-item-meta" style="color:#a77b00;">Подарок по акции${promoGift.qty > 1 ? ` · ${promoGift.qty} шт` : ''}</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price" style="color:#0a8a3e;font-weight:600;">Подарок</div>
+      </div>
+    `;
+    itemsEl.appendChild(pgEl);
+  }
+
   // Расчёт скидок
   const calc = cartCalculations();
+
+  // Счётчик «ещё N тренажёров до подарка» — показываем, когда уже начал собирать
+  let promoHintHtml = '';
+  const promoState = getMachinePromoState();
+  if (promoState && promoState.count > 0 && promoState.need > 0) {
+    promoHintHtml = `
+      <div class="cart-promo-hint" style="margin-bottom:12px;padding:10px 12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:13px;text-align:center;line-height:1.4;">
+        🎁 Ещё ${promoState.need} ${machinesWord(promoState.need)} XPODIUM — и ${escapeHtmlText(MACHINE_PROMO.giftLabel)} в подарок
+      </div>
+    `;
+  }
 
   // Блок промокода (либо форма ввода, либо «применён»)
   let promoBlock;
@@ -1181,6 +1398,9 @@ function renderCart() {
 
   // Блок «Сумма заказа + Скидка» (только если есть скидка от суммы)
   let summaryHtml = '';
+  const excludedNote = calc.hasExcluded
+    ? `<div style="font-size:12px;color:#888;margin-top:6px;">Скидка от суммы заказа не распространяется на тренажёры</div>`
+    : '';
   if (calc.appliedPercent > 0) {
     const label = `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
     summaryHtml = `
@@ -1193,21 +1413,26 @@ function renderCart() {
           <span>${label}:</span>
           <span>−${formatPrice(calc.discountAmount)}</span>
         </div>
+        ${excludedNote}
       </div>
     `;
   } else if (calc.nextTier) {
-    // Подсказка «доберите до следующего уровня»
-    const need = calc.nextTier.minAmount - calc.subtotal;
+    // Подсказка «доберите до следующего уровня» (считается без тренажёров)
+    const need = calc.nextTier.minAmount - calc.discountableSubtotal;
     summaryHtml = `
       <div class="cart-next-tier" style="margin-bottom:12px;padding:10px 12px;background:#f7f7f7;border-radius:6px;font-size:13px;color:#555;text-align:center;">
         Доберите ${formatPrice(need)} — получите скидку ${calc.nextTier.percent}%
+        ${excludedNote}
       </div>
     `;
+  } else if (calc.hasExcluded) {
+    // В корзине только тренажёры — честно говорим, что скидки нет
+    summaryHtml = `<div style="margin-bottom:12px;">${excludedNote}</div>`;
   }
 
   // Промо-форма + summary — в футер (всегда видны, не уплывают за прокруткой)
   if (extrasEl) {
-    extrasEl.innerHTML = promoBlock + summaryHtml;
+    extrasEl.innerHTML = promoHintHtml + promoBlock + summaryHtml;
   }
 
   // Итоговая сумма с учётом скидки
@@ -1248,13 +1473,19 @@ function checkoutToTelegram() {
     msg += '\n';
   }
 
+  const promoGift = getMachinePromoGift();
+  if (promoGift) {
+    msg += `\n🎁 Подарок по акции: ${promoGift.name}${promoGift.qty > 1 ? ` — ${promoGift.qty} шт` : ''}\n`;
+  }
+
   if (APPLIED_PROMO) {
     msg += `\nПромокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
   }
 
   if (calc.appliedPercent > 0) {
     msg += `\nСумма заказа: ${formatPrice(calc.subtotal)}\n`;
-    msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})\n`;
+    msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})`;
+    msg += calc.hasExcluded ? ` — без учёта тренажёров\n` : `\n`;
     msg += `Итого: ${formatPrice(calc.total)}\n\n`;
   } else {
     msg += `\nИтого: ${formatPrice(calc.total)}\n\n`;
