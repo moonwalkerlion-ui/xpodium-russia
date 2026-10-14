@@ -1223,6 +1223,7 @@ function addToCart(product, size, color) {
       size, color,
       qty: 1,
       no_discount: isExcludedFromAutoDiscount(product),
+      color_choice: (product.colors || []).length > 1,
     });
   }
   saveCart();
@@ -1387,10 +1388,10 @@ function renderCart() {
     promoBlock = `
       <div class="cart-promo-form" style="display:flex;gap:8px;margin-bottom:6px;">
         <input type="text" id="promoInput" placeholder="Промокод" autocomplete="off"
-               style="flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;background:#fff;color:#0a0a0a;"
+               style="flex:1;min-width:0;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;background:#fff;color:#0a0a0a;"
                onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromoFromInput();}">
         <button onclick="applyPromoFromInput()"
-                style="padding:10px 18px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;">Применить</button>
+                style="flex-shrink:0;padding:10px 18px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;">Применить</button>
       </div>
       <div id="promoMessage" style="font-size:13px;margin-bottom:8px;min-height:18px;"></div>
     `;
@@ -1454,60 +1455,118 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
-function checkoutToTelegram() {
-  if (!CART.length) return;
-  const calc = cartCalculations();
-  const gift = getActiveGiftItem();
+// ============================================
+// Оформление заказа в Telegram
+// ============================================
+// Текст заказа передаётся прямо в ссылке t.me/...?text=...
+// Telegram отбрасывает слишком длинные ссылки с ошибкой «400 Bad Request»,
+// а кириллица в ссылке занимает ~6 символов на букву. Поэтому:
+//  1) сообщение собираем компактно (без лишних «1 шт», цвета без выбора, неразрывных пробелов);
+//  2) если ссылка всё равно длиннее TG_URL_MAX — шлём короткое сообщение с итогом,
+//     а полный список копируем в буфер, чтобы вставить его в чат.
+const TG_URL_MAX = 2000;
 
-  let msg = 'Здравствуйте! Хочу оформить заказ:\n\n';
+// Цена с обычными пробелами: неразрывный пробел в ссылке занимает вдвое больше места
+function plainPrice(n) {
+  return formatPrice(n).replace(/[  ]/g, ' ');
+}
+
+// «1 товар», «2 товара», «5 товаров»
+function pluralRu(n, forms) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return forms[0];
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return forms[1];
+  return forms[2];
+}
+
+// Писать ли цвет: только если покупателю было из чего выбирать
+function itemHasColorChoice(i) {
+  if (typeof i.color_choice === 'boolean') return i.color_choice;
+  const p = PRODUCTS.find(x => x.id === i.id);
+  return p ? (p.colors || []).length > 1 : true;
+}
+
+// Тело заказа: позиции, подарки, промокод, суммы и (по желанию) анкета
+function buildOrderBody(calc, withForm) {
+  let body = '';
   CART.forEach((i, idx) => {
-    msg += `${idx + 1}. ${i.name}`;
-    if (i.size) msg += ` · ${i.size}`;
-    if (i.color) msg += ` · ${i.color}`;
-    msg += ` — ${i.qty} шт — ${formatPrice(i.price * i.qty)}\n`;
+    body += `${idx + 1}. ${i.name}`;
+    if (i.size) body += ` · ${i.size}`;
+    if (i.color && itemHasColorChoice(i)) body += ` · ${i.color}`;
+    if (i.qty > 1) body += ` ×${i.qty}`;
+    body += ` - ${plainPrice(i.price * i.qty)}\n`;
   });
 
-  if (gift) {
-    msg += `\n🎁 Подарок: ${gift.name}`;
-    if (gift.note) msg += ` (${gift.note})`;
-    msg += '\n';
-  }
-
+  const gift = getActiveGiftItem();
   const promoGift = getMachinePromoGift();
-  if (promoGift) {
-    msg += `\n🎁 Подарок по акции: ${promoGift.name}${promoGift.qty > 1 ? ` — ${promoGift.qty} шт` : ''}\n`;
+  if (gift || promoGift || APPLIED_PROMO) body += '\n';
+  if (gift) {
+    body += `🎁 Подарок: ${gift.name}${gift.note ? ` (${gift.note})` : ''}\n`;
   }
-
+  if (promoGift) {
+    // Короткое название из настроек акции, а не полное имя товара
+    const label = (MACHINE_PROMO && MACHINE_PROMO.giftLabel) || promoGift.name;
+    const nice = label.charAt(0).toUpperCase() + label.slice(1);
+    body += `🎁 Подарок по акции: ${nice}${promoGift.qty > 1 ? ` ×${promoGift.qty}` : ''}\n`;
+  }
   if (APPLIED_PROMO) {
-    msg += `\nПромокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
+    body += `Промокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
   }
 
   if (calc.appliedPercent > 0) {
-    msg += `\nСумма заказа: ${formatPrice(calc.subtotal)}\n`;
-    msg += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${formatPrice(calc.discountAmount)})`;
-    msg += calc.hasExcluded ? ` — без учёта тренажёров\n` : `\n`;
-    msg += `Итого: ${formatPrice(calc.total)}\n\n`;
+    body += `\nСумма заказа: ${plainPrice(calc.subtotal)}\n`;
+    body += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${plainPrice(calc.discountAmount)})`;
+    body += calc.hasExcluded ? `, без учёта тренажёров\n` : `\n`;
+    body += `Итого: ${plainPrice(calc.total)}\n`;
   } else {
-    msg += `\nИтого: ${formatPrice(calc.total)}\n\n`;
+    body += `\nИтого: ${plainPrice(calc.total)}\n`;
   }
 
-  msg += `Имя: \nГород: \nАдрес доставки: \nСпособ оплаты: `;
+  if (withForm) body += `\nИмя: \nГород: \nАдрес доставки: \nСпособ оплаты: `;
+  return body;
+}
 
-  // Используем orderTelegramUrl (личный TG для заказов), а если его нет — обычный telegramUrl
+function tgOrderUrl(text) {
   const targetUrl = SHOP_CONFIG.orderTelegramUrl || SHOP_CONFIG.telegramUrl;
-  // Открываем Telegram с предзаполненным текстом.
-  // На десктопе/iOS параметр ?text= обычно подхватывается. На Android — нет (поэтому ниже копируем в буфер).
-  
-  if (typeof ym !== 'undefined') ym(109646659, 'reachGoal', 'telegram_order'); window.open(`${targetUrl}?text=${encodeURIComponent(msg)}`, '_blank');
+  return `${targetUrl}?text=${encodeURIComponent(text)}`;
+}
 
-  // На Android — копируем в буфер + показываем подсказку (на случай если ?text= не подхватился)
+function checkoutToTelegram() {
+  if (!CART.length) return;
+  const calc = cartCalculations();
+  const greeting = 'Здравствуйте! Хочу оформить заказ:\n\n';
+
+  // Пробуем от полного к короткому, пока ссылка не влезет в лимит Telegram
+  let msg = greeting + buildOrderBody(calc, true);
+  let pasteText = null;   // если не null — это полный список, который надо вставить в чат вручную
+
+  if (tgOrderUrl(msg).length > TG_URL_MAX) {
+    msg = greeting + buildOrderBody(calc, false);
+  }
+  if (tgOrderUrl(msg).length > TG_URL_MAX) {
+    const count = CART.reduce((s, i) => s + i.qty, 0);
+    pasteText = buildOrderBody(calc, true);
+    msg = `Здравствуйте! Хочу оформить заказ с сайта: ${count} ${pluralRu(count, ['товар', 'товара', 'товаров'])} на ${plainPrice(calc.total)}.`;
+    if (APPLIED_PROMO) msg += `\nПромокод: ${APPLIED_PROMO.code}`;
+    msg += `\n\nСписок заказа:\n`;
+  }
+
   const isAndroid = /Android/i.test(navigator.userAgent || '');
-  if (isAndroid) {
-    copyToClipboard(msg).then(ok => {
-      if (ok) {
-        showCheckoutToast('Если поле сообщения пустое — задержите палец и нажмите «Вставить»');
-      }
-    });
+
+  // Буфер обмена заполняем ДО открытия Telegram: после ухода фокуса браузер может запретить копирование
+  if (pasteText) {
+    copyToClipboard(pasteText);
+  } else if (isAndroid) {
+    copyToClipboard(msg);
+  }
+
+  if (typeof ym !== 'undefined') ym(109646659, 'reachGoal', 'telegram_order');
+  window.open(tgOrderUrl(msg), '_blank');
+
+  if (pasteText) {
+    showCheckoutToast('Заказ большой, поэтому список скопирован — вставьте его в чат после текста', 10000);
+  } else if (isAndroid) {
+    showCheckoutToast('Если поле сообщения пустое — задержите палец и нажмите «Вставить»');
   }
 }
 
@@ -1538,7 +1597,7 @@ function fallbackCopy(text) {
 }
 
 // Тост-уведомление снизу экрана (исчезает через 6 секунд)
-function showCheckoutToast(message) {
+function showCheckoutToast(message, durationMs) {
   // Убираем предыдущий тост если есть
   document.querySelectorAll('.checkout-toast').forEach(t => t.remove());
 
@@ -1577,7 +1636,7 @@ function showCheckoutToast(message) {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(-50%) translateY(20px)';
     setTimeout(() => toast.remove(), 300);
-  }, 6000);
+  }, durationMs || 6000);
 }
 
 // --- Инициализация ---
