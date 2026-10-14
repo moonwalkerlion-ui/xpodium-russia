@@ -1459,11 +1459,14 @@ function closeCart() {
 // Оформление заказа в Telegram
 // ============================================
 // Текст заказа передаётся прямо в ссылке t.me/...?text=...
-// Telegram отбрасывает слишком длинные ссылки с ошибкой «400 Bad Request»,
+// Сервер t.me отвечает «400 Bad Request» на слишком длинные ссылки,
 // а кириллица в ссылке занимает ~6 символов на букву. Поэтому:
-//  1) сообщение собираем компактно (без лишних «1 шт», цвета без выбора, неразрывных пробелов);
-//  2) если ссылка всё равно длиннее TG_URL_MAX — шлём короткое сообщение с итогом,
-//     а полный список копируем в буфер, чтобы вставить его в чат.
+//  1) сообщение собираем компактно (без «1 шт», без цвета там, где выбора не было);
+//  2) обычный заказ открываем через t.me, как раньше;
+//  3) большой заказ открываем сразу в приложении Telegram ссылкой tg://resolve —
+//     она не проходит через сервер t.me, поэтому лимита длины нет и весь список
+//     попадает в сообщение. Если приложение не открылось (Telegram не установлен),
+//     через пару секунд показываем кнопку «Открыть чат в браузере».
 const TG_URL_MAX = 2000;
 
 // Цена с обычными пробелами: неразрывный пробел в ссылке занимает вдвое больше места
@@ -1531,43 +1534,73 @@ function tgOrderUrl(text) {
   return `${targetUrl}?text=${encodeURIComponent(text)}`;
 }
 
+// Ссылка прямо в приложение Telegram (минуя сервер t.me)
+function tgAppUrl(text) {
+  const targetUrl = SHOP_CONFIG.orderTelegramUrl || SHOP_CONFIG.telegramUrl;
+  const m = String(targetUrl).match(/t\.me\/([A-Za-z0-9_]+)/);
+  if (!m) return null;
+  return `tg://resolve?domain=${m[1]}&text=${encodeURIComponent(text)}`;
+}
+
+// Переход в приложение (вынесено в функцию, чтобы было удобно проверять)
+function openTgApp(url) {
+  window.location.href = url;
+}
+
+const ANDROID_PASTE_HINT = 'Если поле сообщения пустое — задержите палец и нажмите «Вставить»';
+
 function checkoutToTelegram() {
   if (!CART.length) return;
   const calc = cartCalculations();
   const greeting = 'Здравствуйте! Хочу оформить заказ:\n\n';
-
-  // Пробуем от полного к короткому, пока ссылка не влезет в лимит Telegram
-  let msg = greeting + buildOrderBody(calc, true);
-  let pasteText = null;   // если не null — это полный список, который надо вставить в чат вручную
-
-  if (tgOrderUrl(msg).length > TG_URL_MAX) {
-    msg = greeting + buildOrderBody(calc, false);
-  }
-  if (tgOrderUrl(msg).length > TG_URL_MAX) {
-    const count = CART.reduce((s, i) => s + i.qty, 0);
-    pasteText = buildOrderBody(calc, true);
-    msg = `Здравствуйте! Хочу оформить заказ с сайта: ${count} ${pluralRu(count, ['товар', 'товара', 'товаров'])} на ${plainPrice(calc.total)}.`;
-    if (APPLIED_PROMO) msg += `\nПромокод: ${APPLIED_PROMO.code}`;
-    msg += `\n\nСписок заказа:\n`;
-  }
-
+  const fullMsg = greeting + buildOrderBody(calc, true);
   const isAndroid = /Android/i.test(navigator.userAgent || '');
+  const track = () => { if (typeof ym !== 'undefined') ym(109646659, 'reachGoal', 'telegram_order'); };
 
-  // Буфер обмена заполняем ДО открытия Telegram: после ухода фокуса браузер может запретить копирование
-  if (pasteText) {
-    copyToClipboard(pasteText);
-  } else if (isAndroid) {
-    copyToClipboard(msg);
+  // 1) Обычный заказ — через t.me, как раньше
+  let msg = fullMsg;
+  if (tgOrderUrl(msg).length > TG_URL_MAX) msg = greeting + buildOrderBody(calc, false);
+  const appUrl = tgAppUrl(fullMsg);
+
+  if (tgOrderUrl(msg).length <= TG_URL_MAX || !appUrl) {
+    // Буфер заполняем ДО открытия Telegram: после ухода фокуса браузер может запретить копирование
+    if (isAndroid) copyToClipboard(msg);
+    track();
+    window.open(tgOrderUrl(msg), '_blank');
+    if (isAndroid) showCheckoutToast(ANDROID_PASTE_HINT);
+    return;
   }
 
-  if (typeof ym !== 'undefined') ym(109646659, 'reachGoal', 'telegram_order');
-  window.open(tgOrderUrl(msg), '_blank');
+  // 2) Большой заказ — сразу в приложение Telegram, весь список в сообщении
+  copyToClipboard(fullMsg);   // запасной вариант, если приложение не подставит текст
+  track();
+  openTgApp(appUrl);
+  if (isAndroid) showCheckoutToast(ANDROID_PASTE_HINT);
 
-  if (pasteText) {
-    showCheckoutToast('Заказ большой, поэтому список скопирован — вставьте его в чат после текста', 10000);
-  } else if (isAndroid) {
-    showCheckoutToast('Если поле сообщения пустое — задержите палец и нажмите «Вставить»');
-  }
+  // 3) Если через 3 секунды мы всё ещё на сайте — значит Telegram не открылся
+  let left = false;
+  const markLeft = () => {
+    left = true;
+    document.querySelectorAll('.checkout-toast').forEach(t => t.remove());
+  };
+  window.addEventListener('blur', markLeft, { once: true });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) markLeft(); }, { once: true });
+
+  setTimeout(() => {
+    if (left || document.hidden) return;
+    showCheckoutToast('Telegram не открылся?', 15000, {
+      label: 'Открыть чат в браузере',
+      onClick: () => {
+        const count = CART.reduce((s, i) => s + i.qty, 0);
+        let shortMsg = `Здравствуйте! Хочу оформить заказ с сайта: ${count} ${pluralRu(count, ['товар', 'товара', 'товаров'])} на ${plainPrice(calc.total)}.`;
+        if (APPLIED_PROMO) shortMsg += `\nПромокод: ${APPLIED_PROMO.code}`;
+        shortMsg += `\n\nСписок заказа:\n`;
+        copyToClipboard(fullMsg);
+        window.open(tgOrderUrl(shortMsg), '_blank');
+        showCheckoutToast('Список заказа скопирован — вставьте его в чат после текста', 10000);
+      },
+    });
+  }, 3000);
 }
 
 // Копирование текста в буфер обмена. Возвращает Promise<boolean> успешно ли.
@@ -1597,13 +1630,26 @@ function fallbackCopy(text) {
 }
 
 // Тост-уведомление снизу экрана (исчезает через 6 секунд)
-function showCheckoutToast(message, durationMs) {
+function showCheckoutToast(message, durationMs, action) {
   // Убираем предыдущий тост если есть
   document.querySelectorAll('.checkout-toast').forEach(t => t.remove());
 
   const toast = document.createElement('div');
   toast.className = 'checkout-toast';
   toast.textContent = message;
+  // Необязательная кнопка внутри тоста: { label, onClick }
+  if (action && action.label) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = action.label;
+    Object.assign(btn.style, {
+      display: 'block', margin: '10px auto 0', padding: '8px 18px',
+      background: '#ffffff', color: '#0a0a0a', border: 'none', borderRadius: '6px',
+      fontSize: '14px', fontWeight: '600', fontFamily: 'inherit', cursor: 'pointer', whiteSpace: 'nowrap',
+    });
+    btn.addEventListener('click', () => { toast.remove(); action.onClick && action.onClick(); });
+    toast.appendChild(btn);
+  }
   Object.assign(toast.style, {
     position: 'fixed',
     left: '50%',
@@ -1616,14 +1662,16 @@ function showCheckoutToast(message, durationMs) {
     fontSize: '14px',
     fontWeight: '500',
     fontFamily: 'inherit',
+    width: 'max-content',
     maxWidth: '92vw',
+    boxSizing: 'border-box',
     lineHeight: '1.4',
     textAlign: 'center',
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
     zIndex: '10001',
     opacity: '0',
     transition: 'opacity 0.25s ease, transform 0.25s ease',
-    pointerEvents: 'none',
+    pointerEvents: action ? 'auto' : 'none',
   });
   document.body.appendChild(toast);
 
