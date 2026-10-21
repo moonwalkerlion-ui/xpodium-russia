@@ -139,6 +139,122 @@ fs.writeFileSync(path.join(__dirname, 'products.json'), JSON.stringify(products,
 console.log(`✓ products.json: ${products.length} товаров`);
 
 // ============================================
+// Страницы для превью ссылок в мессенджерах: p/<id>.html
+// ============================================
+// Telegram, WhatsApp, VK и т.п. не запускают JavaScript, а читают только
+// метатеги og:* из HTML. У каталога один файл shop.html на все товары,
+// поэтому для каждого товара собираем маленькую страницу со своими
+// названием, ценой и фото. Человека она сразу перекидывает в каталог
+// на этот товар, а боту превью (см. .htaccess) отдаётся вместо shop.html.
+const SITE_URL = 'https://xpodium-russia.online';
+
+function escAttr(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function rub(n) {
+  return String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+}
+function ogImageUrl(img) {
+  if (!img) return `${SITE_URL}/images/categories/gear.webp`;
+  if (/^https?:\/\//.test(img)) return img;
+  const rel = img.startsWith('/') ? img.slice(1) : (img.includes('/') ? img : `images/products/${img}`);
+  return `${SITE_URL}/${encodeURI(rel)}`;
+}
+function ogPriceText(p) {
+  const prices = Array.isArray(p.size_prices)
+    ? p.size_prices.map(x => Number(x && x.price)).filter(n => n > 0) : [];
+  if (prices.length) {
+    const min = Math.min(...prices);
+    return prices.some(n => n !== min) ? `от ${rub(min)}` : rub(min);
+  }
+  return Number(p.price) > 0 ? rub(p.price) : '';
+}
+// Первый обычный абзац описания (без списков и подзаголовков), не длиннее ~160 символов
+function ogShortText(p) {
+  const lines = String(p.description || '').replace(/\r\n?/g, '\n').split('\n').map(l => l.trim());
+  const firstPara = [];
+  for (const l of lines) {
+    if (!l) { if (firstPara.length) break; continue; }
+    if (/^[•·▪●◦*\-–—]/.test(l) || /[:：]$/.test(l)) { if (firstPara.length) break; continue; }
+    firstPara.push(l);
+  }
+  let t = firstPara.join(' ').replace(/\s+/g, ' ').trim();
+  if (t.length > 160) t = t.slice(0, 160).replace(/\s+\S*$/, '') + '…';
+  return t;
+}
+
+const pagesDir = path.join(__dirname, 'p');
+fs.rmSync(pagesDir, { recursive: true, force: true });
+fs.mkdirSync(pagesDir, { recursive: true });
+
+for (const p of products) {
+  const name = p.name_ru || p.name_en || 'XPODIUM';
+  const price = ogPriceText(p);
+  const short = ogShortText(p) || `${p.category_ru || 'XPODIUM'}. Официальный представитель XPODIUM в России, доставка по России и СНГ.`;
+  const desc = price ? `${price} · ${short}` : short;
+  const image = ogImageUrl(p.images && p.images[0]);
+  const target = `/shop.html?cat=${encodeURIComponent(p.category || '')}&product=${encodeURIComponent(p.id)}`;
+  const pageUrl = `${SITE_URL}/p/${encodeURIComponent(p.id)}.html`;
+
+  const html = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escAttr(name)} — XPODIUM RUSSIA</title>
+<meta name="description" content="${escAttr(desc)}">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="${escAttr(SITE_URL + target)}">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="XPODIUM RUSSIA">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="${escAttr(name)}">
+<meta property="og:description" content="${escAttr(desc)}">
+<meta property="og:url" content="${escAttr(pageUrl)}">
+<meta property="og:image" content="${escAttr(image)}">
+<meta property="og:image:alt" content="${escAttr(name)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${escAttr(name)}">
+<meta name="twitter:description" content="${escAttr(desc)}">
+<meta name="twitter:image" content="${escAttr(image)}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta http-equiv="refresh" content="0; url=${escAttr(target)}">
+<script>location.replace(${JSON.stringify(target)});</script>
+</head>
+<body>
+<p><a href="${escAttr(target)}">${escAttr(name)}</a></p>
+</body>
+</html>
+`;
+  fs.writeFileSync(path.join(pagesDir, `${p.id}.html`), html);
+}
+console.log(`✓ p/: ${products.length} страниц для превью ссылок`);
+
+// Правило для ботов превью дописываем в .htaccess при сборке на GitHub
+// (файл в репозитории не меняется, правится только копия, которая уходит на хостинг).
+// Боту, который строит превью ссылки shop.html?product=ID, сервер отдаёт p/ID.html.
+const HTACCESS_MARK = '# [xpodium] превью ссылок на товары в мессенджерах';
+const htFile = path.join(__dirname, '.htaccess');
+let ht = fs.existsSync(htFile) ? fs.readFileSync(htFile, 'utf-8') : '';
+if (!ht.includes(HTACCESS_MARK)) {
+  const rule = [
+    HTACCESS_MARK,
+    'RewriteCond %{HTTP_USER_AGENT} (TelegramBot|WhatsApp|facebookexternalhit|Facebot|Twitterbot|vkShare|Viber|Discordbot|Slackbot|LinkedInBot|SkypeUriPreview|Pinterest|OdklBot|redditbot|Iframely) [NC]',
+    'RewriteCond %{QUERY_STRING} (^|&)product=([A-Za-z0-9_-]+)',
+    'RewriteCond %{DOCUMENT_ROOT}/p/%2.html -f',
+    'RewriteCond %{QUERY_STRING} (^|&)product=([A-Za-z0-9_-]+)',
+    'RewriteRule ^((shop|index)(\\.html)?)?$ p/%2.html [L]',
+  ].join('\n');
+  const engineRe = /^([ \t]*RewriteEngine[ \t]+On[ \t]*)$/mi;
+  ht = engineRe.test(ht)
+    ? ht.replace(engineRe, `$1\n\n${rule}\n`)
+    : `RewriteEngine On\n\n${rule}\n\n${ht}`;
+  fs.writeFileSync(htFile, ht);
+  console.log('✓ .htaccess: добавлено правило превью ссылок');
+}
+
+// ============================================
 // Настройки
 // ============================================
 const settingsDir = path.join(__dirname, 'content', 'settings');
