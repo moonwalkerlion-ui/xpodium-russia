@@ -201,6 +201,7 @@ async function openProductModal(productId) {
           <div class="pm-options" data-group="color">${colorsHtml}</div>
         ` : ''}
         <button class="pm-add" id="pmAdd">Добавить в корзину</button>
+        ${descriptionDetailsHtml(p)}
         ${specsHtml(p)}
         ${recommendationsHtml ? recommendationsHtml.inlineHtml : ''}
       </div>
@@ -1003,12 +1004,105 @@ window.toggleSizeChart = toggleSizeChart;
 // --- Описание и характеристики товара ---
 
 // Блок описания под ценой
-function descriptionHtml(product) {
+// --- Описание товара с форматированием ---
+// В админке описание — обычный текст. Понимаем простую разметку:
+//   • пустая строка            → новый абзац
+//   • строка с «•», «-», «—»   → пункт списка
+//   • короткая строка с «:» в конце (например «Характеристики:») → подзаголовок
+// Всё, что до первого подзаголовка, показываем под ценой (вводный текст).
+// Разделы с подзаголовками — под кнопкой «Добавить в корзину», чтобы
+// длинные характеристики не отодвигали кнопку вниз.
+const DESC_BULLET_RE = /^\s*[•·▪●◦*\-–—]\s*/;
+
+function parseDescription(text) {
+  const lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+  const blocks = [];
+  let para = null;
+  const closePara = () => { if (para) { blocks.push(para); para = null; } };
+
+  lines.forEach(raw => {
+    const line = raw.trim();
+    if (!line) { closePara(); return; }
+
+    if (DESC_BULLET_RE.test(line) && line.replace(DESC_BULLET_RE, '').trim()) {
+      closePara();
+      const item = line.replace(DESC_BULLET_RE, '').trim();
+      const last = blocks[blocks.length - 1];
+      // Пункты подряд (даже через пустую строку) — один список
+      if (last && last.type === 'ul') last.items.push(item);
+      else blocks.push({ type: 'ul', items: [item] });
+      return;
+    }
+
+    if (/[:：]$/.test(line) && line.length <= 60 && !para) {
+      blocks.push({ type: 'h', text: line.replace(/[:：]$/, '').trim() });
+      return;
+    }
+
+    if (!para) para = { type: 'p', lines: [] };
+    para.lines.push(line);
+  });
+  closePara();
+  return blocks;
+}
+
+// Пункт списка: «Модель: T00100.» → название серым, значение чёрным
+function descItemHtml(item) {
+  const clean = item.replace(/\.$/, '');
+  const m = clean.match(/^([^:]{1,48}):\s+(.+)$/);
+  if (m) {
+    return `<span style="color:#777;">${escapeHtmlText(m[1])}:</span> ${escapeHtmlText(m[2])}`;
+  }
+  return escapeHtmlText(clean);
+}
+
+function descBlocksHtml(blocks) {
+  return blocks.map(b => {
+    if (b.type === 'h') {
+      return `<div class="pm-section-label" style="margin:22px 0 8px;">${escapeHtmlText(b.text)}</div>`;
+    }
+    if (b.type === 'ul') {
+      const items = b.items.map(i => `
+        <li style="position:relative;padding:7px 0 7px 18px;border-bottom:1px solid #f0f0f0;">
+          <span style="position:absolute;left:2px;top:7px;color:#bbb;">•</span>${descItemHtml(i)}
+        </li>`).join('');
+      return `<ul style="list-style:none;margin:6px 0 14px;padding:0;font-size:14px;line-height:1.5;color:#0a0a0a;">${items}</ul>`;
+    }
+    return `<p style="margin:0 0 12px;">${b.lines.map(escapeHtmlText).join('<br>')}</p>`;
+  }).join('');
+}
+
+// Делит описание на вводную часть и разделы с подзаголовками
+function splitDescription(product) {
   const text = product && product.description;
-  if (!text || !String(text).trim()) return '';
+  if (!text || !String(text).trim()) return { intro: [], details: [] };
+  const blocks = parseDescription(text);
+  const firstHeading = blocks.findIndex(b => b.type === 'h');
+  if (firstHeading <= 0) {
+    // Подзаголовков нет (или описание с него начинается) — всё показываем под ценой
+    return firstHeading === 0 ? { intro: [], details: blocks } : { intro: blocks, details: [] };
+  }
+  return { intro: blocks.slice(0, firstHeading), details: blocks.slice(firstHeading) };
+}
+
+// Вводный текст — под ценой
+function descriptionHtml(product) {
+  const { intro } = splitDescription(product);
+  if (!intro.length) return '';
   return `
     <div class="pm-description" style="margin:14px 0 4px;font-size:15px;line-height:1.65;color:#333;">
-      ${escapeHtmlText(text)}
+      ${descBlocksHtml(intro)}
+    </div>
+  `;
+}
+
+// Разделы с подзаголовками — под кнопкой «Добавить в корзину»
+function descriptionDetailsHtml(product) {
+  const { details } = splitDescription(product);
+  if (!details.length) return '';
+  return `
+    <div class="pm-description-details" style="margin-top:8px;font-size:15px;line-height:1.65;color:#333;">
+      ${descBlocksHtml(details)}
     </div>
   `;
 }
