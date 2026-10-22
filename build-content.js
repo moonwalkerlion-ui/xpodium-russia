@@ -275,3 +275,74 @@ if (fs.existsSync(settingsDir)) {
 
 fs.writeFileSync(path.join(__dirname, 'settings.json'), JSON.stringify(settings, null, 2));
 console.log(`✓ settings.json: ${Object.keys(settings).length} блоков`);
+
+// ============================================
+// Вшиваем настройки из админки прямо в HTML страниц
+// ============================================
+// Раньше страница сначала показывала текст, записанный в HTML (старый шаблон:
+// «BRAND», старая бегущая строка и т.п.), и только после загрузки settings.json
+// подменяла его на актуальный. Теперь при сборке на GitHub тот же код
+// settings-loader.js выполняется заранее, и на хостинг уходят страницы
+// уже с актуальными текстами и картинками — подмены при открытии больше нет.
+// Файлы в репозитории не меняются, правятся только копии для хостинга.
+// Если что-то пойдёт не так — страницы просто останутся как были.
+function loadJsdom() {
+  try { return require('jsdom'); } catch (e) { /* ставим ниже */ }
+  try {
+    require('child_process').execSync(
+      'npm install --no-save --no-audit --no-fund --loglevel=error jsdom@24.1.3',
+      { cwd: __dirname, stdio: 'inherit' }
+    );
+    return require('jsdom');
+  } catch (e) {
+    console.warn(`⚠ Не удалось подключить jsdom, страницы не обновлены: ${e.message}`);
+    return null;
+  }
+}
+
+async function prerenderPages() {
+  const lib = loadJsdom();
+  if (!lib) return;
+  const { JSDOM, VirtualConsole } = lib;
+  const loaderFile = path.join(__dirname, 'js', 'settings-loader.js');
+  if (!fs.existsSync(loaderFile)) return;
+  const loaderSrc = fs.readFileSync(loaderFile, 'utf-8');
+
+  const pages = fs.readdirSync(__dirname).filter(f => f.endsWith('.html'));
+  let done = 0;
+  for (const page of pages) {
+    const file = path.join(__dirname, page);
+    const html = fs.readFileSync(file, 'utf-8');
+    if (!html.includes('settings-loader.js')) continue;
+    try {
+      // <noscript> прячем на время обработки: без этого счётчик Метрики из <noscript>
+      // переедет в обычную разметку и будет срабатывать у всех посетителей
+      const noscripts = [];
+      const source = html.replace(/<noscript>[\s\S]*?<\/noscript>/gi, m => {
+        noscripts.push(m);
+        return `<!--NOSCRIPT_${noscripts.length - 1}-->`;
+      });
+      const dom = new JSDOM(source, {
+        url: `https://xpodium-russia.online/${page}`,
+        runScripts: 'outside-only',          // скрипты страницы не запускаем, только загрузчик настроек
+        virtualConsole: new VirtualConsole(),
+      });
+      const w = dom.window;
+      const data = JSON.stringify(settings);
+      w.fetch = async () => ({ ok: true, json: async () => JSON.parse(data) });
+      w.eval(`${loaderSrc}\n;window.__prerender = loadSettings();`);
+      await w.__prerender;
+      const out = dom.serialize().replace(/<!--NOSCRIPT_(\d+)-->/g, (_, i) => noscripts[Number(i)]);
+      w.close();
+      if (out && out.length > html.length * 0.5) {   // защита от пустого результата
+        fs.writeFileSync(file, out);
+        done++;
+      }
+    } catch (e) {
+      console.warn(`⚠ ${page}: не удалось вшить настройки (${e.message}), страница оставлена как есть`);
+    }
+  }
+  console.log(`✓ Страницы с актуальными текстами из админки: ${done}`);
+}
+
+prerenderPages().catch(e => console.warn(`⚠ Вшивание настроек пропущено: ${e.message}`));

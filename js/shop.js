@@ -265,8 +265,19 @@ function renderBundles() {
         ${until ? `<span style="font-size:13px;color:#888;">Акция ${esc(until)}</span>` : ''}
       </div>
       <p style="margin:0 0 14px;font-size:14px;color:#666;">${promo.requiredQty} ${machinesWord(promo.requiredQty)} XPODIUM — ${esc(promo.giftLabel)} в подарок. Добавьте комплект одной кнопкой или соберите свой из каталога ниже.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">${cards}</div>
-    </div>`;
+      <div class="bundles-row">${cards}</div>
+    </div>
+    <style>
+      /* Компьютер: комплекты в один ряд. Телефон: листаются пальцем вбок, чтобы не отодвигать каталог */
+      .bundles-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+      .shop-main, #shopBundles { min-width:0; }   /* иначе лента на телефоне растягивает страницу вбок */
+      @media (max-width:600px) {
+        .bundles-row { display:flex; overflow-x:auto; gap:12px; scroll-snap-type:x mandatory;
+                       -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:4px; }
+        .bundles-row::-webkit-scrollbar { display:none; }
+        .bundles-row > .bundle-card { flex:0 0 82%; scroll-snap-align:start; }
+      }
+    </style>`;
 
   box.querySelectorAll('button[data-bundle]').forEach(btn => {
     btn.addEventListener('click', () => {

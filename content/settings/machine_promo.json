@@ -29,6 +29,14 @@
       ]
     },
     {
+      "title": "Кардио-зона: бег, лыжи, гребля",
+      "items": [
+        "xpodium-air-runner",
+        "xpodium-skierg",
+        "xpodium-rower"
+      ]
+    },
+    {
       "title": "Гребной блок",
       "items": [
         "xpodium-rower",

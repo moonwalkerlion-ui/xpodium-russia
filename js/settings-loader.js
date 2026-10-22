@@ -211,7 +211,8 @@ function applySettings() {
   // Логотип / название бренда
   if (SETTINGS.brand && SETTINGS.brand.name) {
     setText('[data-setting="site_brand"]', SETTINGS.brand.name);
-    document.title = document.title.replace(/^[^—|–-]+/, SETTINGS.brand.name + ' ');
+    // Меняем только слово-заглушку BRAND, название страницы («Каталог — …») не трогаем
+    document.title = document.title.replace(/\bBRAND\b/g, SETTINGS.brand.name);
   }
 
   // Категории на главной
@@ -390,6 +391,8 @@ function renderMarkdown(md) {
   // Убираем обратные слэши которыми Decap CMS экранирует [ и ]
   // (без этого на странице видны буквальные \ перед/после данных)
   md = md.replace(/\\([\[\]])/g, '$1');
+  // Обратный слэш в конце строки — так админка обозначает перенос строки
+  md = md.replace(/\\(\r?\n|$)/g, '$1');
 
   // Экранируем HTML
   let html = md
