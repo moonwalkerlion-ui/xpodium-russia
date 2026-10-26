@@ -690,9 +690,9 @@ function buildRecommendations(currentProduct) {
 // Не складываются — клиенту считается одна, наибольшая.
 
 // Состояние:
-let APPLIED_PROMO = null;       // { code } если применён — даёт бонус, на сумму не влияет
+let APPLIED_PROMO = null;       // { code } если применён. Обычный код — бонус, код со скидкой — % на заказ
 let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — отсортировано по возрастанию
-let PROMO_CODES = [];           // [{ code }] — только активные
+let PROMO_CODES = [];           // [{ code, percent }] — только активные; percent 0 = бонус без скидки
 let GIFT_CONFIG = null;         // { minAmount, productId, note } или null если выключено
 let MACHINE_PROMO = null;       // акция «N тренажёров → подарок», см. parseMachinePromo
 let SHOP_SETTINGS_LOADED = false;
@@ -747,6 +747,8 @@ async function loadShopSettingsOnce() {
         .filter(x => x && x.active !== false && x.code)
         .map(x => ({
           code: String(x.code).trim().toUpperCase(),
+          // Необязательное поле «Скидка, %»: пусто — обычный бонусный код
+          percent: Math.min(Math.max(parsePercent(x.discount), 0), 90),
         }))
         .filter(x => x.code);
     }
@@ -1181,8 +1183,9 @@ function findAutoDiscountPercent(subtotal) {
 }
 
 // Полный расчёт корзины со скидками
-// Промокод на сумму НЕ влияет: он даёт бонус, который подбирает менеджер.
-// Скидка считается только от суммы заказа.
+// Обычный промокод на сумму НЕ влияет: он даёт бонус, который подбирает менеджер.
+// Промокод со скидкой (поле «Скидка, %» в админке) даёт % на заказ.
+// Скидки не складываются: применяется БОЛЬШАЯ из двух — от суммы заказа или по промокоду.
 // Тренажёры (Оборудование → Функциональный тренинг) не участвуют в скидке от суммы:
 // ни в пороге, ни в базе расчёта.
 function isExcludedFromAutoDiscount(product) {
@@ -1195,6 +1198,13 @@ function cartItemExcluded(item) {
   return isExcludedFromAutoDiscount(PRODUCTS.find(p => p.id === item.id));
 }
 
+// % скидки по применённому промокоду (берём из актуального списка — если код выключат в админке, скидка пропадёт)
+function getAppliedPromoPercent() {
+  if (!APPLIED_PROMO) return 0;
+  const found = PROMO_CODES.find(p => p.code === APPLIED_PROMO.code);
+  return found ? (found.percent || 0) : 0;
+}
+
 function cartCalculations() {
   const subtotal = CART.reduce((s, i) => s + i.price * i.qty, 0);
   const discountableSubtotal = CART
@@ -1203,24 +1213,34 @@ function cartCalculations() {
   const hasExcluded = CART.some(cartItemExcluded);
 
   const autoPercent = findAutoDiscountPercent(discountableSubtotal);
+  const promoPercent = getAppliedPromoPercent();
 
-  const appliedSource = autoPercent > 0 ? 'auto' : null;
-  const appliedPercent = autoPercent > 0 ? autoPercent : 0;
+  let appliedSource = null;
+  let appliedPercent = 0;
+  if (promoPercent > 0 && promoPercent > autoPercent && discountableSubtotal > 0) {
+    appliedSource = 'promo';
+    appliedPercent = promoPercent;
+  } else if (autoPercent > 0) {
+    appliedSource = 'auto';
+    appliedPercent = autoPercent;
+  }
 
   const discountAmount = Math.round(discountableSubtotal * appliedPercent / 100);
   const total = subtotal - discountAmount;
 
   // Следующий уровень (для подсказки «доберите до...») — только если в корзине есть что-то кроме тренажёров
+  // и только если он даст больше, чем уже применённая скидка
   const nextTier = discountableSubtotal > 0
-    ? DISCOUNT_TIERS.find(t => discountableSubtotal < t.minAmount)
+    ? DISCOUNT_TIERS.find(t => discountableSubtotal < t.minAmount && t.percent > appliedPercent)
     : null;
 
   return {
     subtotal,
     discountableSubtotal, // сумма без тренажёров — от неё считается скидка
     hasExcluded,          // в корзине есть тренажёры
-    appliedSource,        // 'auto' | null
+    appliedSource,        // 'auto' | 'promo' | null
     appliedPercent,
+    promoPercent,         // % по промокоду (0 — обычный бонусный код)
     discountAmount,
     total,
     autoPercent,
@@ -1474,7 +1494,11 @@ function renderCart() {
   if (APPLIED_PROMO) {
     promoBlock = `
       <div class="cart-promo-applied" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:12px;background:#0a0a0a;color:#fff;border-radius:6px;font-size:14px;">
-        <span><strong>${APPLIED_PROMO.code}</strong> — бонус к заказу</span>
+        <span><strong>${APPLIED_PROMO.code}</strong> — ${calc.promoPercent > 0
+          ? (calc.appliedSource === 'promo' || calc.discountableSubtotal === 0
+              ? `скидка ${calc.promoPercent}%`
+              : `скидка ${calc.promoPercent}%<span style="display:block;font-size:12px;opacity:0.7;margin-top:2px;">Не суммируется: применена скидка от суммы заказа</span>`)
+          : 'бонус к заказу'}</span>
         <button onclick="clearPromoAndRender()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;">Убрать</button>
       </div>
     `;
@@ -1494,10 +1518,12 @@ function renderCart() {
   // Блок «Сумма заказа + Скидка» (только если есть скидка от суммы)
   let summaryHtml = '';
   const excludedNote = calc.hasExcluded
-    ? `<div style="font-size:12px;color:#888;margin-top:6px;">Скидка от суммы заказа не распространяется на тренажёры</div>`
+    ? `<div style="font-size:12px;color:#888;margin-top:6px;">${calc.appliedSource === 'promo' ? 'Скидка по промокоду не распространяется' : (calc.promoPercent > 0 ? 'Скидки не распространяются' : 'Скидка от суммы заказа не распространяется')} на тренажёры</div>`
     : '';
   if (calc.appliedPercent > 0) {
-    const label = `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
+    const label = calc.appliedSource === 'promo'
+      ? `Скидка по промокоду (−${calc.appliedPercent}%)`
+      : `Скидка от суммы заказа (−${calc.appliedPercent}%)`;
     summaryHtml = `
       <div class="cart-summary" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee;font-size:14px;">
         <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px;">
@@ -1607,12 +1633,18 @@ function buildOrderBody(calc, withForm) {
     body += `🎁 Подарок по акции: ${nice}${promoGift.qty > 1 ? ` ×${promoGift.qty}` : ''}\n`;
   }
   if (APPLIED_PROMO) {
-    body += `Промокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
+    if (calc.promoPercent > 0) {
+      const note = calc.appliedSource === 'promo' ? ''
+        : (calc.discountableSubtotal > 0 ? ', не суммируется' : ', на тренажёры не действует');
+      body += `Промокод: ${APPLIED_PROMO.code} (скидка ${calc.promoPercent}%${note})\n`;
+    } else {
+      body += `Промокод: ${APPLIED_PROMO.code} (бонус к заказу)\n`;
+    }
   }
 
   if (calc.appliedPercent > 0) {
     body += `\nСумма заказа: ${plainPrice(calc.subtotal)}\n`;
-    body += `Скидка от суммы заказа: −${calc.appliedPercent}% (−${plainPrice(calc.discountAmount)})`;
+    body += `${calc.appliedSource === 'promo' ? 'Скидка по промокоду' : 'Скидка от суммы заказа'}: −${calc.appliedPercent}% (−${plainPrice(calc.discountAmount)})`;
     body += calc.hasExcluded ? `, без учёта тренажёров\n` : `\n`;
     body += `Итого: ${plainPrice(calc.total)}\n`;
   } else {
