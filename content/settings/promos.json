@@ -34,7 +34,8 @@
     },
     {
       "code": "Fedotov",
-      "active": true
+      "active": true,
+      "discount": 15
     },
     {
       "code": "Furia",
