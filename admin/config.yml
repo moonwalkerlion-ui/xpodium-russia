@@ -88,7 +88,7 @@ collections:
         widget: "object"
         required: false
         collapsed: true
-        hint: "Показывается в карточке товара под кнопками выбора размера. Если строк нет — таблицы не будет"
+        hint: "Показывается в карточке товара под кнопками выбора размера. Если строк нет — таблицы не будет. Для одежды можно не заполнять: покажется общая сетка из «Настройки сайта → Размерная сетка одежды»"
         fields:
           - { label: "Показывать таблицу", name: "enabled", widget: "boolean", default: true, required: false }
           - { label: "Название 1-й колонки", name: "col_1_label", widget: "string", required: false, default: "Замер", hint: "Например «Обхват талии» или «Длина ладони»" }
@@ -321,6 +321,36 @@ collections:
           - { label: "Сумма заказа от (₽)", name: "min_amount", widget: "number", default: 5000, min: 0, hint: "При сумме корзины от этого значения товар добавляется как подарок" }
           - { label: "ID товара-подарка", name: "product_id", widget: "string", default: "sweat-band", hint: "ID товара из URL. Например для https://сайт/shop.html?cat=gear&product=sweat-band — это sweat-band" }
           - { label: "Пометка к подарку", name: "note", widget: "string", default: "укажите цвет менеджеру", required: false, hint: "Текст под названием подарка в корзине" }
+
+      # --- Размерная сетка одежды ---
+      - name: "apparel_sizes"
+        label: "Размерная сетка одежды"
+        file: "content/settings/apparel_sizes.json"
+        fields:
+          - { label: "Показывать в карточках одежды", name: "enabled", widget: "boolean", default: true, hint: "Таблица появляется у одежды под выбором размера. Показываются только размеры, которые есть у товара. Если у товара заполнена своя «Таблица размеров», показывается она." }
+          - label: "Мужская сетка (и унисекс)"
+            name: "men"
+            widget: "list"
+            label_singular: "Размер"
+            summary: "{{fields.size}} · RU {{fields.ru}} · грудь {{fields.chest}}"
+            fields:
+              - { label: "Размер", name: "size", widget: "string", hint: "Как в товаре: XS, S, M, L, XL, XXL" }
+              - { label: "Российский размер", name: "ru", widget: "string", required: false, hint: "Например 48" }
+              - { label: "Обхват груди, см", name: "chest", widget: "string", required: false, hint: "Например 94-97" }
+              - { label: "Обхват талии, см", name: "waist", widget: "string", required: false }
+              - { label: "Обхват бёдер, см", name: "hips", widget: "string", required: false }
+          - label: "Женская сетка"
+            name: "women"
+            widget: "list"
+            label_singular: "Размер"
+            summary: "{{fields.size}} · RU {{fields.ru}} · грудь {{fields.chest}}"
+            fields:
+              - { label: "Размер", name: "size", widget: "string", hint: "Как в товаре: XS, S, M, L, XL, XXL" }
+              - { label: "Российский размер", name: "ru", widget: "string", required: false, hint: "Например 48" }
+              - { label: "Обхват груди, см", name: "chest", widget: "string", required: false, hint: "Например 94-97" }
+              - { label: "Обхват талии, см", name: "waist", widget: "string", required: false }
+              - { label: "Обхват бёдер, см", name: "hips", widget: "string", required: false }
+          - { label: "Примечание под таблицей", name: "note", widget: "text", required: false, hint: "Как снять мерки, как выбрать между размерами" }
 
       # --- Акция «N тренажёров → подарок» ---
       - name: "machine_promo"

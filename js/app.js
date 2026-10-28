@@ -695,6 +695,7 @@ let DISCOUNT_TIERS = [];        // [{ minAmount: 10000, percent: 5 }, ...] — �
 let PROMO_CODES = [];           // [{ code, percent }] — только активные; percent 0 = бонус без скидки
 let GIFT_CONFIG = null;         // { minAmount, productId, note } или null если выключено
 let MACHINE_PROMO = null;       // акция «N тренажёров → подарок», см. parseMachinePromo
+let APPAREL_SIZES = null;       // общая размерная сетка одежды { men: [...], women: [...], note }
 let SHOP_SETTINGS_LOADED = false;
 
 // Парсеры. Поддерживают и числа и форматированные строки из админки ("10 000 ₽", "5%")
@@ -767,6 +768,13 @@ async function loadShopSettingsOnce() {
 
     // Акция «N тренажёров → подарок» (settings.machine_promo)
     MACHINE_PROMO = parseMachinePromo(data.machine_promo);
+
+    // Размерная сетка одежды (settings.apparel_sizes)
+    const as = data.apparel_sizes;
+    if (as && as.enabled !== false) {
+      const rows = list => (Array.isArray(list) ? list : []).filter(r => r && r.size);
+      APPAREL_SIZES = { men: rows(as.men), women: rows(as.women), note: as.note || '' };
+    }
   } catch (e) {
     console.warn('[Shop settings] загрузка не удалась', e);
   }
@@ -937,42 +945,82 @@ function escapeHtmlText(str) {
     .replace(/"/g, '&quot;');
 }
 
-// Возвращает таблицу размеров товара (задаётся в карточке товара в админке)
+// Таблица размеров для карточки товара. Приведена к общему виду:
+// { columns: ['RU', 'Грудь', ...], rows: [{ size, values: [...] }], note, caption }
+//  1) своя таблица из карточки товара в админке (накладки, наколенники, пояса);
+//  2) у одежды без своей таблицы — общая размерная сетка из «Настройки → Размерная сетка одежды»:
+//     женская одежда — женская сетка, мужская и унисекс — мужская.
+//     Показываем только те размеры, которые есть у товара.
+function normSizeLabel(s) {
+  const v = String(s || '').toUpperCase().replace(/\s+/g, '');
+  if (v === '2XL') return 'XXL';
+  if (v === 'XXXL') return '3XL';
+  return v;
+}
+
 function getSizeChart(product) {
-  const chart = product && product.size_chart;
-  if (!chart) return null;
-  if (chart.enabled === false) return null;
-  if (!Array.isArray(chart.rows) || !chart.rows.length) return null;
-  return chart;
+  if (!product) return null;
+
+  const own = product.size_chart;
+  if (own && own.enabled !== false && Array.isArray(own.rows) && own.rows.some(r => r && r.size)) {
+    const rows = own.rows.filter(r => r && r.size);
+    const hasCol2 = !!(own.col_2_label && rows.some(r => r.value_2));
+    return {
+      columns: [own.col_1_label || 'Замер'].concat(hasCol2 ? [own.col_2_label] : []),
+      rows: rows.map(r => ({ size: r.size, values: [r.value_1].concat(hasCol2 ? [r.value_2 || '—'] : []) })),
+      note: own.note || '',
+      caption: '',
+    };
+  }
+
+  if (product.category !== 'apparel' || !APPAREL_SIZES) return null;
+  const isWomen = product.subcategory === 'apparel-women' && !product.unisex;
+  const table = isWomen ? APPAREL_SIZES.women : APPAREL_SIZES.men;
+  const productSizes = (product.sizes || []).map(normSizeLabel);
+  const rows = table.filter(r => productSizes.includes(normSizeLabel(r.size)));
+  if (!rows.length) return null;   // One size, носки и т.п. — таблица не нужна
+
+  const cols = [
+    { key: 'ru',    label: 'RU' },
+    { key: 'chest', label: 'Грудь' },
+    { key: 'waist', label: 'Талия' },
+    { key: 'hips',  label: 'Бёдра' },
+  ].filter(c => rows.some(r => r[c.key]));
+  return {
+    columns: cols.map(c => c.label),
+    rows: rows.map(r => ({ size: r.size, values: cols.map(c => r[c.key] || '—') })),
+    note: APPAREL_SIZES.note,
+    caption: `${isWomen ? 'Женская' : 'Мужская'} размерная сетка · обхваты в сантиметрах`,
+  };
 }
 
 // HTML-блок «Таблица размеров»: ссылка-переключатель + скрытая таблица
 function sizeChartHtml(chart) {
-  if (!chart) return '';
-  const rows = chart.rows.filter(r => r && r.size);
-  if (!rows.length) return '';
+  if (!chart || !chart.rows || !chart.rows.length) return '';
 
-  // Вторая колонка показывается только если она заполнена
-  const hasCol2 = !!(chart.col_2_label && rows.some(r => r.value_2));
-  const th = 'padding:9px 12px;text-align:left;font-weight:600;font-size:13px;border-bottom:1px solid #e2e2e2;white-space:nowrap;';
-  const td = 'padding:9px 12px;text-align:left;font-size:14px;border-bottom:1px solid #f0f0f0;white-space:nowrap;';
+  // Много колонок — делаем ячейки компактнее, чтобы таблица помещалась на телефоне
+  const compact = chart.columns.length >= 3;
+  const pad = compact ? '8px 6px' : '9px 12px';
+  const th = `padding:${pad};text-align:left;font-weight:600;font-size:13px;border-bottom:1px solid #e2e2e2;white-space:nowrap;`;
+  const td = `padding:${pad};text-align:left;font-size:${compact ? 13 : 14}px;border-bottom:1px solid #f0f0f0;white-space:nowrap;`;
 
   const headHtml = `
     <tr>
       <th style="${th}">Размер</th>
-      <th style="${th}">${escapeHtmlText(chart.col_1_label || 'Замер')}</th>
-      ${hasCol2 ? `<th style="${th}">${escapeHtmlText(chart.col_2_label)}</th>` : ''}
+      ${chart.columns.map(c => `<th style="${th}">${escapeHtmlText(c)}</th>`).join('')}
     </tr>
   `;
 
-  const bodyHtml = rows.map(r => `
+  const bodyHtml = chart.rows.map(r => `
     <tr>
       <td style="${td}font-weight:600;">${escapeHtmlText(r.size)}</td>
-      <td style="${td}">${escapeHtmlText(r.value_1)}</td>
-      ${hasCol2 ? `<td style="${td}">${escapeHtmlText(r.value_2 || '—')}</td>` : ''}
+      ${r.values.map(v => `<td style="${td}">${escapeHtmlText(v)}</td>`).join('')}
     </tr>
   `).join('');
 
+  const captionHtml = chart.caption
+    ? `<div style="margin-bottom:8px;font-size:12px;color:#777;">${escapeHtmlText(chart.caption)}</div>`
+    : '';
   const noteHtml = chart.note
     ? `<div style="margin-top:10px;font-size:13px;line-height:1.5;color:#666;">${escapeHtmlText(chart.note)}</div>`
     : '';
@@ -984,6 +1032,7 @@ function sizeChartHtml(chart) {
       Таблица размеров
     </button>
     <div id="pmSizeChart" style="display:none;margin:4px 0 16px;padding:14px;background:#f7f7f7;border-radius:8px;">
+      ${captionHtml}
       <div style="overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-family:inherit;">
           <thead>${headHtml}</thead>
