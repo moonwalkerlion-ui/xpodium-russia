@@ -136,6 +136,7 @@ function applySettings() {
       const hasItems = Array.isArray(h.features) && h.features.length > 0;
       if (!enabled || !hasItems) {
         featuresContainer.style.display = 'none';
+        featuresContainer.innerHTML = '';   // выключенный блок убираем целиком, чтобы старый текст не оставался в коде страницы
       } else {
         featuresContainer.style.display = '';
         featuresContainer.innerHTML = h.features.map(f => `
