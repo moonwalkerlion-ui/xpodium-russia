@@ -387,7 +387,8 @@ section.cta .btn-primary { /* контекстные */ }
   transition: opacity 0.25s;
 }
 .hero-video:hover .video-controls,
-.hero-video.touched .video-controls { opacity: 1; }
+.hero-video.touched .video-controls,
+.hero-video:focus-within .video-controls { opacity: 1; }
 .video-btn {
   width: 40px;
   height: 40px;
@@ -405,6 +406,50 @@ section.cta .btn-primary { /* контекстные */ }
 .video-btn:hover { background: rgba(0, 0, 0, 0.75); transform: scale(1.05); }
 .video-btn:active { transform: scale(0.95); }
 .video-btn svg { display: block; }
+
+/* Крупная кнопка запуска поверх обложки, видна до запуска и на паузе. */
+.video-big-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: clamp(80px, 8vw, 112px);
+  height: clamp(80px, 8vw, 112px);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.video-big-play[hidden] { display: none; }
+.video-big-play svg {
+  display: block;
+  width: 38%;
+  height: 38%;
+  margin-left: 5%;
+  pointer-events: none;
+}
+.video-big-play:hover {
+  background: rgba(0, 0, 0, 0.75);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+.video-big-play:active { transform: translate(-50%, -50%) scale(0.96); }
+.video-big-play:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-big-play { transition: none; }
+}
 
 @media (max-width: 768px) {
   .hero-videos-grid { grid-template-columns: 1fr; gap: 0; }
@@ -1822,3 +1867,4 @@ body.has-page-bg .info-sections {
     overflow-wrap: break-word;
   }
 }
+

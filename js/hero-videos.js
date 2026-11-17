@@ -1,30 +1,29 @@
 // ============================================
-// Hero-видео: автоплей при появлении, кнопки play/sound
+// Hero-видео: запуск по нажатию, крупная кнопка Play и управление звуком
 // ============================================
 (function () {
   const videos = document.querySelectorAll('.hero-video');
   if (!videos.length) return;
 
-  // Автозапуск при попадании во viewport, пауза при уходе
+  // При уходе с экрана ставим на паузу. Прокрутка не запускает видео.
   const io = 'IntersectionObserver' in window
     ? new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           const v = entry.target.querySelector('video');
-          if (!v) return;
-          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
-            if (v.paused && !v.dataset.userPaused) {
-              v.play().catch(() => {});
-            }
-          } else {
-            if (!v.paused) v.pause();
-          }
+          if (v && !entry.isIntersecting) v.pause();
         });
-      }, { threshold: [0, 0.3, 0.7] })
+      }, { threshold: 0 })
     : null;
 
   videos.forEach((wrapper) => {
     const video = wrapper.querySelector('video');
     if (!video) return;
+    const bigPlayBtn = wrapper.querySelector('.video-big-play');
+
+    // Отключаем автозапуск, в том числе если сохранилась старая HTML-разметка.
+    video.autoplay = false;
+    video.removeAttribute('autoplay');
+    video.pause();
 
     // touch-устройства — показываем контролы после тапа
     wrapper.addEventListener('touchstart', () => {
@@ -37,20 +36,24 @@
     const iconPause = wrapper.querySelector('.icon-pause');
 
     function updatePlayIcon() {
-      if (video.paused) {
-        iconPlay.style.display = '';
-        iconPause.style.display = 'none';
-      } else {
-        iconPlay.style.display = 'none';
-        iconPause.style.display = '';
+      const isPlaying = !video.paused && !video.ended;
+      iconPlay.style.display = isPlaying ? 'none' : '';
+      iconPause.style.display = isPlaying ? '' : 'none';
+      playBtn.setAttribute('aria-label', isPlaying ? 'Пауза' : 'Воспроизвести видео');
+
+      if (bigPlayBtn) {
+        if (isPlaying && document.activeElement === bigPlayBtn) {
+          playBtn.focus({ preventScroll: true });
+        }
+        bigPlayBtn.hidden = isPlaying;
       }
     }
 
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (video.paused) {
+      if (video.paused || video.ended) {
         delete video.dataset.userPaused;
-        video.play().catch(() => {});
+        video.play().catch(() => updatePlayIcon());
       } else {
         video.dataset.userPaused = '1';
         video.pause();
@@ -58,6 +61,14 @@
     });
     video.addEventListener('play', updatePlayIcon);
     video.addEventListener('pause', updatePlayIcon);
+    video.addEventListener('ended', updatePlayIcon);
+
+    if (bigPlayBtn) {
+      bigPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playBtn.click();
+      });
+    }
 
     // Клик по видео = play/pause
     video.addEventListener('click', () => {
@@ -108,6 +119,6 @@
 
     // наблюдаем
     if (io) io.observe(wrapper);
-    else video.play().catch(() => {});
   });
 })();
+
