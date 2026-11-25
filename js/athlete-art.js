@@ -104,9 +104,27 @@ const AthleteArt = (() => {
       if(!mark)return;
       ctx.globalAlpha=.87;ctx.drawImage(mark,x-w/2,y,w,w*mark.height/mark.width);ctx.globalAlpha=1;
     }
+    function drawSweatband(tone, side, raised) {
+      ctx.save();
+      const x=(female?203:225)-(raised?9:0), y=(female?500:480)-(raised?31:0);
+      ctx.translate(side*x,y);
+      ctx.rotate(-side*.22);
+      const shape='M-26 0 Q0 -6 26 0 L23 36 Q0 42 -23 36Z';
+      const ink=rgb(tone).every(channel=>channel>165)?'#4b4b59':'#f5f3e9';
+      path(shape,tone,'#291f38',2.4);
+      ctx.clip(new Path2D(shape));
+      ctx.globalAlpha=.20;
+      for(let x=-25;x<=25;x+=4)path(`M${x} -3 Q${x+1} 20 ${x*.89} 40`,null,ink,.9);
+      ctx.globalAlpha=.78;
+      path('M-26 6 Q0 2 26 6 M-24 31 Q0 36 24 31',null,ink,1.8);
+      ctx.globalAlpha=1;
+      logo(0,16,37,tone,ink);
+      ctx.restore();
+    }
     const suit=worn(state,'suit'), base=suit||worn(state,'base'), bottom=suit||worn(state,'bottom');
     const shirt=worn(state,'top'), jacket=worn(state,'outer'), waist=worn(state,'waist'), knees=worn(state,'knees');
     const elbows=worn(state,'elbows'), wrists=worn(state,'wrists'), grips=worn(state,'grips'), bag=worn(state,'bag');
+    const sweatband=worn(state,'sweatbands');
     const prop=worn(state,'handheld'), sock=worn(state,'socks'), hat=worn(state,'headwear');
     const hair=AthleteModel.hairColors[state.tint][1], skin=AthleteModel.skin[state.skin][1];
     function gear(key,tone,x,y,w,h,rotation=0,mirror=false,cuff=null){
@@ -170,6 +188,7 @@ const AthleteArt = (() => {
         gear('knee',knees.tone,sign*(female?74:77),y,94,115,-sign*.13,sign<0);
       }
       if(elbows){const x=female?144:166,y=female?320:309;gear('knee',elbows.tone,x*sign,y,69,85,-sign*.40,sign<0);}
+      if(sweatband)drawSweatband(sweatband.tone,sign,Boolean(wrists||grips));
       if(wrists){const x=female?209:231;gear('wrap',wrists.tone,x*sign,female?494:474,48,41,-sign*.22,sign<0);}
       if(grips){
         const x=(female?211:230)*sign, yy=female?613:602;

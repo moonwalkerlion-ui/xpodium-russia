@@ -104,9 +104,14 @@ function productColorPhoto(product, color) {
   return product.color_photos?.find(option => option.color === color)?.image || null;
 }
 
+function deepBlueCollectionColor(product) {
+  const color = product.id === '3-4-sleeves-t-shirt' ? 'Графитовый + Серый' : DEEP_BLUE_COLOR;
+  return product.colors?.includes(color) ? color : null;
+}
+
 function featuredShopColor(product) {
-  return product.colors?.includes(DEEP_BLUE_COLOR) &&
-    new URLSearchParams(location.search).get('collection') === 'deep-blue' ? DEEP_BLUE_COLOR : null;
+  return new URLSearchParams(location.search).get('collection') === 'deep-blue'
+    ? deepBlueCollectionColor(product) : null;
 }
 
 function productPriceLabel(product, size) {

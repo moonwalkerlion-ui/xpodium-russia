@@ -19,7 +19,7 @@ const collections = {
   },
   'deep-blue': {
     title: 'Глубокий синий',
-    matches: product => product.colors?.includes(DEEP_BLUE_COLOR)
+    matches: product => Boolean(deepBlueCollectionColor(product))
   }
 };
 

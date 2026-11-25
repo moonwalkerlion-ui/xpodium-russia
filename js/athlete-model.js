@@ -3,7 +3,7 @@ const AthleteModel = (() => {
   const slots = {
     base: 'Бра', top: 'Футболки и майки', outer: 'Худи', bottom: 'Шорты и брюки',
     suit: 'Спортивные костюмы', headwear: 'Головные уборы', waist: 'Пояса',
-    knees: 'Наколенники', elbows: 'Налокотники', wrists: 'Напульсники',
+    knees: 'Наколенники', elbows: 'Налокотники', wrists: 'Кистевые бинты', sweatbands: 'Напульсники',
     grips: 'Накладки и лямки', socks: 'Носки', bag: 'Рюкзаки и сумки', handheld: 'В руки'
   };
   const cuts = {};
@@ -32,7 +32,7 @@ const AthleteModel = (() => {
   register('knees', 'sleeve', 'knee-sleeves-1-0', 'knee-sleeves-2-0', 'knee-sleeves-3-0', 'ultra-knee-leeves');
   register('elbows', 'sleeve', 'elbow-sleeves-3-0');
   register('wrists', 'wrap', 'wristband-1-0', 'wristband-2-0', 'wristband-3-0');
-  register('wrists', 'terry', 'sweat-band');
+  register('sweatbands', 'terry', 'sweat-band');
   register('grips', 'grip', 'xpodium-sticky-grips', 'elite-sticky-grips', 'suede-grip', 'xpodium-carbon-grips', 'xpodium-3-0-grip-white', 'xpodium-3-0-grip-black');
   register('grips', 'holes', 'suede-grip-with-hole', 'xpodium-carbon-grips-with-hole');
   register('grips', 'strap', 'lifting-strap');
@@ -116,7 +116,9 @@ const AthleteModel = (() => {
       if (!product) continue;
       const slot = cuts[product.id].slot;
       const legacyTop = input.version === 1 && savedSlot === 'top' && ['base','outer'].includes(slot);
-      if (slot !== savedSlot && !legacyTop) continue;
+      const legacySweatband = savedSlot === 'wrists' && item.id === 'sweat-band';
+      if (slot !== savedSlot && !legacyTop && !legacySweatband) continue;
+      if (legacySweatband && input.look.sweatbands?.id === item.id) continue;
       equip(state, product, item.color);
       if ((product.sizes || []).includes(item.size)) state.look[slot].size = item.size;
     }

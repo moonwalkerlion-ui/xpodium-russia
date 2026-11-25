@@ -15,7 +15,7 @@
   const wearSections={apparel:'Одежда',gear:'Экипировка',accessories:'Аксессуары'};
   const sectionLabels={
     apparel:{top:'Футболки и лонгсливы',bottom:'Шорты и брюки',suit:'Костюмы'},
-    gear:{handheld:'Скакалки',headwear:'Повязки',wrists:'Кистевые бинты и напульсники'},
+    gear:{handheld:'Скакалки',headwear:'Повязки'},
     accessories:{handheld:'Бутылки',headwear:'Кепки и банданы'}
   };
   const symbols={
@@ -29,6 +29,7 @@
     knees:'M11 3l11 2-2 7 3 10-4 7-10-3 3-7-3-7z M13 11l5 2 1 5-5 2-2-5z',
     headwear:'M4 21q1-14 12-14 10 0 11 13l-8-2q-8-1-15 3z M7 20l-3 4q9 0 16-5',
     wrists:'M4 16L20 5l8 11-16 11z M8 17l13-9 M12 20l9-6',
+    sweatbands:'M6 9q10-3 20 0l-2 15q-8 3-16 0z M7 12q9-2 18 0 M8 21q8 2 16 0',
     elbows:'M11 4l11 3-4 8 7 7-6 6-12-11z M11 15l7 7',
     socks:'M13 4h11l-2 17-12 6q-7 1-7-4l10-8z M13 8h10',
     handheld:'M12 4h8v5l3 4v12q0 3-3 3h-8q-3 0-3-3V13l3-4z M12 8h8 M10 16h12',
