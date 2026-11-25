@@ -47,11 +47,13 @@ function formatPrice(n) {
 
 // Маппинг русского цвета -> hex (для кружков-свотчей)
 // Регистр названия не важен — нормализуем при поиске
+const DEEP_BLUE_COLOR = 'Глубокий синий';
 const COLOR_SWATCH = {
   // Базовые
   'чёрный': '#0a0a0a', 'черный': '#0a0a0a',
   'белый': '#ffffff',
   'серый': '#8a8a8a', 'тёмно-серый': '#3a3a3a', 'темно-серый': '#3a3a3a',
+  'графитовый': '#373942',
   'светло-серый': '#cfcfcf',
   // Зелёные
   'зелёный': '#2d5a3d', 'зеленый': '#2d5a3d',
@@ -60,7 +62,7 @@ const COLOR_SWATCH = {
   'хаки': '#8b7d5a', 'армейский зелёный': '#4a5a3a', 'армейский зеленый': '#4a5a3a',
   'серо-зелёный': '#7a8a6a', 'серо-зеленый': '#7a8a6a',
   // Синие
-  'синий': '#2a4a7a', 'тёмно-синий': '#1a2b4a', 'темно-синий': '#1a2b4a',
+  'синий': '#2a4a7a', 'тёмно-синий': '#1a2b4a', 'темно-синий': '#1a2b4a', 'глубокий синий': '#203658',
   'голубой': '#8ab4d8', 'бирюзовый': '#3da6a8', 'индиго': '#3a3a7a',
   // Красные / розовые
   'красный': '#b33030', 'тёмно-красный': '#6b2020', 'темно-красный': '#6b2020',
@@ -86,6 +88,33 @@ function getSwatchColor(colorName) {
   return COLOR_SWATCH[first] || '#cccccc';
 }
 
+function getSwatchBackground(colorName) {
+  const [first, second] = colorName.split('+').map(part => part.trim());
+  return second ? `linear-gradient(135deg, ${getSwatchColor(first)} 50%, ${getSwatchColor(second)} 50%)` : getSwatchColor(first);
+}
+
+function resolveProductColor(product, color) {
+  const colors = product.colors || [];
+  if (colors.includes(color)) return color;
+  const renamed = product.color_aliases?.find(option => option.from === color)?.color;
+  return colors.includes(renamed) ? renamed : null;
+}
+
+function productColorPhoto(product, color) {
+  return product.color_photos?.find(option => option.color === color)?.image || null;
+}
+
+function featuredShopColor(product) {
+  return product.colors?.includes(DEEP_BLUE_COLOR) &&
+    new URLSearchParams(location.search).get('collection') === 'deep-blue' ? DEEP_BLUE_COLOR : null;
+}
+
+function productPriceLabel(product, size) {
+  const amount = size === undefined ? getMinPrice(product) : getPriceFor(product, size);
+  if (amount <= 0) return 'Цена уточняется';
+  return (size === undefined && hasVariablePrice(product) ? 'от ' : '') + formatPrice(amount);
+}
+
 // Путь к картинке товара. Поддерживает и имя файла, и полный путь.
 function productImageUrl(img) {
   if (!img) return 'images/placeholder.svg';
@@ -95,9 +124,11 @@ function productImageUrl(img) {
 
 // --- Рендер карточки товара ---
 function renderProductCard(p) {
-  const img = productImageUrl(p.images && p.images[0]);
-  const colors = (p.colors || []).slice(0, 5).map(c =>
-    `<span class="product-color" style="background:${getSwatchColor(c)}" title="${c}"></span>`
+  const featured = featuredShopColor(p);
+  const img = productImageUrl(productColorPhoto(p, featured) || p.images?.[0]);
+  const palette = featured ? [featured] : (p.colors || []).slice(0, 5);
+  const colors = palette.map(c =>
+    `<span class="product-color" style="background:${getSwatchBackground(c)}" title="${c}"></span>`
   ).join('');
   // Безопасный data-product-id (без проблем с кодировкой)
   const safeId = String(p.id || '').replace(/"/g, '&quot;');
@@ -107,7 +138,7 @@ function renderProductCard(p) {
       <div class="product-img">${machinePromoBadge(p)}<img src="${img}" alt="${safeName}" loading="lazy"></div>
       <div class="product-brand">${p.brand || ''}</div>
       <div class="product-name">${p.name_ru || ''}</div>
-      <div class="product-price">${hasVariablePrice(p) ? 'от ' : ''}${formatPrice(getMinPrice(p))}</div>
+      <div class="product-price">${productPriceLabel(p)}</div>
       ${colors ? `<div class="product-colors">${colors}</div>` : ''}
     </div>
   `;
@@ -143,25 +174,29 @@ async function openProductModal(productId) {
   } catch (e) { /* fallback: оставляем URL как есть */ }
 
   let selectedSize = (p.sizes && p.sizes[0]) || null;
-  let selectedColor = (p.colors && p.colors[0]) || null;
-  let currentImageIndex = 0;
+  const featured = featuredShopColor(p);
+  let selectedColor = featured || p.colors?.[0] || null;
 
-  const images = (p.images && p.images.length) ? p.images : [null];
-  const mainImg = productImageUrl(images[0]);
+  const variantImages = (p.color_photos || []).filter(option => p.colors?.includes(option.color) && option.image)
+    .map(option => option.image);
+  const gallery = [...new Set([...(p.images || []), ...variantImages])];
+  const images = gallery.length ? gallery : [null];
+  let currentImageIndex = featured ? Math.max(0, images.indexOf(productColorPhoto(p, featured))) : 0;
+  const mainImg = productImageUrl(images[currentImageIndex]);
 
   const sizesHtml = (p.sizes || []).map(s =>
     `<div class="pm-option pm-size ${s === selectedSize ? 'selected' : ''}" data-size="${s}">${s}</div>`
   ).join('');
   const colorsHtml = (p.colors || []).map(c =>
     `<div class="pm-option pm-color ${c === selectedColor ? 'selected' : ''}" data-color="${c}" title="${c}">
-       <span class="product-color" style="background:${getSwatchColor(c)};display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.15)"></span><span class="pm-option-label">${c}</span>
+       <span class="product-color" style="background:${getSwatchBackground(c)};display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,0.15)"></span><span class="pm-option-label">${c}</span>
      </div>`
   ).join('');
 
   // Галерея миниатюр
   const thumbsHtml = images.length > 1
     ? `<div class="pm-thumbs">${images.map((src, i) =>
-        `<button class="pm-thumb ${i === 0 ? 'active' : ''}" data-index="${i}">
+        `<button class="pm-thumb ${i === currentImageIndex ? 'active' : ''}" data-index="${i}">
           <img src="${productImageUrl(src)}" alt="">
         </button>`
       ).join('')}</div>`
@@ -188,7 +223,7 @@ async function openProductModal(productId) {
       <div class="pm-info">
         <div class="pm-brand">${p.brand}</div>
         <h2 class="pm-title">${p.name_ru}</h2>
-        <div class="pm-price" id="pmPrice">${formatPrice(getPriceFor(p, selectedSize))}</div>
+        <div class="pm-price" id="pmPrice">${productPriceLabel(p, selectedSize)}</div>
         ${machinePromoLine(p)}
         ${descriptionHtml(p)}
         ${p.sizes && p.sizes.length ? `
@@ -200,7 +235,7 @@ async function openProductModal(productId) {
           <div class="pm-section-label">Цвет</div>
           <div class="pm-options" data-group="color">${colorsHtml}</div>
         ` : ''}
-        <button class="pm-add" id="pmAdd">Добавить в корзину</button>
+        <button class="pm-add" id="pmAdd" ${getPriceFor(p, selectedSize) > 0 ? '' : 'disabled'}>Добавить в корзину</button>
         ${descriptionDetailsHtml(p)}
         ${specsHtml(p)}
         ${recommendationsHtml ? recommendationsHtml.inlineHtml : ''}
@@ -328,10 +363,15 @@ async function openProductModal(productId) {
         selectedSize = el.dataset.size;
         // Если у размеров разные цены — пересчитываем показанную цену
         const priceEl = modal.querySelector('#pmPrice');
-        if (priceEl) priceEl.textContent = formatPrice(getPriceFor(p, selectedSize));
+        if (priceEl) priceEl.textContent = productPriceLabel(p, selectedSize);
+        modal.querySelector('#pmAdd').disabled = getPriceFor(p, selectedSize) <= 0;
       }
       if (group === 'color') {
         selectedColor = el.dataset.color;
+        if (variantImages.length) {
+          const photo = images.indexOf(productColorPhoto(p, selectedColor));
+          showImage(Math.max(0, photo));
+        }
         // Если название обрезано — показываем всплывашку с полным
         const labelEl = el.querySelector('.pm-option-label');
         if (labelEl && labelEl.scrollWidth > labelEl.clientWidth + 2) {
@@ -362,6 +402,7 @@ async function openProductModal(productId) {
 
   // добавление в корзину
   modal.querySelector('#pmAdd').addEventListener('click', () => {
+    if (getPriceFor(p, selectedSize) <= 0) return;
     addToCart(p, selectedSize, selectedColor);
     closeModal();
     openCart();
@@ -531,7 +572,7 @@ function renderRecommendationsHtml(items) {
         <div class="pm-rec-info">
           <div class="pm-rec-brand">${p.brand}</div>
           <div class="pm-rec-name">${p.name_ru}</div>
-          <div class="pm-rec-price">${formatPrice(p.price)}</div>
+          <div class="pm-rec-price">${productPriceLabel(p)}</div>
         </div>
       </a>
     `;
@@ -1370,10 +1411,19 @@ if (typeof window !== 'undefined') {
 }
 
 function addToCart(product, size, color) {
+  const price = getPriceFor(product, size);
+  if (price <= 0) return;
   // один "ключ" в корзине = товар + размер + цвет
   const key = `${product.id}|${size||''}|${color||''}`;
-  const existing = CART.find(i => i.key === key);
+  const existing = CART.find(i => i.key === key) || (product.color_aliases?.length && color
+    ? CART.find(i => i.id === product.id && (i.size || '') === (size || '') && resolveProductColor(product, i.color) === color)
+    : null);
   if (existing) {
+    if (existing.key !== key) {
+      existing.key = key;
+      existing.color = color;
+      existing.image = productColorPhoto(product, color) || product.images?.[0] || null;
+    }
     existing.qty += 1;
   } else {
     CART.push({
@@ -1381,8 +1431,8 @@ function addToCart(product, size, color) {
       id: product.id,
       name: product.name_ru,
       brand: product.brand,
-      price: getPriceFor(product, size),
-      image: product.images && product.images[0] ? product.images[0] : null,
+      price,
+      image: productColorPhoto(product, color) || product.images?.[0] || null,
       size, color,
       qty: 1,
       no_discount: isExcludedFromAutoDiscount(product),

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Собери атлета | XPODIUM RUSSIA</title>
+<meta name="description" content="Создай своего 2D-атлета или собери друга. Примерь одежду и экипировку XPODIUM, сохрани образ для сторис и добавь комплект в корзину.">
+<meta property="og:title" content="Собери атлета | XPODIUM">
+<meta property="og:description" content="Собери себя или друга в экипировке XPODIUM.">
+<link rel="canonical" href="https://xpodium-russia.online/athlete.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xpodium-russia.online/athlete.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=athlete-1">
+<link rel="stylesheet" href="css/athlete.css?v=5">
+<script type="text/javascript">
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=109646659", "ym");
+
+   ym(109646659, "init", {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/109646659" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<!-- Бегущая строка -->
+<div class="marquee">
+  <div class="marquee-track"><span>СКИДКА ПРИ ЗАКАЗЕ ОТ 10 000 РУБЛЕЙ</span><span>•</span><span>ДОСТАВКА ПО РОССИИ И СНГ</span><span>•</span><span>НОВЫЕ НАКЛАДКИ ELITE STICKY</span><span>•</span><span>СКИДКА ПРИ ЗАКАЗЕ ОТ 10 000 РУБЛЕЙ</span><span>•</span><span>ДОСТАВКА ПО РОССИИ И СНГ</span><span>•</span><span>НОВЫЕ НАКЛАДКИ ELITE STICKY</span><span>•</span><span>СКИДКА ПРИ ЗАКАЗЕ ОТ 10 000 РУБЛЕЙ</span><span>•</span><span>ДОСТАВКА ПО РОССИИ И СНГ</span><span>•</span><span>НОВЫЕ НАКЛАДКИ ELITE STICKY</span><span>•</span></div>
+</div>
+
+<!-- Навигация -->
+<header class="header" id="header">
+  <a href="/" class="logo"><span data-setting="site_brand">XPODIUM RUSSIA</span></a>
+  <nav class="nav">
+    <div class="nav-item has-dropdown">
+      <a href="shop.html">Каталог</a>
+            <div class="dropdown">
+        <a href="shop.html?cat=gear">Экипировка</a>
+        <a href="shop.html?cat=apparel">Одежда</a>
+        <a href="shop.html?cat=accessories">Аксессуары</a>
+        <a href="shop.html?cat=equipment">Оборудование</a>
+        <a href="shop.html">Всё</a>
+      </div>
+    </div>
+    <a href="gym.html">Зал под ключ</a>
+    <a href="our-story.html">О нас</a>
+    <a href="partners.html">Сотрудничество</a>
+    <a href="contact.html">Контакты</a>
+  </nav>
+  <div class="header-actions">
+    <button class="cart-btn" id="cartBtn" aria-label="Корзина">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 01-8 0"></path>
+      </svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="burger" id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<main id="athleteStudio" class="athlete-studio">
+  <div class="studio-heading">
+    <h1>Собери <span>атлета</span></h1>
+    <div class="mode-switch" role="group" aria-label="Для кого образ">
+      <button type="button" data-mode="self" aria-pressed="true">Для себя</button>
+      <button type="button" data-mode="friend" aria-pressed="false">Для друга</button>
+    </div>
+  </div>
+
+  <div class="studio-layout">
+    <section class="athlete-settings" aria-label="Настройки персонажа">
+      <div class="studio-tabs" role="group" aria-label="Раздел редактора">
+        <button type="button" data-tab="wear" aria-pressed="true" aria-controls="studioControls">Вещи</button>
+        <button type="button" data-tab="face" aria-pressed="false" aria-controls="studioControls">Облик</button>
+        <button type="button" data-tab="body" aria-pressed="false" aria-controls="studioControls">Тело</button>
+      </div>
+      <div id="studioControls" class="studio-controls"></div>
+    </section>
+
+    <section class="athlete-preview" aria-label="Твой персонаж">
+      <div class="studio-stage">
+        <canvas id="athleteCanvas" width="640" height="780" role="img" aria-label="Атлет в выбранной одежде"></canvas>
+        <div class="art-loading" id="stageLoading" role="status"><span>Загружаем персонажа…</span><button id="retryArt" type="button" hidden>Повторить</button></div>
+        <div class="slot-rail rail-clothes" id="clothingSlots" role="group" aria-label="Слои одежды"></div>
+        <div class="slot-rail rail-gear" id="gearSlots" role="group" aria-label="Экипировка"></div>
+        <button type="button" class="studio-dice" id="athleteRandom" aria-label="Случайный облик" title="Случайный облик">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" transform="rotate(-10 12 12)"/><path d="M8 9h.1M12 12h.1M16 15h.1" stroke-width="3.2" stroke-linecap="round"/></svg><span>Случайный облик</span>
+        </button>
+        <span class="studio-stage-name" id="stageName" hidden></span>
+      </div>
+      <div class="quick-wear" id="quickWear" aria-label="Быстрая примерка" role="region" hidden></div>
+      <div class="studio-export">
+        <button type="button" id="saveStory" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></svg>Сохранить для сторис</button>
+        <button type="button" id="shareLook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3a4 4 0 0 1 0 8h-3m-4 0H7a4 4 0 0 1 0-8h3m-1 4h6"/></svg>Поделиться</button>
+      </div>
+      <input id="manualShare" class="studio-input share-field" type="text" readonly hidden aria-label="Ссылка на образ для копирования">
+    </section>
+
+    <section class="athlete-kit" id="athleteKit" aria-labelledby="kitHeading">
+      <div class="kit-heading"><h2 id="kitHeading">Твой комплект</h2><span id="kitCount" aria-label="Количество вещей">0</span></div>
+      <div id="kitItems" class="kit-items"></div>
+      <div class="kit-bottom">
+        <div class="kit-total"><span>Стоимость</span><strong id="kitPrice" aria-live="polite">0 ₽</strong></div>
+        <p class="kit-discounts">Скидки рассчитываются в корзине.</p>
+        <button type="button" class="kit-buy" id="kitBuy" disabled>В корзину</button>
+      </div>
+    </section>
+  </div>
+  <a class="studio-mobile-total" id="mobileKit" href="#athleteKit" hidden>Комплект <strong id="mobilePrice">0 ₽</strong></a>
+  <div role="status" id="studioStatus" class="studio-status" aria-live="polite"></div>
+  <noscript>Включите JavaScript, чтобы собрать атлета.</noscript>
+</main>
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-logo" data-setting="site_brand">XPODIUM RUSSIA</div>
+    <p data-setting="footer_tagline">Экипировка для функционального фитнеса</p>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Магазин</div>
+    <a href="shop.html">Каталог</a>
+    <a href="gym.html">Зал под ключ</a>
+    <a href="our-story.html">О нас</a>
+    <a href="partners.html">Сотрудничество</a>
+    <a href="contact.html">Контакты</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Связь</div>
+    <a href="https://t.me/xpodium_russia" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://instagram.com/xpodium_russia" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-title">Информация</div>
+    <a href="terms.html">Условия покупки и доставки</a>
+    <a href="returns.html">Возврат и обмен</a>
+    <a href="privacy.html">Политика конфиденциальности</a>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">
+      <span data-setting="legal_owner_full_name">ИП Барков Денис Дмитриевич</span> ·
+      ИНН <span data-setting="legal_inn">254010052235</span> ·
+      ОГРНИП <span data-setting="legal_ogrnip">326253600010088</span> ·
+      <span data-setting="footer_copyright">© 2026 XPODIUM RUSSIA. Все права защищены.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Корзина (модалка) -->
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Корзина</div>
+    <button class="cart-close" id="cartClose" aria-label="Закрыть">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Итого</span>
+      <span id="cartTotal">0 ₽</span>
+    </div>
+    <button class="btn-primary cart-checkout" id="cartCheckout" disabled="">Оформить в Telegram</button>
+    <p class="cart-hint">После нажатия откроется чат с менеджером с готовым сообщением. Оплата и доставка обсуждаются лично.</p>
+  </div>
+</aside>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+
+
+<script src="js/settings-loader.js?v=athlete-1"></script>
+<script src="js/app.js"></script>
+<script src="js/athlete-model.js?v=5"></script>
+<script src="js/athlete-sprites.js?v=5"></script>
+<script src="js/athlete-art.js?v=5"></script>
+<script src="js/athlete.js?v=5"></script>
+</body></html>

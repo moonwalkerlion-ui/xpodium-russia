@@ -20,6 +20,24 @@ async function loadSettings() {
 }
 
 function applySettings() {
+  // Сборка запускает эту же функцию и вшивает ссылку в шапки всех страниц.
+  const header = document.querySelector('.header');
+  const catalog = header && header.querySelector('.nav > .has-dropdown');
+  if (catalog && !header.querySelector('.nav > .athlete-nav-link')) {
+    const link = document.createElement('a');
+    link.href = 'athlete.html';
+    link.className = 'athlete-nav-link';
+    link.textContent = 'Собрать атлета';
+    if (/\/athlete(?:\.html)?\/?$/.test(location.pathname)) link.setAttribute('aria-current', 'page');
+    catalog.after(link);
+    const actions = header.querySelector('.header-actions');
+    if (actions) {
+      const compact = link.cloneNode(true);
+      compact.classList.add('athlete-nav-compact');
+      actions.prepend(compact);
+    }
+  }
+
   // Бегущая строка (marquee)
   if (SETTINGS.marquee && Array.isArray(SETTINGS.marquee.messages) && SETTINGS.marquee.messages.length) {
     const msgs = SETTINGS.marquee.messages.map(m => {

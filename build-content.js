@@ -91,14 +91,7 @@ if (fs.existsSync(productsDir)) {
             return '';
           })
           .filter(Boolean)
-          .map(img => {
-            // /images/products/foo.webp → foo.webp (для совместимости с product-image-url)
-            if (img.startsWith('/images/products/')) {
-              return img.replace('/images/products/', '');
-            }
-            // /images/uploads/foo.jpg оставляем как есть (полный путь)
-            return img;
-          });
+          .map(img => img.replace(/^\/images\/products\//, ''));
       }
 
       // sizes и colors могут быть массивами объектов из Decap
@@ -107,6 +100,11 @@ if (fs.existsSync(productsDir)) {
       }
       if (Array.isArray(data.colors)) {
         data.colors = data.colors.map(c => typeof c === 'object' && c !== null ? (c.color || c.text || '') : c).filter(Boolean);
+      }
+      if (Array.isArray(data.color_photos)) {
+        data.color_photos = data.color_photos
+          .filter(option => data.colors?.includes(option?.color) && typeof option.image === 'string' && option.image)
+          .map(({ color, image }) => ({ color, image: image.replace(/^\/images\/products\//, '') }));
       }
 
       // category_ru
@@ -307,6 +305,12 @@ async function prerenderPages() {
   const loaderFile = path.join(__dirname, 'js', 'settings-loader.js');
   if (!fs.existsSync(loaderFile)) return;
   const loaderSrc = fs.readFileSync(loaderFile, 'utf-8');
+  // Ранее закешированные страницы и новые шапки должны получать подходящие стили.
+  const sharedAssets = ['js/settings-loader.js', 'js/app.js', 'css/style.css'].map(file => {
+    const bytes = fs.readFileSync(path.join(__dirname, file));
+    const hash = require('crypto').createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+    return { file, hash };
+  });
 
   const pages = fs.readdirSync(__dirname).filter(f => f.endsWith('.html'));
   let done = 0;
@@ -332,6 +336,11 @@ async function prerenderPages() {
       w.fetch = async () => ({ ok: true, json: async () => JSON.parse(data) });
       w.eval(`${loaderSrc}\n;window.__prerender = loadSettings();`);
       await w.__prerender;
+      for (const { file, hash } of sharedAssets) {
+        const attr = file.endsWith('.css') ? 'href' : 'src';
+        const node = w.document.querySelector(`[${attr}^="${file}"]`);
+        if (node) node.setAttribute(attr, file + '?v=' + hash);
+      }
       const out = dom.serialize().replace(/<!--NOSCRIPT_(\d+)-->/g, (_, i) => noscripts[Number(i)]);
       w.close();
       if (out && out.length > html.length * 0.5) {   // защита от пустого результата

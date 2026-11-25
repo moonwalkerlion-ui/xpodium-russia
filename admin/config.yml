@@ -69,12 +69,13 @@ collections:
           - { label: "Одежда мужская", value: "apparel-men" }
           - { label: "Одежда женская", value: "apparel-women" }
           - { label: "Рюкзаки и сумки", value: "bags" }
+          - { label: "Головные уборы", value: "headwear" }
           - { label: "Носки", value: "socks" }
           - { label: "Мелочи", value: "extras" }
           - { label: "Функциональный тренинг", value: "functional" }
           - { label: "Силовой тренинг", value: "strength" }
       - { label: "Унисекс (показывать и в мужском, и в женском фильтрах)", name: "unisex", widget: "boolean", default: false, required: false, hint: "Только для одежды. Включи если товар подходит обоим полам — он появится и в табе «Мужская», и в «Женская»" }
-      - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50 }
+      - { label: "Цена (₽)", name: "price", widget: "number", min: 0, step: 50, hint: "0 выводит «Цена уточняется» и отключает покупку." }
       - { label: "Старая цена (₽, для скидки)", name: "old_price", widget: "number", required: false, min: 0, step: 50 }
       - { label: "Описание", name: "description", widget: "text", required: false }
       - label: "Размеры"
@@ -132,6 +133,24 @@ collections:
         required: false
         summary: "{{fields.color}}"
         field: { label: "Цвет", name: "color", widget: "string" }
+      - label: "Фото для отдельных цветов"
+        name: "color_photos"
+        widget: "list"
+        required: false
+        collapsed: true
+        summary: "{{fields.color}}"
+        fields:
+          - { label: "Цвет (точно как в списке цветов)", name: "color", widget: "string" }
+          - { label: "Фото", name: "image", widget: "image" }
+      - label: "Прежние названия цветов"
+        name: "color_aliases"
+        widget: "list"
+        required: false
+        collapsed: true
+        hint: "Позволяет открыть сохранённые образы с прежним названием цвета"
+        fields:
+          - { label: "Прежнее название", name: "from", widget: "string" }
+          - { label: "Текущее название", name: "color", widget: "string" }
       - label: "Фото товара (можно перетаскивать для смены порядка)"
         name: "images"
         widget: "list"

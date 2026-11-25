@@ -13,7 +13,8 @@
     "Зелёный",
     "Серый + Синий",
     "Хаки (камуфляж)",
-    "Чёрный (камуфляж)"
+    "Чёрный (камуфляж)",
+    "Глубокий синий"
   ],
   "sizes": [
     "XS",
@@ -24,7 +25,8 @@
   ],
   "name_ru": "Пояс тяжелоатлетический PR Belt",
   "images": [
-    "/images/products/pr-belt-5.webp",
+    "/images/products/pr-belt-colours.webp",
+    "/images/products/pr-belt-navy.webp",
     "/images/products/pr-belt-4.webp",
     "/images/products/pr-belt-6.webp",
     "/images/products/pr-belt-7.webp",
@@ -67,5 +69,17 @@
       }
     ],
     "note": "Измерьте обхват талии и выберите соответствующий размер. Ширина пояса — 10,5 см."
-  }
+  },
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/pr-belt-navy.webp"
+    }
+  ],
+  "color_aliases": [
+    {
+      "from": "Тёмно-синий",
+      "color": "Глубокий синий"
+    }
+  ]
 }

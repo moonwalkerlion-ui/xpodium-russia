@@ -1,0 +1,33 @@
+{
+  "id": "xpodium-bandana",
+  "name_ru": "Бандана XPODIUM",
+  "brand": "XPODIUM",
+  "category": "accessories",
+  "subcategory": "headwear",
+  "price": 0,
+  "description": "Квадратная бандана с орнаментом пейсли и логотипом XPODIUM.",
+  "colors": [
+    "Чёрный",
+    "Графитовый",
+    "Оливковый"
+  ],
+  "images": [
+    "/images/products/xpodium-bandana-black.webp",
+    "/images/products/xpodium-bandana-graphite.webp",
+    "/images/products/xpodium-bandana-olive.webp"
+  ],
+  "color_photos": [
+    {
+      "color": "Чёрный",
+      "image": "/images/products/xpodium-bandana-black.webp"
+    },
+    {
+      "color": "Графитовый",
+      "image": "/images/products/xpodium-bandana-graphite.webp"
+    },
+    {
+      "color": "Оливковый",
+      "image": "/images/products/xpodium-bandana-olive.webp"
+    }
+  ]
+}

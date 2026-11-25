@@ -110,6 +110,11 @@
   </aside>
 
   <main class="shop-main">
+    <nav class="shop-collections" aria-label="Подборки">
+      <a href="shop.html" data-shop-collection="all">Весь каталог</a>
+      <a href="shop.html?collection=new-arrivals" data-shop-collection="new-arrivals">Новинки</a>
+      <a href="shop.html?collection=deep-blue" data-shop-collection="deep-blue">Глубокий синий</a>
+    </nav>
     <div class="shop-toolbar">
       <div class="shop-count" id="shopCount">— товаров</div>
       <select class="shop-sort" id="shopSort">
@@ -189,6 +194,6 @@
 
 <script src="js/settings-loader.js"></script>
 <script src="js/app.js"></script>
-<script src="js/shop.js"></script>
+<script src="js/shop.js?v=collections-1"></script>
 </body>
 </html>

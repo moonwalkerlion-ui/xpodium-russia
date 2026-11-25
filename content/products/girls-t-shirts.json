@@ -13,7 +13,9 @@
     "Тёмно-синий",
     "Розовый",
     "Жёлтый",
-    "Коричневый мокко"
+    "Коричневый мокко",
+    "Белый + Серый",
+    "Лавандовый"
   ],
   "sizes": [
     "XS",
@@ -22,7 +24,9 @@
   ],
   "name_ru": "Футболка кроп (жен.)",
   "images": [
-    "/images/uploads/1.jpg",
+    "/images/products/girls-t-shirts-colours.webp",
+    "/images/products/girls-t-shirts-white-grey.webp",
+    "/images/products/girls-t-shirts-lavender.webp",
     "/images/uploads/fdb80fca4da90f867d0a34215df8aa5e.jpg",
     "/images/uploads/zy_04185.jpg",
     "/images/uploads/zy_04837.jpg"
@@ -30,5 +34,15 @@
   "id": "girls-t-shirts",
   "name_en": "Girls T-Shirts",
   "category": "apparel",
-  "subcategory": "apparel-women"
+  "subcategory": "apparel-women",
+  "color_photos": [
+    {
+      "color": "Белый + Серый",
+      "image": "/images/products/girls-t-shirts-white-grey.webp"
+    },
+    {
+      "color": "Лавандовый",
+      "image": "/images/products/girls-t-shirts-lavender.webp"
+    }
+  ]
 }

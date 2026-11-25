@@ -13,7 +13,9 @@
     "Кремовый",
     "Розовый",
     "Жёлтый",
-    "Коричневый мокко"
+    "Коричневый мокко",
+    "Белый + Серый",
+    "Лавандовый"
   ],
   "sizes": [
     "XS",
@@ -25,7 +27,9 @@
   ],
   "name_ru": "Футболка PRO (муж.)",
   "images": [
-    "/images/products/pro-t-shirts-3.webp",
+    "/images/products/pro-t-shirts-colours.webp",
+    "/images/products/pro-t-shirts-white-grey.webp",
+    "/images/products/pro-t-shirts-lavender.webp",
     "/images/products/pro-t-shirts.webp",
     "/images/products/pro-t-shirts-2.webp",
     "/images/products/pro-t-shirts-4.webp"
@@ -34,5 +38,15 @@
   "in_stock": true,
   "name_en": "PRO T-Shirts",
   "category": "apparel",
-  "subcategory": "apparel-men"
+  "subcategory": "apparel-men",
+  "color_photos": [
+    {
+      "color": "Белый + Серый",
+      "image": "/images/products/pro-t-shirts-white-grey.webp"
+    },
+    {
+      "color": "Лавандовый",
+      "image": "/images/products/pro-t-shirts-lavender.webp"
+    }
+  ]
 }

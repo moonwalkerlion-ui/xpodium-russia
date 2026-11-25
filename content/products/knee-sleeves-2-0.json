@@ -9,7 +9,8 @@
     "Белый",
     "Серый",
     "Кофейный",
-    "Тёмно-красный"
+    "Тёмно-красный",
+    "Глубокий синий"
   ],
   "sizes": [
     "XS",
@@ -20,7 +21,8 @@
   ],
   "name_ru": "Наколенники 2.0 (3мм)",
   "images": [
-    "/images/uploads/122.webp",
+    "/images/products/knee-sleeves-2-0-colours.webp",
+    "/images/products/knee-sleeves-2-0-navy.webp",
     "/images/uploads/zy_08511.jpg",
     "/images/uploads/zy_08476.jpg",
     "/images/uploads/zy_08455.jpg"
@@ -62,5 +64,17 @@
       }
     ],
     "note": "Измерьте обхват ноги по центру колена."
-  }
+  },
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/knee-sleeves-2-0-navy.webp"
+    }
+  ],
+  "color_aliases": [
+    {
+      "from": "Тёмно-синий",
+      "color": "Глубокий синий"
+    }
+  ]
 }

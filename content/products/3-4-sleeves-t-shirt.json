@@ -15,7 +15,9 @@
     "Серый + Серый",
     "Розовый + Розовый",
     "Коричневый + Коричневый",
-    "Белый + Синий"
+    "Белый + Синий",
+    "Тёмно-зелёный + Светло-серый",
+    "Графитовый + Серый"
   ],
   "sizes": [
     "XS",
@@ -28,6 +30,8 @@
   "name_ru": "Футболка с рукавом 3/4 (унисекс)",
   "images": [
     "/images/products/3-4-sleeves-t-shirt-4.webp",
+    "/images/products/3-4-sleeves-t-shirt-dark-green-light-grey.webp",
+    "/images/products/3-4-sleeves-t-shirt-graphite-grey.webp",
     "/images/products/3-4-sleeves-t-shirt.webp",
     "/images/products/3-4-sleeves-t-shirt-2.webp",
     "/images/products/3-4-sleeves-t-shirt-3.webp"
@@ -37,5 +41,15 @@
   "name_en": "3/4 Sleeves t-shirt",
   "category": "apparel",
   "subcategory": "apparel-men",
-  "unisex": true
+  "unisex": true,
+  "color_photos": [
+    {
+      "color": "Тёмно-зелёный + Светло-серый",
+      "image": "/images/products/3-4-sleeves-t-shirt-dark-green-light-grey.webp"
+    },
+    {
+      "color": "Графитовый + Серый",
+      "image": "/images/products/3-4-sleeves-t-shirt-graphite-grey.webp"
+    }
+  ]
 }

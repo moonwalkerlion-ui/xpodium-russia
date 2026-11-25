@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=20261117-manual-play-1">
+<link rel="stylesheet" href="css/hero-carousel.css?v=arrivals-1">
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -79,16 +80,58 @@
   </div>
 </header>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-bg" id="heroBg" style="--hero-bg-image: url(&quot;/images/uploads/7-.jpg&quot;);" data-has-image="true"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1 data-setting="hero_title_block" class="hero-title-empty" style="font-size: 11vw;">СДЕЛАЙ ЭТО<br>ВОЗМОЖНЫМ</h1>
-    <p class="hero-sub" data-setting="hero_subtitle">Экипировка для функционального фитнеса, созданная для результата</p>
-    <a href="shop.html" class="btn-primary" data-setting="hero_cta">В каталог</a>
+<!-- Главные предложения -->
+<section class="hero home-carousel" aria-label="Предложения XPODIUM" aria-roledescription="карусель">
+  <div class="home-slide home-slide-arrivals is-current" role="group" aria-roledescription="слайд" aria-label="Новинки XPODIUM">
+    <img class="home-arrivals-photo" src="images/hero/new-arrivals.webp" alt="Футболки, лонгслив, бандана, рюкзак и новая экипировка XPODIUM" fetchpriority="high" width="1500" height="960">
+    <div class="home-slide-copy">
+      <h1 class="home-slide-title">Новинки<br>XPODIUM</h1>
+      <p>Новые цвета, экипировка и банданы.</p>
+      <a href="shop.html?collection=new-arrivals" class="btn-primary">Смотреть новинки</a>
+    </div>
   </div>
-  <div class="hero-scroll">Scroll ↓</div>
+  <div class="home-slide home-slide-blue" role="group" aria-roledescription="слайд" aria-label="Коллекция «Глубокий синий»" inert aria-hidden="true">
+    <img class="home-blue-photo" src="images/hero/deep-blue-athlete.webp" alt="Голубые накладки с тёмно-синими ремешками на руках атлета" width="360" height="360">
+    <div class="home-slide-copy">
+      <h2 class="home-slide-title">Глубокий<br>синий</h2>
+      <p>Накладки, наколенники, пояс, кистевые бинты и рюкзак в новом цвете.</p>
+      <a href="shop.html?collection=deep-blue" class="btn-primary">Открыть коллекцию</a>
+    </div>
+  </div>
+  <div class="home-slide home-slide-gym" role="group" aria-roledescription="слайд" aria-label="Зал под ключ" inert aria-hidden="true">
+    <img class="home-gym-photo" src="images/hero/turnkey-gym.webp" alt="" width="1680" height="1258">
+    <div class="home-slide-copy">
+      <h2 class="home-slide-title">Соберём зал<br>под ключ</h2>
+      <p>Подберём оборудование под вашу площадь, формат тренировок и бюджет. Покажем расстановку в 3D, доставим и установим.</p>
+      <a href="gym.html" class="btn-primary">Как мы собираем зал</a>
+    </div>
+  </div>
+  <div class="home-slide home-slide-gift" role="group" aria-roledescription="слайд" aria-label="Акция на кардиотренажёры" hidden inert aria-hidden="true">
+    <img class="home-gift-photo" src="images/hero/cardio-gift.webp" alt="" width="1280" height="720">
+    <div class="home-slide-copy">
+      <h2 class="home-slide-title"><span data-gift-label>Настенный SkiErg</span><br>в подарок</h2>
+      <p>При покупке <span data-gift-quantity>3 кардиотренажёров</span> XPODIUM по акции. Выберите готовый комплект или соберите свой.</p>
+      <a href="shop.html?cat=equipment&amp;sub=functional" class="btn-primary">Выбрать тренажёры</a>
+    </div>
+  </div>
+  <div class="home-slide home-slide-brand" role="group" aria-roledescription="слайд" aria-label="Экипировка XPODIUM" inert aria-hidden="true">
+    <div class="hero-bg" id="heroBg" style="--hero-bg-image: url(&quot;/images/uploads/7-.jpg&quot;);" data-has-image="true"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2 data-setting="hero_title_block" class="hero-title-empty" style="font-size: 11vw;">СДЕЛАЙ ЭТО<br>ВОЗМОЖНЫМ</h2>
+      <p class="hero-sub" data-setting="hero_subtitle">Экипировка для функционального фитнеса, созданная для результата</p>
+      <a href="shop.html" class="btn-primary" data-setting="hero_cta">В каталог</a>
+    </div>
+  </div>
+  <div class="home-carousel-controls" hidden>
+    <div class="home-carousel-marks" role="group" aria-label="Выбрать баннер"></div>
+    <button class="home-carousel-toggle" type="button" aria-label="Приостановить смену слайдов">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="currentColor">
+        <path class="pause-icon" d="M4 2h3v12H4zm5 0h3v12H9z"/>
+        <path class="play-icon" d="M4 2l10 6-10 6z"/>
+      </svg>
+    </button>
+  </div>
 </section>
 
 <!-- Три видео под hero -->
@@ -283,6 +326,7 @@
 <script src="js/settings-loader.js?v=dfac995bd314"></script>
 <script src="js/app.js"></script>
 <script src="js/home.js"></script>
+<script src="js/hero-carousel.js?v=arrivals-1"></script>
 <script src="js/hero-videos.js?v=20261117-manual-play-1"></script>
 
 

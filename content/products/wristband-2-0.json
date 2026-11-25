@@ -10,7 +10,8 @@
     "Розово-красный",
     "Зелёный",
     "Серый",
-    "Розовый"
+    "Розовый",
+    "Глубокий синий"
   ],
   "sizes": [
     "5cm*155cm"
@@ -18,6 +19,7 @@
   "name_ru": "Кистевой бинт 2.0",
   "images": [
     "/images/products/wristband-2-0-2.webp",
+    "/images/products/wristband-2-0-deep-blue.webp",
     "/images/products/wristband-2-0-3.webp",
     "/images/products/wristband-2-0-4.webp",
     "/images/products/wristband-2-0-5.webp",
@@ -27,5 +29,11 @@
   "id": "wristband-2-0",
   "name_en": "Wristband 2.0",
   "category": "gear",
-  "subcategory": "wraps"
+  "subcategory": "wraps",
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/wristband-2-0-deep-blue.webp"
+    }
+  ]
 }

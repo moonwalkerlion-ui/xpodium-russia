@@ -7,7 +7,8 @@
     "Армейский зелёный",
     "Коричневый мокко",
     "Белый",
-    "Серый"
+    "Серый",
+    "Глубокий синий"
   ],
   "sizes": [
     "50*25*35cm"
@@ -15,7 +16,9 @@
   "price": 9000,
   "unit": "single",
   "images": [
-    "/images/products/backpack-2-0.webp",
+    "/images/products/backpack-2-0-colours.webp",
+    "/images/products/backpack-2-0-navy.webp",
+    "/images/products/backpack-2-0-navy-in-use.webp",
     "/images/products/backpack-2-0-2.webp",
     "/images/products/backpack-2-0-3.webp",
     "/images/products/backpack-2-0-4.webp",
@@ -26,5 +29,17 @@
   "category_ru": "Рюкзаки и сумки",
   "id": "backpack-2-0",
   "subcategory": "accessories",
-  "subcategory_ru": "Аксессуары"
+  "subcategory_ru": "Аксессуары",
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/backpack-2-0-navy.webp"
+    }
+  ],
+  "color_aliases": [
+    {
+      "from": "Тёмно-синий",
+      "color": "Глубокий синий"
+    }
+  ]
 }

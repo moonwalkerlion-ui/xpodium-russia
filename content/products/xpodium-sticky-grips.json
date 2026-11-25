@@ -8,9 +8,10 @@
     "Чёрный",
     "Розовый",
     "Жёлтый",
-    "Белый",
+    "Белый + Серый",
     "Хаки",
-    "Синий"
+    "Синий",
+    "Глубокий синий"
   ],
   "sizes": [
     "M",
@@ -19,7 +20,8 @@
   ],
   "name_ru": "Накладки XPODIUM Sticky (без магнезии)",
   "images": [
-    "/images/products/xpodium-sticky-grips-3.webp",
+    "/images/products/xpodium-sticky-grips-colours.webp",
+    "/images/products/xpodium-sticky-grips-navy.webp",
     "/images/products/xpodium-sticky-grips.webp",
     "/images/products/xpodium-sticky-grips-4.webp",
     "/images/products/xpodium-sticky-grips-5.webp",
@@ -46,5 +48,21 @@
       }
     ],
     "note": "Измерьте длину ладони от основания пальцев до запястья. По размерам S и XL уточните у менеджера."
-  }
+  },
+  "color_aliases": [
+    {
+      "from": "Белый",
+      "color": "Белый + Серый"
+    },
+    {
+      "from": "Тёмно-синий",
+      "color": "Глубокий синий"
+    }
+  ],
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/xpodium-sticky-grips-navy.webp"
+    }
+  ]
 }

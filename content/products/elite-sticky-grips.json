@@ -24,9 +24,10 @@
   "colors": [
     "Чёрный",
     "Лавандовый",
-    "Белый",
+    "Белый + Серый",
     "Хаки",
-    "Серый"
+    "Серый",
+    "Глубокий синий"
   ],
   "sizes": [
     "S",
@@ -36,7 +37,9 @@
   ],
   "name_ru": "Накладки Sticky Grips Elite (без магнезии)",
   "images": [
-    "/images/uploads/21948.jpg",
+    "/images/products/elite-sticky-grips-colours.webp",
+    "/images/products/elite-sticky-grips-navy.webp",
+    "/images/products/elite-sticky-grips-navy-in-use.webp",
     "/images/uploads/screenshot-2026-05-03-at-13.42.17.png",
     "/images/products/elite-sticky-grips-2.webp",
     "/images/products/elite-sticky-grips-3.webp",
@@ -53,5 +56,29 @@
   "in_stock": true,
   "name_en": "Elite Sticky Grips",
   "category": "gear",
-  "subcategory": "grips"
+  "subcategory": "grips",
+  "color_aliases": [
+    {
+      "from": "Белый",
+      "color": "Белый + Серый"
+    },
+    {
+      "from": "Тёмно-синий",
+      "color": "Глубокий синий"
+    }
+  ],
+  "color_photos": [
+    {
+      "color": "Глубокий синий",
+      "image": "/images/products/elite-sticky-grips-navy.webp"
+    },
+    {
+      "color": "Лавандовый",
+      "image": "/images/uploads/screenshot-2026-05-03-at-13.42.17.png"
+    },
+    {
+      "color": "Белый + Серый",
+      "image": "/images/products/elite-sticky-grips-5.webp"
+    }
+  ]
 }

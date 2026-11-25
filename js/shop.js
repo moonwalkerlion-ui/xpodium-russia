@@ -9,6 +9,20 @@ const CATEGORY_RU = {
   'equipment': 'Оборудование',
 };
 
+const collections = {
+  'new-arrivals': {
+    title: 'Новинки XPODIUM',
+    matches: product => [
+      'pro-t-shirts', 'girls-t-shirts', '3-4-sleeves-t-shirt', 'xpodium-bandana', 'backpack-2-0',
+      'xpodium-sticky-grips', 'elite-sticky-grips', 'knee-sleeves-2-0', 'pr-belt', 'wristband-2-0'
+    ].includes(product.id)
+  },
+  'deep-blue': {
+    title: 'Глубокий синий',
+    matches: product => product.colors?.includes(DEEP_BLUE_COLOR)
+  }
+};
+
 const state = {
   category: 'all',
   price: 'all',
@@ -19,6 +33,8 @@ const state = {
 
 // Парсим query string
 const params = new URLSearchParams(location.search);
+const collectionKey = params.get('collection');
+const activeCollection = Object.hasOwn(collections, collectionKey) ? collections[collectionKey] : null;
 if (params.get('cat')) state.category = params.get('cat');
 if (params.get('gender')) state.gender = params.get('gender');
 if (params.get('sub')) state.equip = params.get('sub');
@@ -28,18 +44,25 @@ if (params.get('sub')) state.equip = params.get('sub');
   // Настройки нужны для плашек акции и готовых комплектов
   try { await loadShopSettings(); } catch (e) {}
 
+  const collectionProducts = activeCollection ? products.filter(activeCollection.matches) : products;
   const catCounts = {};
-  products.forEach(p => {
+  collectionProducts.forEach(p => {
     catCounts[p.category] = (catCounts[p.category] || 0) + 1;
   });
 
   const catList = document.getElementById('filterCategories');
-  let catHtml = `<label><input type="radio" name="cat" value="all" ${state.category === 'all' ? 'checked' : ''}> Все <span class="filter-count">${products.length}</span></label>`;
+  let catHtml = `<label><input type="radio" name="cat" value="all" ${state.category === 'all' ? 'checked' : ''}> Все <span class="filter-count">${collectionProducts.length}</span></label>`;
   Object.keys(CATEGORY_RU).forEach(key => {
     if (!catCounts[key]) return;
     catHtml += `<label><input type="radio" name="cat" value="${key}" ${state.category === key ? 'checked' : ''}> ${CATEGORY_RU[key]} <span class="filter-count">${catCounts[key]}</span></label>`;
   });
   catList.innerHTML = catHtml;
+  if (activeCollection) {
+    document.querySelector(`[data-shop-collection="${collectionKey}"]`)?.setAttribute('aria-current', 'page');
+    document.title = activeCollection.title + ' | XPODIUM RUSSIA';
+  } else {
+    document.querySelector('[data-shop-collection="all"]')?.setAttribute('aria-current', 'page');
+  }
 
   catList.addEventListener('change', e => {
     state.category = e.target.value;
@@ -87,6 +110,11 @@ if (params.get('sub')) state.equip = params.get('sub');
 function updateTitle() {
   const t = document.getElementById('shopTitle');
   const s = document.getElementById('shopSubtitle');
+  if (activeCollection) {
+    t.textContent = activeCollection.title;
+    s.textContent = state.category === 'all' ? '' : CATEGORY_RU[state.category] || '';
+    return;
+  }
   if (state.category === 'all') {
     t.textContent = 'Каталог';
     s.textContent = 'Экипировка для тех, кто тренируется всерьёз';
@@ -156,6 +184,7 @@ function matchesGender(p) {
 }
 
 function matchesFilters(p) {
+  if (activeCollection && !activeCollection.matches(p)) return false;
   // Категория «Одежда» — особый случай (учитываем унисекс из других категорий)
   if (state.category === 'apparel') {
     if (state.gender === 'all') {
@@ -179,6 +208,7 @@ function matchesFilters(p) {
 
   if (state.price !== 'all') {
     const pr = p.price;
+    if (getMinPrice(p) <= 0) return false;
     if (state.price === 'lt1000' && pr >= 1000) return false;
     if (state.price === '1000-3000' && (pr < 1000 || pr > 3000)) return false;
     if (state.price === '3000-7000' && (pr < 3000 || pr > 7000)) return false;
@@ -190,10 +220,12 @@ function matchesFilters(p) {
 function render() {
   let list = PRODUCTS.filter(matchesFilters);
 
-  if (state.sort === 'price-asc') {
-    list.sort((a, b) => a.price - b.price);
-  } else if (state.sort === 'price-desc') {
-    list.sort((a, b) => b.price - a.price);
+  if (state.sort === 'price-asc' || state.sort === 'price-desc') {
+    const direction = state.sort === 'price-asc' ? 1 : -1;
+    list.sort((a, b) => {
+      const first = getMinPrice(a), second = getMinPrice(b);
+      return Number(first <= 0) - Number(second <= 0) || (first - second) * direction;
+    });
   } else {
     list = sortByDefault(list, state.category);
   }
@@ -218,7 +250,7 @@ function renderBundles() {
   const box = document.getElementById('shopBundles');
   if (!box) return;
 
-  const showHere = state.category === 'equipment' && (state.equip === 'all' || state.equip === 'functional');
+  const showHere = !activeCollection && state.category === 'equipment' && (state.equip === 'all' || state.equip === 'functional');
   const promo = (typeof MACHINE_PROMO !== 'undefined') ? MACHINE_PROMO : null;
   if (!showHere || !promo || !promo.bundles.length) { box.innerHTML = ''; return; }
 
