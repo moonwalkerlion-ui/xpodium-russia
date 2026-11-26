@@ -53,8 +53,14 @@ const AthleteModel = (() => {
     ['Графит','#35303c'], ['Каштан','#6c4438'], ['Медь','#b9603e'],
     ['Блонд','#eac68a'], ['Седой','#d4d2d3'], ['Розовый','#e77c9d']
   ];
-  const hairstyles = { crop:'Короткая', curls:'Кудри', crest:'Ирокез', bob:'Каре', bun:'Пучок', bald:'Налысо' };
-  const beards = { none:'Без бороды', stubble:'Щетина', moustache:'Усы', beard:'Борода' };
+  const hairstyles = {
+    crop:'Короткая', buzz:'Ёжик', sidePart:'Боковой пробор', quiff:'Квифф', curls:'Кудри', crest:'Ирокез',
+    bob:'Каре', waves:'Длинные волны', bun:'Пучок', ponytail:'Высокий хвост', braids:'Две косы', bald:'Налысо'
+  };
+  const beards = {
+    none:'Без бороды', stubble:'Щетина', moustache:'Усы', goatee:'Эспаньолка',
+    short:'Короткая борода', beard:'Густая борода', long:'Длинная борода'
+  };
   const parts = {
     head:'Голова', shoulders:'Плечи', chest:'Грудь', belly:'Живот', hips:'Бёдра',
     armR:'Правая рука', armL:'Левая рука', calfR:'Правая икра', calfL:'Левая икра'
