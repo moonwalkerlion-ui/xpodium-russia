@@ -2,7 +2,7 @@
 const AthleteArt = (() => {
   const width=820, height=1190, cx=410, top=145, resolution=.78;
   const normal={head:48,shoulders:52,chest:50,belly:35,hips:48,armR:52,armL:52,calfR:48,calfL:48};
-  const fabricColours={'navyblue':'#34465a','drak grey':'#62665f','long':'#d7d9d0','short':'#d7d9d0'};
+  const fabricColours={'drak grey':'#62665f','long':'#d7d9d0','short':'#d7d9d0'};
   const textures=new Map(), printLogos=new Map(), contours=new Map();
   const hairDims={crop:[-69,-40,134,85],curls:[-80,-48,157,101],crest:[-66,-66,128,116],bob:[-82,-36,160,170],bun:[-64,-69,125,122]};
   const hairPeaks={bald:-21,buzz:-25,sidePart:-34,quiff:-56,waves:-39,ponytail:-54,braids:-31};
@@ -196,9 +196,10 @@ const AthleteArt = (() => {
       design({seam,center:middle(bounds((start+end)/2)),left,right,lo,hi});
       ctx.restore();
     }
+    const shoeTop=945;
     function drawSocks(side){
       const start={'basic-logo-socks':861,'lifting-socks':807,'weightlifting-socks':757}[sock.id];
-      const end=assets.shoe?977:1008, tone=sock.tone;
+      const end=shoeTop+14, tone=sock.tone;
       const bounds=y=>partBounds(y,side*100);
       garmentBand(bounds,start,end,2,9,tone,({seam,center,left,right,lo,hi})=>{
         for(let i=1;i<9;i++){
@@ -212,12 +213,29 @@ const AthleteArt = (() => {
         }else logo(center,start+17,Math.min(37,right-left-10),tone);
       });
     }
-    function drawShoe(side){
-      const ankle=side*middle(partBounds(939,side*100));
-      const foot=partBounds(992,side*105).map(x=>side*x);
-      const heel=ankle-28, toe=Math.max(...foot)+22;
-      ctx.save();ctx.scale(side,1);
-      ctx.drawImage(assets.shoe,heel,930,toe-heel,84);
+    function drawShoe(side,back){
+      // The rear collar sits behind the ankle. The padded front edge covers
+      // the end of the sock, with the sole flat and the toe turned slightly out.
+      const bounds=partBounds(shoeTop,side*100);
+      ctx.save();ctx.translate(middle(bounds),shoeTop);
+      ctx.scale(side*(bounds[1]-bounds[0])/48,1);
+      if(back){
+        path('M-28 14 Q-32 0 -25-5 Q-13-12 8-8 Q22-8 27-2 Q30 3 29 14 L25 24 H-23Z','#353640',ink,3.2);
+        path('M-24 5 Q-20-4 -3-4 Q18-5 25 4 L22 17 H-23Z','#1b1d25','#54535b',2);
+      }else{
+        path('M-30 48 Q-28 59 -15 64 Q10 69 37 67 Q53 65 54 54 L51 45Z','#171922',ink,3.2);
+        path('M-32 43 Q-35 49 -29 56 Q-18 66 19 64 Q45 65 53 57 Q57 53 52 44 L48 39Z','#c88c38',ink,3.2);
+        path('M-29 49 Q-19 55 -4 56 Q14 66 40 59 Q49 57 53 52 M-8 58l4 3 M2 60l4 4 M34 59l-1 4 M42 57l-1 4',null,'#865123',1.8);
+        const upper=ctx.createLinearGradient(0,0,0,61);
+        upper.addColorStop(0,'#40424d');upper.addColorStop(.55,'#262b35');upper.addColorStop(1,'#191d28');
+        path('M-28 8 Q-13 20 0 15 Q11 13 23 6 Q28 8 27 18 Q31 24 41 30 Q52 34 54 45 Q55 52 47 55 Q26 63 4 54 Q-11 49 -24 48 Q-36 44 -31 32 Q-28 22 -28 8Z',upper,ink,3.3);
+        path('M-25 10 Q-14 20 -3 19 Q10 17 24 8 M-27 17 Q-14 25 -6 24',null,'#666774',2);
+        path('M-10 21 Q4 15 15 15 L36 35 Q24 45 10 44 Q0 31 -10 21Z','#151923','#555866',2.1);
+        path('M-8 24L16 20 M-2 30L22 25 M4 36L28 30 M11 41L34 35',null,'#8c8c96',2);
+        path('M-26 30 Q-18 29 -12 36 L1 54 Q-12 49 -24 47 Q-33 42 -26 30Z','#353945',ink,2.1);
+        path('M16 47 Q26 39 41 39 Q52 39 53 46 Q51 54 42 55 Q26 59 14 53Z','#373b47','#20232d',2);
+        path('M22 48 Q35 44 45 46 M-24 40 Q-18 39 -14 44',null,'#575963',1.6);
+      }
       ctx.restore();
     }
     function drawSleeve(bounds,start,end,tone,mark){
@@ -382,8 +400,9 @@ const AthleteArt = (() => {
     if(bag?.cut==='tote')gear('tote',bag.tone,138,258+dy,151,246,-.06);
     drawHeldProp();
     drawHair(true);
+    for(const side of [-1,1])drawShoe(side,true);
     ctx.save();
-    if(assets.shoe){ctx.beginPath();ctx.rect(-cx,-top,width,top+981);ctx.clip();}
+    ctx.beginPath();ctx.rect(-cx,-top,width,top+shoeTop+15);ctx.clip();
     plate('body',state.skin===2?null:skin,'skin');
     ctx.restore();
     if(sock)for(const side of [-1,1])drawSocks(side);
@@ -395,8 +414,9 @@ const AthleteArt = (() => {
       for(const side of [-1,1])drawSleeve(y=>partBounds(y,side*76,over),female?660:651,female?768:760,knees.tone,36);
     }
     if(bottomCut==='jogger')plate(bottomCut,bottom.tone);
-    if(bottom)logo(bottomCut==='leggings'?72:-62,female?462:446,36,bottom.tone);
-    if(assets.shoe)for(const side of [-1,1])drawShoe(side);
+    if(bottom)logo(bottomCut==='leggings'?72:-62,female?462:446,
+      /\bbig logo$/i.test(bottom.color)?49:/\bsmall logo$/i.test(bottom.color)?27:36,bottom.tone);
+    for(const side of [-1,1])drawShoe(side,false);
     if(elbows)for(const side of [-1,1])drawSleeve(y=>armBounds(y,side),female?337:324,female?407:396,elbows.tone,28);
     if(shirt){
       plate(shirt.cut,shirt.tone);

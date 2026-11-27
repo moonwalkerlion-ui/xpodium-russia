@@ -137,7 +137,12 @@
     </div>
     <!-- Готовые комплекты по акции (заполняет js/shop.js, только в «Оборудовании») -->
     <div id="shopBundles"></div>
-    <div class="shop-grid" id="shopGrid"></div>
+    <div class="shop-grid" id="shopGrid" aria-busy="true">
+      <div class="shop-empty" style="grid-column:1 / -1">
+        <p id="shopLoadMessage" role="status">Загружаем товары…</p>
+        <button type="button" id="shopRetry" class="shop-sort" style="margin-top:12px;cursor:pointer" hidden>Повторить</button>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -192,8 +197,8 @@
 </aside>
 <div class="cart-backdrop" id="cartBackdrop"></div>
 
-<script src="js/settings-loader.js"></script>
-<script src="js/app.js?v=collections-2"></script>
-<script src="js/shop.js?v=collections-2"></script>
+<script src="js/settings-loader.js?v=catalog-loading-1"></script>
+<script src="js/app.js?v=catalog-loading-1"></script>
+<script src="js/shop.js?v=catalog-loading-1"></script>
 </body>
 </html>

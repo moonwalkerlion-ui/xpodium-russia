@@ -407,18 +407,17 @@
   async function loadArtwork(){
     const loading=byId('stageLoading'), retry=byId('retryArt');
     loading.hidden=false;loading.firstElementChild.textContent='Загружаем персонажа…';retry.hidden=true;
-    const [gym,logo,atlas,shoe,black,graphite,olive]=await Promise.all([
+    const [gym,logo,atlas,black,graphite,olive]=await Promise.all([
       loadImage('images/athlete/comic-gym.webp'),
       loadImage('images/athlete/wordmark.png'),
       loadImage('images/athlete/comic-wardrobe.webp'),
-      loadImage('images/athlete/comic-shoe.webp'),
       loadImage('images/athlete/bandana-black.webp'),
       loadImage('images/athlete/bandana-graphite.webp'),
       loadImage('images/athlete/bandana-olive.webp')
     ]);
-    assets.gym=gym;assets.logo=logo;assets.atlas=atlas;assets.shoe=shoe;
+    assets.gym=gym;assets.logo=logo;assets.atlas=atlas;
     assets.bandanas={'Чёрный':black,'Графитовый':graphite,'Оливковый':olive};
-    if(!atlas||!shoe){
+    if(!atlas){
       loading.firstElementChild.textContent='Не удалось загрузить персонажа.';retry.hidden=false;redraw();return false;
     }
     if(logo){
@@ -443,7 +442,7 @@
       setTimeout(()=>URL.revokeObjectURL(url),60000);
       notice('Картинка для сторис готова.');
     }catch {notice('Не удалось сохранить картинку. Попробуй ещё раз.');}
-    finally{button.disabled=!assets.atlas||!assets.shoe;}
+    finally{button.disabled=!assets.atlas;}
   });
   function shareURL() {
     const url=new URL(location.href);

@@ -29,15 +29,29 @@ function saveCart() {
 
 // --- Загрузка каталога ---
 let PRODUCTS = [];
-async function loadProducts() {
-  if (PRODUCTS.length) return PRODUCTS;
-  try {
-    const res = await fetch('products.json');
-    PRODUCTS = await res.json();
-  } catch (e) {
-    console.error('Ошибка загрузки products.json', e);
+let productsRequest = null;
+async function loadProducts({ throwOnError = false } = {}) {
+  if (!productsRequest) {
+    productsRequest = fetchSiteJSON('products.json')
+      .then(products => {
+        if (!Array.isArray(products) || products.some(p => !p || typeof p.id !== 'string')) {
+          throw new Error('Неверный формат products.json');
+        }
+        PRODUCTS = products;
+        return PRODUCTS;
+      })
+      .catch(error => {
+        productsRequest = null;
+        console.error('Ошибка загрузки products.json', error);
+        throw error;
+      });
   }
-  return PRODUCTS;
+  try {
+    return await productsRequest;
+  } catch (error) {
+    if (throwOnError) throw error;
+    return PRODUCTS;
+  }
 }
 
 // --- Утилиты ---
@@ -63,6 +77,7 @@ const COLOR_SWATCH = {
   'серо-зелёный': '#7a8a6a', 'серо-зеленый': '#7a8a6a',
   // Синие
   'синий': '#2a4a7a', 'тёмно-синий': '#1a2b4a', 'темно-синий': '#1a2b4a', 'глубокий синий': '#203658',
+  'navyblue': '#264675', 'navy blue': '#264675',
   'голубой': '#8ab4d8', 'бирюзовый': '#3da6a8', 'индиго': '#3a3a7a',
   // Красные / розовые
   'красный': '#b33030', 'тёмно-красный': '#6b2020', 'темно-красный': '#6b2020',
@@ -83,8 +98,9 @@ const COLOR_SWATCH = {
 };
 function getSwatchColor(colorName) {
   if (!colorName) return '#cccccc';
-  // если составной (Белый+Серый) — берём первый
-  const first = colorName.split('+')[0].split('(')[0].trim().toLowerCase();
+  // Выбор логотипа не влияет на оттенок ткани.
+  const first = colorName.split('+')[0].split('(')[0].trim().toLowerCase()
+    .replace(/\s+(?:big|small) logo$/, '');
   return COLOR_SWATCH[first] || '#cccccc';
 }
 
@@ -154,14 +170,12 @@ async function openProductModal(productId) {
   // Если товары ещё не загружены — ждём (на медленном интернете может опередить)
   if (!PRODUCTS.length) {
     try {
-      await loadProducts();
+      await loadProducts({ throwOnError: true });
     } catch (e) {
       console.warn('Не удалось загрузить товары');
       return;
     }
   }
-  // Настройки нужны для строки об акции в карточке (загрузка кешируется)
-  try { await loadShopSettings(); } catch (e) { /* без настроек просто не будет строки */ }
   const p = PRODUCTS.find(x => x.id === productId);
   if (!p) {
     console.warn('Товар не найден:', productId);
@@ -209,6 +223,8 @@ async function openProductModal(productId) {
 
   // Блок "Вам ещё может понравиться" — показываем товары из противоположной категории
   const recommendationsHtml = buildRecommendations(p);
+  const promoHtml = machinePromoLine(p);
+  const chartHtml = sizeChartHtml(getSizeChart(p));
 
   const modal = document.createElement('div');
   modal.className = 'product-modal open';
@@ -229,12 +245,12 @@ async function openProductModal(productId) {
         <div class="pm-brand">${p.brand}</div>
         <h2 class="pm-title">${p.name_ru}</h2>
         <div class="pm-price" id="pmPrice">${productPriceLabel(p, selectedSize)}</div>
-        ${machinePromoLine(p)}
+        <div data-modal-promo>${promoHtml}</div>
         ${descriptionHtml(p)}
         ${p.sizes && p.sizes.length ? `
           <div class="pm-section-label">Размер</div>
           <div class="pm-options" data-group="size">${sizesHtml}</div>
-          ${sizeChartHtml(getSizeChart(p))}
+          <div data-modal-size-chart>${chartHtml}</div>
         ` : ''}
         ${p.colors && p.colors.length ? `
           <div class="pm-section-label">Цвет</div>
@@ -255,6 +271,15 @@ async function openProductModal(productId) {
   `;
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
+
+  if (!SHOP_SETTINGS_LOADED) loadShopSettings().then(() => {
+    if (!modal.isConnected) return;
+    const promo = machinePromoLine(p);
+    if (promo !== promoHtml) modal.querySelector('[data-modal-promo]').innerHTML = promo;
+    const chart = modal.querySelector('[data-modal-size-chart]');
+    const nextChartHtml = sizeChartHtml(getSizeChart(p));
+    if (chart && nextChartHtml !== chartHtml) chart.innerHTML = nextChartHtml;
+  });
 
   // Предзагружаем все остальные фото товара в фоне (чтобы листание было мгновенным)
   if (images.length > 1) {
@@ -769,11 +794,8 @@ function loadShopSettings() {
 }
 
 async function loadShopSettingsOnce() {
-  SHOP_SETTINGS_LOADED = true;
   try {
-    const res = await fetch('settings.json?v=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
+    const data = await loadSettings();
 
     // Скидки от суммы (settings.home.discounts)
     const d = data.home && data.home.discounts;
@@ -823,6 +845,8 @@ async function loadShopSettingsOnce() {
     }
   } catch (e) {
     console.warn('[Shop settings] загрузка не удалась', e);
+  } finally {
+    SHOP_SETTINGS_LOADED = true;
   }
 }
 
@@ -1609,10 +1633,10 @@ function renderCart() {
   } else {
     promoBlock = `
       <div class="cart-promo-form" style="display:flex;gap:8px;margin-bottom:6px;">
-        <input type="text" id="promoInput" placeholder="Промокод" autocomplete="off"
+        <input type="text" id="promoInput" placeholder="Промокод" autocomplete="off" ${SHOP_SETTINGS_LOADED ? '' : 'disabled'}
                style="flex:1;min-width:0;padding:10px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;background:#fff;color:#0a0a0a;"
                onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromoFromInput();}">
-        <button onclick="applyPromoFromInput()"
+        <button onclick="applyPromoFromInput()" ${SHOP_SETTINGS_LOADED ? '' : 'disabled'}
                 style="flex-shrink:0;padding:10px 18px;background:#0a0a0a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;">Применить</button>
       </div>
       <div id="promoMessage" style="font-size:13px;margin-bottom:8px;min-height:18px;"></div>
@@ -1665,7 +1689,7 @@ function renderCart() {
   if (totalEl) totalEl.textContent = formatPrice(calc.total);
 
   const checkoutBtn = document.getElementById('cartCheckout');
-  if (checkoutBtn) checkoutBtn.disabled = false;
+  if (checkoutBtn) checkoutBtn.disabled = !SHOP_SETTINGS_LOADED;
 }
 
 function openCart() {
@@ -1969,7 +1993,7 @@ document.addEventListener('DOMContentLoaded', () => {
   (async function() {
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('product');
-    if (!productId) return;
+    if (!productId || document.getElementById('shopGrid')) return;
     // Ждём загрузки PRODUCTS
     let attempts = 0;
     while (PRODUCTS.length === 0 && attempts < 30) {

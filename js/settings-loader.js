@@ -4,13 +4,32 @@
    ============================================ */
 
 let SETTINGS = null;
+let settingsRequest = null;
 
-async function loadSettings() {
-  if (SETTINGS) return SETTINGS;
+async function fetchSiteJSON(path, options = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
   try {
-    const res = await fetch('settings.json?v=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) throw new Error('not ok');
-    SETTINGS = await res.json();
+    const response = await fetch(path, { ...options, signal: controller.signal });
+    if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function loadSettings() {
+  if (!settingsRequest) settingsRequest = loadSettingsOnce();
+  return settingsRequest;
+}
+
+async function loadSettingsOnce() {
+  try {
+    const settings = await fetchSiteJSON('settings.json?v=' + Date.now(), { cache: 'no-store' });
+    if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+      throw new Error('Неверный формат settings.json');
+    }
+    SETTINGS = settings;
   } catch (e) {
     console.warn('settings.json не загружен, использую значения из HTML');
     SETTINGS = {};

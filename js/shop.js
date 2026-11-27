@@ -39,11 +39,43 @@ if (params.get('cat')) state.category = params.get('cat');
 if (params.get('gender')) state.gender = params.get('gender');
 if (params.get('sub')) state.equip = params.get('sub');
 
-(async function init() {
-  const products = await loadProducts();
-  // Настройки нужны для плашек акции и готовых комплектов
-  try { await loadShopSettings(); } catch (e) {}
+const shopGrid = document.getElementById('shopGrid');
+const shopLoadMessage = document.getElementById('shopLoadMessage');
+const shopRetry = document.getElementById('shopRetry');
+let catalogReady = false;
 
+async function loadCatalog() {
+  shopGrid.setAttribute('aria-busy', 'true');
+  shopLoadMessage.textContent = 'Загружаем товары…';
+  shopRetry.disabled = true;
+  let products;
+  try {
+    products = await loadProducts({ throwOnError: true });
+  } catch {
+    shopLoadMessage.textContent = 'Не удалось загрузить каталог. Попробуй ещё раз.';
+    shopRetry.hidden = false;
+    shopRetry.disabled = false;
+    return;
+  } finally {
+    shopGrid.setAttribute('aria-busy', 'false');
+  }
+  initCatalog(products);
+  catalogReady = true;
+
+  const productId = params.get('product');
+  if (productId) openProductModal(productId);
+}
+
+updateTitle();
+shopRetry.addEventListener('click', loadCatalog);
+loadCatalog();
+
+// Плашки и комплекты могут появиться позже, когда загрузятся настройки акции.
+loadShopSettings().then(() => {
+  if (catalogReady && MACHINE_PROMO) render();
+});
+
+function initCatalog(products) {
   const collectionProducts = activeCollection ? products.filter(activeCollection.matches) : products;
   const catCounts = {};
   collectionProducts.forEach(p => {
@@ -103,9 +135,8 @@ if (params.get('sub')) state.equip = params.get('sub');
 
   updateGenderTabs();
   updateEquipTabs();
-  updateTitle();
   render();
-})();
+}
 
 function updateTitle() {
   const t = document.getElementById('shopTitle');
@@ -232,15 +263,14 @@ function render() {
 
   renderBundles();
 
-  const grid = document.getElementById('shopGrid');
   const count = document.getElementById('shopCount');
   count.textContent = `${list.length} ${declOfNum(list.length, ['товар','товара','товаров'])}`;
 
   if (!list.length) {
-    grid.innerHTML = '<div class="shop-empty">По выбранным фильтрам ничего не найдено</div>';
+    shopGrid.innerHTML = '<div class="shop-empty">По выбранным фильтрам ничего не найдено</div>';
     return;
   }
-  grid.innerHTML = list.map(renderProductCard).join('');
+  shopGrid.innerHTML = list.map(renderProductCard).join('');
 }
 
 // ============================================
